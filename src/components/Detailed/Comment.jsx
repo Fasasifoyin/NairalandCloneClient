@@ -12,7 +12,7 @@ import ChildComments from "./ChildComments";
 
 import { useDispatch, useSelector } from "react-redux";
 import { commentId } from "../../app/slice/Detailed/CommentSlice";
-import { UserDetails } from "../../app/Slice/UserSlice";
+import { UserDetails } from "../../app/slice/UserSlice";
 import {
   likeComment as Like,
   createChildComment,
