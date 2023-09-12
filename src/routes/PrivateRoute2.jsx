@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { UserDetails } from "../app/Slice/UserSlice";
+import { UserDetails } from "../app/slice/UserSlice";
 import { Navigate, useLocation } from "react-router-dom";
 
 import { useSelector } from "react-redux";
