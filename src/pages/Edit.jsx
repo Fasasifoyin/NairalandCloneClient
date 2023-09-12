@@ -13,7 +13,7 @@ import Footer from "../components/layouts/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { editBlog, getSingleProduct } from "../app/actions/Blogs";
 import { Details, Status, Error } from "../app/slice//Detailed/DetailedSlice";
-import { UserDetails } from "../app/Slice/UserSlice";
+import { UserDetails } from "../app/slice/UserSlice";
 import { toast } from "react-hot-toast";
 import { EditStatus } from "../app/slice/CreateSlice";
 

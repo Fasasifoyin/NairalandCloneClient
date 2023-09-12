@@ -7,8 +7,8 @@ import { RiMenu5Fill } from "react-icons/ri";
 import { CiSearch } from "react-icons/ci";
 
 import { useSelector, useDispatch } from "react-redux";
-import { UserDetails } from "../../app/Slice/UserSlice";
-import { LOGOUT } from "../../app/Slice/UserSlice";
+import { UserDetails } from "../../app/slice/UserSlice";
+import { LOGOUT } from "../../app/slice/UserSlice";
 import decode from "jwt-decode";
 import Sidebar from "./Sidebar";
 

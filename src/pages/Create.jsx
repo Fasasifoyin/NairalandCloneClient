@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 import { createValidation } from "../components/formik/FormikValidation";
 
 import { useDispatch, useSelector } from "react-redux";
-import { UserDetails } from "../app/Slice/UserSlice";
+import { UserDetails } from "../app/slice/UserSlice";
 import { createBlog } from "../app/actions/Blogs";
 import { BlogStatus } from "../app/slice/CreateSlice";
 import Footer from "../components/layouts/Footer";

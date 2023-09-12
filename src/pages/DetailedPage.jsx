@@ -34,7 +34,7 @@ import {
   Status as CommentStatus,
   TotalComments,
 } from "../app/slice/Detailed/CommentSlice";
-import { UserDetails } from "../app/Slice/UserSlice";
+import { UserDetails } from "../app/slice/UserSlice";
 
 const check = (array, id, number) => {
   const first = array.slice(0).filter((each) => each !== id);
