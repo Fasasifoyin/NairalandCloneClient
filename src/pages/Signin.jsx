@@ -9,7 +9,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../app/actions/User";
-import { UserStatus } from "../app/Slice/UserSlice";
+import { UserStatus } from "../app/slice/UserSlice";
 import { useEffect, useState } from "react";
 
 const Signin = () => {

@@ -9,7 +9,7 @@ import { signupSliders } from "../utils/Data";
 
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../app/actions/User";
-import { UserStatus } from "../app/Slice/UserSlice";
+import { UserStatus } from "../app/slice/UserSlice";
 
 const Signup = () => {
   const navigate = useNavigate();
