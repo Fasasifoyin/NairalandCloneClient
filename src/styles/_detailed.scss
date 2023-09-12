@@ -1,0 +1,26 @@
+.scroller {
+  display: flex;
+  gap: 3rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+
+  @media (min-width: 992px) {
+    flex-direction: column;
+  }
+}
+
+.snaps {
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: 10px;
+}
+
+.snaps > * {
+  scroll-snap-align: start;
+}
+
+.relatedScroller {
+  display: flex;
+  gap: 3rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}

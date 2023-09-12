@@ -1,0 +1,42 @@
+@import "./variables";
+
+@import "./colors";
+
+@import "./base";
+@import "./typo";
+@import "./account";
+@import "./checkbox";
+@import "./skeleton";
+@import "./new";
+@import "./detailed";
+@import "./accordion";
+
+.page_alignment {
+  padding: 0 1.25rem;
+
+  @media (min-width: 768px) {
+    padding: 0 3.125rem;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 0 6.25rem !important;
+  }
+}
+
+.cc-container {
+  max-width: 1440px !important;
+  width: 100% !important;
+  margin: 0 auto;
+}
+
+.footer_input:focus {
+  border-bottom: 2px solid #175616 !important;
+}
+
+.rotate {
+  rotate: 45deg;
+}
+
+.shadow {
+  text-shadow: 0px 0px 5px rgb(0, 0, 0, 0.2);
+}

@@ -1,0 +1,21 @@
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity ease-in-out 0.7s; /* going out */
+}
+
+.slide-active {
+  opacity: 1;
+}
+
+.slide-text {
+  opacity: 0;
+  transition: opacity ease-in-out 0.6s; /* going out */
+}
+
+.slide-text-active {
+  opacity: 1;
+  transition: opacity ease-in-out 0.7s; /* coming in */
+}

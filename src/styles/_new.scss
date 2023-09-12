@@ -1,0 +1,51 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100%);
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    justify-content: space-between;
+    grid-template-columns: repeat(auto-fill, 48%);
+    grid-auto-rows: 10px;
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(auto-fill, 30.5%) !important;
+  }
+}
+
+.grid > * {
+  margin: 30px 0;
+}
+
+@media (min-width: 768px) {
+  .zero {
+    grid-row-end: span 52;
+  }
+
+  .one {
+    grid-row-end: span 73;
+  }
+
+  .two {
+    grid-row-end: span 55;
+  }
+
+  .three {
+    grid-row-end: span 52;
+  }
+
+  .four {
+    grid-row-end: span 57;
+  }
+
+  .five {
+    grid-row-end: span 60;
+  }
+}
+
+@media (min-width: 968px) {
+  .transform:hover {
+    transform: scale(1.3);
+  }
+}

@@ -1,0 +1,30 @@
+$green: #175616;
+$black: #000000;
+$cream: #f6f6ec;
+$white: #ffffff;
+$cream2: #e8ece0;
+
+$colors: (
+  "green": $green,
+  "black": $black,
+  "white": $white,
+  "cream": $cream,
+  "cream2": $cream2,
+);
+
+$regular: 400;
+$medium: 500;
+$bold: 700;
+
+$fontWeight: (
+  "regular": $regular,
+  "medium": $medium,
+  "bold": $bold,
+);
+
+//font-sizes
+// $base-font-size: 1;
+// $font-size-sm: $base_font_size * 0.8;
+// $font-size-md: $base_font_size * 1.5;
+// $font-size-lg: $base_font_size * 2;
+// $font-size-xl: $base_font_size * 3;

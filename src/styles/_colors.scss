@@ -1,0 +1,53 @@
+@each $key, $val in $colors {
+  .text-#{$key} {
+    color: $val !important;
+  }
+
+  .bg-#{$key} {
+    background-color: $val !important;
+  }
+
+  .text-hover-#{$key} {
+    &:hover {
+      color: $val !important;
+      transition: 0.2s ease-in all !important;
+    }
+  }
+
+  .bg-hover-#{$key} {
+    &:hover {
+      background-color: $val !important;
+      transition: 0.2s ease-in all !important;
+    }
+  }
+
+  //hover light variations
+  @for $i from 1 through 9 {
+    .text-#{$key}-light-#{$i} {
+      color: mix(white, $val, $i * 10%) !important;
+    }
+
+    .text-#{$key}-light-#{$i}-hover {
+      &:hover {
+        color: mix(white, $val, $i * 10%) !important;
+        transition: 0.2s ease-in all !important;
+      }
+    }
+  }
+
+  //hover dark variations
+  @for $i from 1 through 9 {
+    .text-#{$key}-dark-#{$i}-hover {
+      &:hover {
+        color: mix(black, $val, $i * 10%) !important;
+        transition: 0.2s ease-in all !important;
+      }
+    }
+  }
+}
+
+@each $key, $val in $fontWeight {
+  .fw-#{$key} {
+    font-weight: $val !important;
+  }
+}
