@@ -9,7 +9,7 @@ import { CiSearch } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
 import { UserDetails } from "../../app/slice/UserSlice";
 import { LOGOUT } from "../../app/slice/UserSlice";
-import decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import Sidebar from "./Sidebar";
 
 const Navbar = ({
@@ -69,15 +69,14 @@ const Navbar = ({
     }
 
     if (token) {
-      const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()) {
+      const decodedToken = jwtDecode(token).exp;
+
+      if (decodedToken.exp < Date.now()) {
         loggingOut();
-      } else {
-        return;
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location, user?.token]);
 
   return (
     <>
