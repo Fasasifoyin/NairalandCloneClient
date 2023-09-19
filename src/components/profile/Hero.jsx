@@ -36,6 +36,7 @@ const Hero = ({ userProfile, user }) => {
         lg: "none",
       }}
       className="cc-container page_alignment"
+      mb={{base:"30px", lg:"50px"}}
     >
       <Box
         paddingTop={{
@@ -67,6 +68,7 @@ const Hero = ({ userProfile, user }) => {
           <Flex
             gap={{ lg: "40px" }}
             direction={{ base: "column-reverse", lg: "column" }}
+            align={{ base: "center", lg: "start" }}
           >
             <Box hideFrom={"lg"}>
               <h1 style={{ textAlign: "center" }} className="text-white">
