@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
-import { login, signUp } from "../actions/User";
+import { login, signUp, updatePhoto } from "../actions/User";
 import { toast } from "react-hot-toast";
 
 const initialState = {
@@ -42,6 +42,10 @@ const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, { payload }) => {
         (state.status = "failed"), (state.error = payload);
+      })
+      .addCase(updatePhoto.fulfilled, (state, { payload }) => {
+        state.user = { ...state.user, image: payload };
+        localStorage.setItem("nairalandUser", JSON.stringify(state.user));
       });
   },
 });

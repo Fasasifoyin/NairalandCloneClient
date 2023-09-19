@@ -15,6 +15,7 @@ import {
   allNewBlogId,
 } from "../app/slice/new/NewPageSlice";
 import { getNewPageBlogs } from "../app/actions/Blogs";
+import TriangleLoader from "../components/loaders/TriangleLoader";
 
 const New = () => {
   const { newpage } = useParams();
@@ -64,7 +65,11 @@ const New = () => {
             <Box h={"2px"} width={"80%"} bg={"#175616"} />
           </Flex>
         </Flex>
-        {status === "pending" && <p>Loading...</p>}
+        {status === "pending" && (
+                    <Flex justify={"center"}>
+                    <TriangleLoader />
+                  </Flex>
+        )}
         {status === "failed" && <p>{error}</p>}
         {status === "success" &&
           (newBlogs.length ? (

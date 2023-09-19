@@ -14,6 +14,7 @@ import Sidebar from "./Sidebar";
 
 const Navbar = ({
   logo,
+  baseLogoColor,
   text,
   activeText,
   hover,
@@ -22,7 +23,6 @@ const Navbar = ({
   btnHover,
   btnColorHover,
   logoutBg,
-  logoutBgHover,
   logoutHoverBorder,
   logoutColor,
   currentLoc,
@@ -70,8 +70,9 @@ const Navbar = ({
 
     if (token) {
       const decodedToken = jwtDecode(token).exp;
+      const now = Date.now().valueOf() / 1000;
 
-      if (decodedToken.exp < Date.now()) {
+      if (decodedToken < now) {
         loggingOut();
       }
     }
@@ -89,7 +90,11 @@ const Navbar = ({
         height={`4.688rem`}
       >
         <Link to="/">
-          <Logo color={logo ? "white" : "#175616"} fs={"logo-medium-text"} />
+          <Logo
+            color={logo ? "white" : "#175616"}
+            fs={"logo-medium-text"}
+            baseLogoColor={baseLogoColor}
+          />
         </Link>
         <Flex hideBelow={"lg"} gap={{ lg: "40px", xl: "80px" }}>
           {pages.map((each, index) => (
@@ -120,9 +125,9 @@ const Navbar = ({
           ))}
         </Flex>
         <Flex gap={"20px"}>
-          {user?.token && (
+          {user?.token && currentLoc !== location.pathname && (
             <Box hideBelow={"lg"}>
-              <Link>
+              <Link to={`/profile/${user.userName}`}>
                 <Button
                   bg={buttonBg}
                   color={buttonColor}
@@ -167,66 +172,6 @@ const Navbar = ({
             </Box>
           )}
         </Flex>
-        {/* <Flex gap={"20px"}>
-          {user?.token && (
-            <Link to="/profile">
-              <Button
-                hideBelow={"lg"}
-                w={"94px"}
-                h={"34px"}
-                color={button ? "#175616" : "white"}
-                bg={button ? "white" : "#175616"}
-                rounded={0}
-                _hover={{
-                  bg: button ? "#175616" : "white",
-                  color: button ? "white" : "#175616",
-                  border: buttonborder ? "3px solid #e8ece0" : "",
-                }}
-              >
-                PROFILE
-              </Button>
-            </Link>
-          )}
-          {user.token ? (
-            <Button
-              variant={"outline"}
-              hideBelow={"lg"}
-              w={"94px"}
-              h={"34px"}
-              color={button ? "white" : "#175616"}
-              border={button ? "1px solid white" : "1px solid #175616"}
-              rounded={0}
-              className={
-                button
-                  ? "bg-hover-green"
-                  : buttonborder
-                  ? "bg-hover-green text-hover-white"
-                  : "bg-hover-white"
-              }
-              onClick={loggingOut}
-            >
-              LOGOUT
-            </Button>
-          ) : (
-            <Link to="/signin">
-              <Button
-                hideBelow={"lg"}
-                w={"94px"}
-                h={"34px"}
-                color={button ? "#175616" : "white"}
-                bg={button ? "white" : "#175616"}
-                rounded={0}
-                _hover={{
-                  bg: button ? "#175616" : "white",
-                  color: button ? "white" : "#175616",
-                  border: buttonborder ? "3px solid #e8ece0" : "",
-                }}
-              >
-                LOGIN
-              </Button>
-            </Link>
-          )}
-        </Flex> */}
         <Box
           display={"flex"}
           gap={"7px"}
@@ -238,13 +183,19 @@ const Navbar = ({
             hideFrom={"md"}
             as={CiSearch}
             boxSize={7}
-            color={{ base: "#175616", lg: logo ? "white" : "#175616" }}
+            color={{
+              base: baseLogoColor ? baseLogoColor : "#175616",
+              lg: logo ? "white" : "#175616",
+            }}
           />
           <Icon
             onClick={onOpen}
             as={RiMenu5Fill}
             boxSize={7}
-            color={{ base: "#175616", lg: logo ? "white" : "#175616" }}
+            color={{
+              base: baseLogoColor ? baseLogoColor : "#175616",
+              lg: logo ? "white" : "#175616",
+            }}
           />
         </Box>
       </Flex>

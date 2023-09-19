@@ -33,6 +33,13 @@
         transition: 0.2s ease-in all !important;
       }
     }
+
+    .bg-#{$key}-light-#{$i}-hover {
+      &:hover {
+        background-color: mix(white, $val, $i * 10%) !important;
+        transition: 0.2s ease-in all !important;
+      }
+    }
   }
 
   //hover dark variations

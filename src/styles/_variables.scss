@@ -10,6 +10,7 @@ $colors: (
   "white": $white,
   "cream": $cream,
   "cream2": $cream2,
+  "red": #FF0000,
 );
 
 $regular: 400;
@@ -21,10 +22,3 @@ $fontWeight: (
   "medium": $medium,
   "bold": $bold,
 );
-
-//font-sizes
-// $base-font-size: 1;
-// $font-size-sm: $base_font_size * 0.8;
-// $font-size-md: $base_font_size * 1.5;
-// $font-size-lg: $base_font_size * 2;
-// $font-size-xl: $base_font_size * 3;

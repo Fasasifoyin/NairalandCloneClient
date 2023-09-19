@@ -16,6 +16,8 @@ API.interceptors.request.use((req) => {
 
 export const signUp = (form) => API.post("/api/users/signup", form);
 export const signIn = (form) => API.post("/api/users/signin", form);
+export const profile = (userName) => API.get(`/api/users/profile/${userName}`);
+export const updatePhoto = (body) => API.patch("/api/users/profile/updatePhoto", body)
 
 export const createBlog = (form) => API.post("/api/blogs/create", form);
 export const updateBlog = (form) => API.patch("/api/blogs/update", form);

@@ -13,7 +13,6 @@ import { Timeago } from "../../utils/Timeago";
 
 const ChildComments = ({ index, seeComments, id, child, user, blogId }) => {
   const dispatch = useDispatch();
-  console.log(child)
 
   const like = (childCommentId) => {
     if (user.token) {

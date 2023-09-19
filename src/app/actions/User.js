@@ -66,3 +66,41 @@ export const login = createAsyncThunk(
     }
   }
 );
+
+export const profile = createAsyncThunk(
+  "/profile/profile",
+  async (userName, { rejectWithValue }) => {
+    try {
+      const { data } = await api.profile(userName);
+      return data;
+    } catch (error) {
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      return rejectWithValue(outputError);
+    }
+  }
+);
+
+export const updatePhoto = createAsyncThunk(
+  "/profile/updatePhoto",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { userName, file, setFile } = body;
+      const { data, status } = await api.updatePhoto({ userName, file });
+      if (status === 200) {
+        setFile("");
+      }
+      toast.success(`Photo updated successfully`);
+      return data;
+    } catch (error) {
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);

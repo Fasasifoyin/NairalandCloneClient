@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./slice/UserSlice"
+import userReducer from "./slice/UserSlice";
 import createReducer from "./slice/CreateSlice";
 import homeBlogSlice from "./slice/home/HomeBlogSlice";
 import randomTagsSlice from "./slice/home/RandomTagsSlice";
@@ -11,6 +11,7 @@ import detailedSlice from "./slice//Detailed/DetailedSlice";
 import detailedLatestSlice from "./slice/Detailed/DetailedLatest";
 import detailedRelatedSlice from "./slice/Detailed/DetailedRelated";
 import commentSlice from "./slice/Detailed/CommentSlice";
+import profileSlice from "./slice/ProfileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -26,5 +27,6 @@ export const store = configureStore({
     detailedLatest: detailedLatestSlice,
     detailedRelated: detailedRelatedSlice,
     comment: commentSlice,
+    profile: profileSlice,
   },
 });

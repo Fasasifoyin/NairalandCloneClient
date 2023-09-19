@@ -24,6 +24,7 @@ const initialState = commentAdapter.getInitialState({
   likeStatus: "idle",
   createStatus: "idle",
   childCommentStatus: "idle",
+  deleteCommentStatus: "idle",
 });
 
 const commentSlice = createSlice({
@@ -94,8 +95,12 @@ const commentSlice = createSlice({
         toast.error(payload);
         // state.childCommentStatus = "failed";
       })
+      .addCase(deleteComment.pending, (state, action) => {
+        state.deleteCommentStatus = "pending";
+      })
       .addCase(deleteComment.fulfilled, (state, { payload }) => {
         commentAdapter.removeOne(state, payload.data._id);
+        state.deleteCommentStatus = "success";
         (state.totalComments = payload.totalComments),
           toast.success("Comment deleted successfully");
       })
@@ -125,6 +130,7 @@ export const Error = (state) => state.comment.error;
 export const Total = (state) => state.comment.totalPages;
 export const TotalComments = (state) => state.comment.totalComments;
 export const ChildCommentStatus = (state) => state.comment.childCommentStatus;
+export const DeleteCommentStatus = (state) => state.comment.deleteCommentStatus;
 
 export const { setEmpty } = commentSlice.actions;
 

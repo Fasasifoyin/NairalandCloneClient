@@ -8,6 +8,7 @@ import Fader from "../components/home/Fader";
 import HomeTagsBlog from "../components/home/HomeTagsBlog";
 import Pagination from "../components/layouts/Pagination";
 import Footer from "../components/layouts/Footer";
+import TriangleLoader from "../components/loaders/TriangleLoader";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePageBlogs, getRandomTags } from "../app/actions/Blogs";
@@ -105,7 +106,11 @@ const Home = () => {
             <h4 className="Xlarge-text text-green">Topics</h4>
           </Box>
         </Flex>
-        {status === "pending" && <p>Loading...</p>}
+        {status === "pending" && (
+          <Flex justify={"center"}>
+            <TriangleLoader />
+          </Flex>
+        )}
         {status === "failed" && <p>{error}</p>}
         {status === "success" &&
           (homeTagsBlog.length ? (

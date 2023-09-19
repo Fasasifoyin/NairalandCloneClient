@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import useWindowSize from "../../hooks/useWindowSize";
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-const Logo = ({ fs, color }) => {
+const Logo = ({ fs, color, baseLogoColor }) => {
   const { width } = useWindowSize();
 
   return (
@@ -10,7 +10,10 @@ const Logo = ({ fs, color }) => {
       <Box pos={"relative"}>
         <h6
           className={`${fs} fw-bold`}
-          style={{ color: width >= 992 ? color : "#175616" }}
+          style={{
+            color:
+              width >= 992 ? color : baseLogoColor ? baseLogoColor : "#175616",
+          }}
         >
           N
         </h6>
@@ -21,15 +24,32 @@ const Logo = ({ fs, color }) => {
             justifyContent={"center"}
             gap={"7%"}
           >
-            <Box width={"100%"} h={"7%"} bg={{ base: "#175616", lg: color }} />
-            <Box width={"100%"} h={"7%"} bg={{ base: "#175616", lg: color }} />
+            <Box
+              width={"100%"}
+              h={"7%"}
+              bg={{
+                base: baseLogoColor ? baseLogoColor : "#175616",
+                lg: color,
+              }}
+            />
+            <Box
+              width={"100%"}
+              h={"7%"}
+              bg={{
+                base: baseLogoColor ? baseLogoColor : "#175616",
+                lg: color,
+              }}
+            />
           </Flex>
         </Box>
       </Box>
       <Box>
         <h6
           className={`${fs} fw-bold`}
-          style={{ color: width >= 992 ? color : "#175616" }}
+          style={{
+            color:
+              width >= 992 ? color : baseLogoColor ? baseLogoColor : "#175616",
+          }}
         >
           airaland
         </h6>

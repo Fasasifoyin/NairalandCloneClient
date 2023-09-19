@@ -11,7 +11,10 @@ import ChildComments from "./ChildComments";
 // import LikesModal from "./LikesModal";
 
 import { useDispatch, useSelector } from "react-redux";
-import { commentId } from "../../app/slice/Detailed/CommentSlice";
+import {
+  DeleteCommentStatus,
+  commentId,
+} from "../../app/slice/Detailed/CommentSlice";
 import { UserDetails } from "../../app/slice/UserSlice";
 import {
   likeComment as Like,
@@ -20,6 +23,8 @@ import {
 } from "../../app/actions/Comment";
 import { toast } from "react-hot-toast";
 import { Timeago } from "../../utils/Timeago";
+import { useState } from "react";
+import ConfirmationModal from "../layouts/ConfirmationModal";
 
 const Comment = ({
   each,
@@ -34,8 +39,12 @@ const Comment = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const comment = useSelector((state) => commentId(state, each));
+  const deleteCommentStatus = useSelector(DeleteCommentStatus);
   const user = useSelector(UserDetails);
   const time = Timeago(comment.createdAt);
+  const [deleteModal, setDeleteModal] = useState(false);
+  4;
+  console.log(deleteModal);
   // const [viewChildComments, setViewChildComments] = useState(-1);
   // const [viewLikes, setViewLikes] = useState(-1);
 
@@ -115,17 +124,14 @@ const Comment = ({
             <p>{comment.creator.firstName}</p>
             <p>{time}</p>
           </Flex>
-
           <h4 className="medium-text">{comment.comment}</h4>
           <Flex align={"center"} columns={3} gap={{ base: "50px", md: "80px" }}>
-            <Flex align={"center"} gap={"5px"}>
-              <Icon
-                onClick={() => openReply(index)}
-                className="cursor"
-                as={BsReply}
-                boxSize={5}
-              />
-            </Flex>
+            <Icon
+              onClick={() => openReply(index)}
+              className="cursor"
+              as={BsReply}
+              boxSize={5}
+            />
             <Flex align={"center"} gap={"5px"}>
               <Icon
                 boxSize={4}
@@ -149,15 +155,16 @@ const Comment = ({
               />
               <h6 className="small-text">{comment.likes.length}</h6>
             </Flex>
-            <Flex align={"center"} gap={"5px"}>
+            {comment.creator.userName === user.userName && (
               <Icon
                 _hover={{ color: "red" }}
                 className="cursor"
                 as={MdOutlineDeleteOutline}
                 boxSize={5}
-                onClick={deleteCom}
+                onClick={() => setDeleteModal(true)}
+                // onClick={deleteCom}
               />
-            </Flex>
+            )}
           </Flex>
         </Flex>
       </Flex>
@@ -187,6 +194,16 @@ const Comment = ({
           blogId={blogId}
         />
       </Flex>
+      {deleteModal && (
+        <ConfirmationModal
+          actiontype={"Are you sure you want to delete this comment"}
+          warningNote={"Please note that this action is not reversible"}
+          buttonText={"Delete"}
+          setFalse={setDeleteModal}
+          c
+          status={deleteCommentStatus}
+        />
+      )}
 
       {/* <ChildCommentModal
         Comment={comment.comment} 

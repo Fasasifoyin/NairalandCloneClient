@@ -9,6 +9,7 @@ import PrivateRoute2 from "./PrivateRoute2";
 import New from "../pages/New";
 import DetailedPage from "../pages/DetailedPage";
 import Edit from "../pages/Edit";
+import Profile from "../pages/Profile";
 
 const routes = [
   {
@@ -70,6 +71,14 @@ const routes = [
       {
         path: "/:slug",
         element: <DetailedPage />,
+      },
+      {
+        path: "/profile/:userName",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
     ],
   },
