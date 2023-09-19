@@ -22,7 +22,6 @@ const Profile = () => {
   const userProfile = useSelector(ProfileDetails);
   const profileError = useSelector(ProfileError);
   const profileStatus = useSelector(ProfileStatus);
-  console.log(userProfile);
 
   useEffect(() => {
     dispatch(profile(userName));
