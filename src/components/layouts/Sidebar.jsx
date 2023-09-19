@@ -73,7 +73,7 @@ const Sidebar = ({ isOpen, onClose, pages, user, loggingOut }) => {
             ))}
           </Flex>
           {user?.token && (
-            <Link as={RouterLink} to="/profile">
+            <Link as={RouterLink} to={`/profile/${user.userName}`}>
               <Button
                 mt={"30px"}
                 hideFrom={"lg"}
