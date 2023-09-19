@@ -61,23 +61,23 @@ const Navbar = ({
     },
   ];
 
-  useEffect(() => {
-    const token = user?.token;
+  // useEffect(() => {
+  //   const token = user?.token;
 
-    if (!token) {
-      return;
-    }
+  //   if (!token) {
+  //     return;
+  //   }
 
-    if (token) {
-      const decodedToken = jwtDecode(token).exp;
-      const now = Date.now().valueOf() / 1000;
+  //   if (token) {
+  //     const decodedToken = jwtDecode(token).exp;
+  //     const now = Date.now().valueOf() / 1000;
 
-      if (decodedToken < now) {
-        loggingOut();
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, user?.token]);
+  //     if (decodedToken < now) {
+  //       loggingOut();
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [location, user?.token]);
 
   return (
     <>
