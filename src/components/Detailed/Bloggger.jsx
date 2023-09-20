@@ -16,6 +16,7 @@ const Bloggger = ({ user }) => {
             w={"100%"}
             h={"100%"}
             borderRadius={"50%"}
+            objectFit={"cover"}
             src={user.image}
             alt={user.firstName}
           />

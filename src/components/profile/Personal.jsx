@@ -34,24 +34,23 @@ const Personal = ({ userProfile, user }) => {
   };
 
   return (
-    <Box>
+    <Box mb={{ base: "50px", lg: "70px" }}>
       <Flex mb={"30px"} justify={"space-between"} align={"center"}>
         <h5 className="large-text fw-bold">Personal information</h5>
         {userProfile.userName === user.userName && (
-
-        <Flex
-          className="cursor"
-          gap={"5px"}
-          align={"center"}
-          border={"1px solid #175616"}
-          borderRadius={"20px"}
-          padding={"5px 10px"}
-          onClick={() => setEdit(!edit)}
-        >
-          {edit && <p>Clear</p>}
-          {!edit && <p style={{ fontStyle: "italic" }}>Edit</p>}
-          {!edit && <Icon as={AiFillEdit} />}
-        </Flex>
+          <Flex
+            className="cursor"
+            gap={"5px"}
+            align={"center"}
+            border={"1px solid #175616"}
+            borderRadius={"20px"}
+            padding={"5px 10px"}
+            onClick={() => setEdit(!edit)}
+          >
+            {edit && <p>Clear</p>}
+            {!edit && <p style={{ fontStyle: "italic" }}>Edit</p>}
+            {!edit && <Icon as={AiFillEdit} />}
+          </Flex>
         )}
       </Flex>
       <Formik

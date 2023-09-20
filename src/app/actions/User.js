@@ -130,3 +130,25 @@ export const updateProfile = createAsyncThunk(
     }
   }
 );
+
+export const updateAddress = createAsyncThunk(
+  "/profile/updateAddress",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { setEdit } = body
+      const { data, status } = await api.updateAddress(body);
+      if(status === 200){
+        setEdit(false)
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);

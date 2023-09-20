@@ -15,6 +15,7 @@ import {
   ProfileStatus,
 } from "../app/slice/ProfileSlice";
 import { UserDetails } from "../app/slice/UserSlice";
+import Address from "../components/profile/Address";
 
 const Profile = () => {
   const { userName } = useParams();
@@ -60,6 +61,7 @@ const Profile = () => {
           <Hero userProfile={userProfile} user={user} />
           <Box className="cc-container page_alignment">
             <Personal userProfile={userProfile} user={user} />
+            <Address userProfile={userProfile} user={user} />
           </Box>
         </Box>
       )}
