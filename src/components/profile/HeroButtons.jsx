@@ -1,17 +1,11 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { updatePhoto } from "../../app/actions/User";
+import { useSelector } from "react-redux";
 import { PhotoStatus } from "../../app/slice/ProfileSlice";
 
-const HeroButtons = ({ file, userName, setFile, image, setButton }) => {
-  const dispatch = useDispatch();
+const HeroButtons = ({ file, image, setButton, setClear }) => {
   const status = useSelector(PhotoStatus);
-
-  const clearProfile = () => {
-    dispatch(updatePhoto({ file: "", userName, setFile }));
-  };
 
   return (
     <Flex
@@ -27,8 +21,7 @@ const HeroButtons = ({ file, userName, setFile, image, setButton }) => {
               size={"sm"}
               className="bg-red text-white bg-red-light-5-hover "
               width={"150px"}
-              isLoading={status === "pending"}
-              onClick={clearProfile}
+              onClick={() => setClear(true)}
             >
               Clear Profile Picture
             </Button>

@@ -80,3 +80,29 @@ export const childCommentValidation = yup.object().shape({
     .min(5, "Your comment cannot be less than 5 characters")
     .required("Comment"),
 });
+
+export const updateProfileValidation = yup.object().shape({
+  firstName: yup
+    .string()
+    // .matches(/^\S*$/, "Name without spaces")
+    .matches(/^\w*$/, "Cannot contain white spaces and special characters")
+    .min(3)
+    .max(15)
+    .required("Enter First Name"),
+  lastName: yup
+    .string()
+    // .matches(/^\S*$/, "Name without spaces")
+    .matches(/^\w*$/, "Cannot contain white spaces and special characters")
+    .min(3)
+    .max(15)
+    .required("Enter Last Name"),
+  userName: yup
+    .string()
+    .matches(/^\S*$/, "Should not contain white spaces")
+    .min(3)
+    .required("Enter UserName"),
+  email: yup
+    .string()
+    .email("Please enter a valid email")
+    .required("Enter Email"),
+});

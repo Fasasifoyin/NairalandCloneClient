@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
 import Navbar from "../components/layouts/Navbar";
+import TriangleLoader from "../components/loaders/TriangleLoader";
+import Hero from "../components/profile/Hero";
+import Personal from "../components/profile/Personal";
+import Footer from "../components/layouts/Footer";
 
 import { useDispatch, useSelector } from "react-redux";
 import { profile } from "../app/actions/User";
@@ -10,8 +14,6 @@ import {
   ProfileError,
   ProfileStatus,
 } from "../app/slice/ProfileSlice";
-import Hero from "../components/profile/Hero";
-import TriangleLoader from "../components/loaders/TriangleLoader";
 import { UserDetails } from "../app/slice/UserSlice";
 
 const Profile = () => {
@@ -38,7 +40,7 @@ const Profile = () => {
           logoutColor={"#175616"}
           logoutHoverBorder={"#175616"}
           currentLoc={`/profile/${userName}`}
-          baseLogoColor={profileStatus === "pending" ? "#175616" : "white"}
+          baseLogoColor={profileStatus === "success" ? "white" : "#175616"}
         />
       </Box>
       {profileStatus === "pending" && (
@@ -47,7 +49,7 @@ const Profile = () => {
         </Flex>
       )}
       {profileStatus === "failed" && (
-        <Box hideBelow={"lg"} paddingTop={"calc(4.644rem + 60px)"}>
+        <Box paddingTop={"calc(4.644rem + 60px)"}>
           <Box className="cc-container page_alignment">
             <h4 className="medium-text">{profileError}</h4>
           </Box>
@@ -56,9 +58,14 @@ const Profile = () => {
       {profileStatus === "success" && (
         <Box>
           <Hero userProfile={userProfile} user={user} />
-          <Box className="cc-container page_alignment">dhdhdfh</Box>
+          <Box className="cc-container page_alignment">
+            <Personal userProfile={userProfile} user={user} />
+          </Box>
         </Box>
       )}
+      <Box mt={"100px"}>
+        <Footer />
+      </Box>
     </Box>
   );
 };

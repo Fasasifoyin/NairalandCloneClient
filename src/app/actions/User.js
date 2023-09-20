@@ -104,3 +104,29 @@ export const updatePhoto = createAsyncThunk(
     }
   }
 );
+
+export const updateProfile = createAsyncThunk(
+  "/profile/updateProfile",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { navigate, setEdit } = body;
+      const { data, status } = await api.updateProfile(body);
+      if (status === 200) {
+        setEdit(false);
+        if (body.user !== data.userName) {
+          navigate(`/profile/${data.userName}`);
+        }
+        toast.success("Profile updated successfully");
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);

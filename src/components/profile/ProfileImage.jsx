@@ -8,7 +8,7 @@ import {
   Image,
   Input,
 } from "@chakra-ui/react";
-import { AiFillEdit } from "react-icons/ai";
+import { AiOutlineCamera } from "react-icons/ai";
 
 const ProfileImage = ({ file, onUpload, userProfile, onSubmit, user }) => {
   return (
@@ -29,19 +29,23 @@ const ProfileImage = ({ file, onUpload, userProfile, onSubmit, user }) => {
         />
 
         {userProfile.userName === user.userName && (
-          <Box pos={"absolute"} top={{ base: "-10px", lg: 0 }} right={0}>
+          <Box pos={"absolute"} bottom={{ base: "-10px", lg: 0 }} right={0}>
             <FormControl>
               <FormLabel htmlFor="profile">
                 <Flex
                   w={{ base: "40px", lg: "50px" }}
                   h={{ base: "40px", lg: "50px" }}
-                  bg={"white"}
+                  bg={{ base: "white", lg: "#175616" }}
                   borderRadius={"50%"}
                   justify={"center"}
                   align={"center"}
                   className="cursor"
                 >
-                  <Icon as={AiFillEdit} boxSize={6} color={"#175616"} />
+                  <Icon
+                    as={AiOutlineCamera}
+                    boxSize={{ base: 6, lg: 8 }}
+                    color={{ base: "#175616", lg: "white" }}
+                  />
                 </Flex>
               </FormLabel>
               <Input

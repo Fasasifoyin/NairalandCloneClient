@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const Bloggger = ({ user }) => {
   return (
@@ -11,7 +12,13 @@ const Bloggger = ({ user }) => {
           w={{ base: "120px", md: "180px", lg: "225px" }}
           h={{ base: "120px", md: "180px", lg: "225px" }}
         >
-          <Image w={"100%"} h={"100%"} borderRadius={"50%"} src={user.image} alt={user.firstName} />
+          <Image
+            w={"100%"}
+            h={"100%"}
+            borderRadius={"50%"}
+            src={user.image}
+            alt={user.firstName}
+          />
         </Box>
         <Box
           w={{
@@ -20,19 +27,37 @@ const Bloggger = ({ user }) => {
             lg: "calc(95% - 225px)",
           }}
         >
-          <Box>
-            <h4 className="medium-text">
-              {user.firstName} {user.lastName}
-            </h4>
-          </Box>
+          <Link to={`/profile/${user.userName}`}>
+            <Box>
+              <h4 className="medium-text">
+                {user.firstName} {user.lastName}
+              </h4>
+            </Box>
+          </Link>
           <Box mb={"30px"}>
             <h6 className="small-text">
               {user.occupation ? user.occupation : "No occupation"}
             </h6>
           </Box>
-          <Box>
-            <p>{user.about ? user.about : "No about"}</p>
+          <Box mb={"20px"}>
+            <p>
+              {user.about
+                ? user.about.length > 200
+                  ? `${user.about.slice(0, 197).trim()}...`
+                  : user.about
+                : "No about"}
+            </p>
           </Box>
+          <Link to={`/profile/${user.userName}`}>
+            <Box>
+              <Button
+                size={"sm"}
+                className="bg-green text-white bg-green-light-5-hover"
+              >
+                Read more about {user.firstName}
+              </Button>
+            </Box>
+          </Link>
         </Box>
       </Flex>
       <Box border={"1px solid #175616"} mt={"15px"} />

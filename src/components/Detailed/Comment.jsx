@@ -43,8 +43,6 @@ const Comment = ({
   const user = useSelector(UserDetails);
   const time = Timeago(comment.createdAt);
   const [deleteModal, setDeleteModal] = useState(false);
-  4;
-  console.log(deleteModal);
   // const [viewChildComments, setViewChildComments] = useState(-1);
   // const [viewLikes, setViewLikes] = useState(-1);
 
@@ -200,7 +198,7 @@ const Comment = ({
           warningNote={"Please note that this action is not reversible"}
           buttonText={"Delete"}
           setFalse={setDeleteModal}
-          c
+          action={deleteCom}
           status={deleteCommentStatus}
         />
       )}

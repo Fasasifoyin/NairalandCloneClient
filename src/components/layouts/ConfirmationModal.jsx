@@ -6,6 +6,8 @@ const ConfirmationModal = ({
   buttonText,
   setFalse,
   warningNote,
+  status,
+  action
 }) => {
   return (
     <Box>
@@ -73,6 +75,8 @@ const ConfirmationModal = ({
               size={"sm"}
               rounded={0}
               className="bg-hover-red text-hover-white"
+              isLoading={status === "pending"}
+              onClick={action}
             >
               {buttonText}
             </Button>
