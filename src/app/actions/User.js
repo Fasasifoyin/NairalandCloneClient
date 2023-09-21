@@ -135,10 +135,30 @@ export const updateAddress = createAsyncThunk(
   "/profile/updateAddress",
   async (body, { rejectWithValue }) => {
     try {
-      const { setEdit } = body
+      const { setEdit } = body;
       const { data, status } = await api.updateAddress(body);
-      if(status === 200){
-        setEdit(false)
+      if (status === 200) {
+        setEdit(false);
+      }
+      return data;
+    } catch (error) {
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "/profile/deleteUser",
+  async (userName, { rejectWithValue }) => {
+    try {
+      const { data, status } = await api.deleteUser(userName);
+      if (status === 200) {
+        toast.success(data.message);
       }
       return data;
     } catch (error) {

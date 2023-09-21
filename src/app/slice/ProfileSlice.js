@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  deleteUser,
   profile,
   updateAddress,
   updatePhoto,
@@ -14,6 +15,7 @@ const initialState = {
   photoStatus: "idle",
   updateStatus: "idle",
   addressStatus: "idle",
+  deleteStatus: "idle",
 };
 
 const porfileSlice = createSlice({
@@ -75,6 +77,15 @@ const porfileSlice = createSlice({
       })
       .addCase(updateAddress.rejected, (state, action) => {
         state.addressStatus = "failed";
+      })
+      .addCase(deleteUser.pending, (state, action) => {
+        state.deleteStatus = "pending";
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.deleteStatus = "success";
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.deleteStatus = "failed";
       });
   },
 });
@@ -85,5 +96,6 @@ export const ProfileStatus = (state) => state.profile.status;
 export const PhotoStatus = (state) => state.profile.photoStatus;
 export const UpdateStatus = (state) => state.profile.updateStatus;
 export const AddressStatus = (state) => state.profile.addressStatus;
+export const DeleteStatus = (state) => state.profile.deleteStatus;
 
 export default porfileSlice.reducer;

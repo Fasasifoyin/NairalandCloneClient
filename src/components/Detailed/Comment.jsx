@@ -109,8 +109,11 @@ const Comment = ({
             h={"100%"}
             borderRadius={"50%"}
             objectFit={"cover"}
-            src={comment.creator.image}
-            alt={comment.creator.firstName}
+            src={
+              comment?.creator?.image ||
+              "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690553303/Nairaland/default_avatar_cxfqgl.jpg"
+            }
+            alt={comment?.creator?.firstName || "Unknown"}
           />
         </Box>
         <Flex
@@ -119,7 +122,7 @@ const Comment = ({
           w={{ base: "calc(98% - 50px)", md: "calc(98% - 70px)" }}
         >
           <Flex gap={"5px"}>
-            <p>{comment.creator.firstName}</p>
+            <p>{comment?.creator?.firstName || "Unknown"}</p>
             <p>{time}</p>
           </Flex>
           <h4 className="medium-text">{comment.comment}</h4>
@@ -153,7 +156,7 @@ const Comment = ({
               />
               <h6 className="small-text">{comment.likes.length}</h6>
             </Flex>
-            {comment.creator.userName === user.userName && (
+            {comment?.creator?.userName === user.userName && (
               <Icon
                 _hover={{ color: "red" }}
                 className="cursor"

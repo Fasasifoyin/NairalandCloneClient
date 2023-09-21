@@ -27,7 +27,7 @@ const Address = ({ userProfile, user }) => {
   };
 
   return (
-    <Box>
+    <Box mb={{ base: "50px", lg: "70px" }}>
       <Flex mb={"30px"} justify={"space-between"} align={"center"}>
         <h5 className="large-text fw-bold">Address information</h5>
         {userProfile.userName === user.userName && (

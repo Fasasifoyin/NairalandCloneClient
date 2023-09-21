@@ -55,14 +55,17 @@ const ChildComments = ({ index, seeComments, id, child, user, blogId }) => {
                     w={"100%"}
                     h={"100%"}
                     objectFit={"cover"}
-                    src={each.creator.image}
+                    src={
+                      each?.creator?.image ||
+                      "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690553303/Nairaland/default_avatar_cxfqgl.jpg"
+                    }
                     borderRadius={"50%"}
-                    alt={each.creator.userName}
+                    alt={each?.creator?.userName || "Unknown"}
                   />
                 </Box>
                 <Box w={{ base: "calc(99% - 30px)", lg: "calc(99% - 40px)" }}>
                   <Flex gap={"3px"}>
-                    <h6 className="small-text">{each.creator.firstName}</h6>
+                    <h6 className="small-text">{each?.creator?.firstName || "Unknown"}</h6>
                     <h6 className="small-text">{Timeago(each.createdAt)}</h6>
                   </Flex>
                   <p>{each.comment}</p>

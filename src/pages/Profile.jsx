@@ -16,6 +16,7 @@ import {
 } from "../app/slice/ProfileSlice";
 import { UserDetails } from "../app/slice/UserSlice";
 import Address from "../components/profile/Address";
+import Actions from "../components/profile/Actions";
 
 const Profile = () => {
   const { userName } = useParams();
@@ -62,6 +63,9 @@ const Profile = () => {
           <Box className="cc-container page_alignment">
             <Personal userProfile={userProfile} user={user} />
             <Address userProfile={userProfile} user={user} />
+            {userProfile.userName === user.userName && (
+              <Actions userProfile={userProfile} />
+            )}
           </Box>
         </Box>
       )}

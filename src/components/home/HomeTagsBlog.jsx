@@ -24,8 +24,9 @@ const HomeTagsBlog = ({ id, index }) => {
                 {tag.related[0]?.body.slice(0, 250).trim()}...
               </h4>
               <p style={{ marginBottom: "20px" }}>
-                -{tag.related[0]?.author.firstName}{" "}
-                {tag.related[0]?.author.lastName}
+                {tag.related[0]?.author?.firstName
+                  ? `-${tag.related[0].author.firstName} ${tag.related[0].author.lastName}`
+                  : "-unknown"}
               </p>
               <Link to={`/${tag.related[0]?.slug}`}>
                 <Button
