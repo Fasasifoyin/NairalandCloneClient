@@ -11,7 +11,6 @@ const ConfirmationModal = ({
 }) => {
   return (
     <Box>
-      <p>yy</p>
       <Box
         pos={"fixed"}
         top={0}

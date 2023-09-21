@@ -2,7 +2,7 @@
 import { Box, Flex, Icon, Image } from "@chakra-ui/react";
 import { FaRegComment } from "react-icons/fa";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BsReply } from "react-icons/bs";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import ChildCommentForm from "./ChildCommentForm";
@@ -29,7 +29,6 @@ import ConfirmationModal from "../layouts/ConfirmationModal";
 const Comment = ({
   each,
   index,
-  slugg,
   reply,
   setReply,
   seeComments,
@@ -38,19 +37,21 @@ const Comment = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const comment = useSelector((state) => commentId(state, each));
   const deleteCommentStatus = useSelector(DeleteCommentStatus);
   const user = useSelector(UserDetails);
   const time = Timeago(comment.createdAt);
   const [deleteModal, setDeleteModal] = useState(false);
+  console.log(comment.creator);
   // const [viewChildComments, setViewChildComments] = useState(-1);
   // const [viewLikes, setViewLikes] = useState(-1);
 
-  const likeComment = (userId, commentId) => {
-    if (userId) {
+  const likeComment = (commentId) => {
+    if (user.token) {
       dispatch(Like(commentId));
     } else {
-      navigate(`/signin?redirect=/${slugg}`);
+      navigate("/signin", { state: { from: location } });
     }
   };
 
@@ -63,10 +64,9 @@ const Comment = ({
       const { childComment } = values;
       const form = { childComment, commentId: comment._id };
       onSubmitProps.resetForm();
-      // setReply(-1);
       dispatch(createChildComment(form));
     } else {
-      toast.error("Not a user");
+      navigate("/signin", { state: { from: location } });
     }
   };
 
@@ -152,18 +152,17 @@ const Comment = ({
                     ? AiFillHeart
                     : AiOutlineHeart
                 }
-                onClick={() => likeComment(user._id, comment._id)}
+                onClick={() => likeComment(comment._id)}
               />
               <h6 className="small-text">{comment.likes.length}</h6>
             </Flex>
-            {comment?.creator?.userName === user.userName && (
+            {comment?.creator?.userName === user.userName && user.userName && (
               <Icon
                 _hover={{ color: "red" }}
                 className="cursor"
                 as={MdOutlineDeleteOutline}
                 boxSize={5}
                 onClick={() => setDeleteModal(true)}
-                // onClick={deleteCom}
               />
             )}
           </Flex>

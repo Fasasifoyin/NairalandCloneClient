@@ -14,7 +14,7 @@ const PrivateRoute = ({ children }) => {
         children
       ) : (
         <Navigate
-          to={"/signin?redirect=/blog/create"}
+          to={"/signin"}
           state={{ from: location }}
         />
       )}

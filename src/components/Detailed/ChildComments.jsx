@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate, useLocation } from "react-router-dom";
 import { Box, Flex, Icon, Image } from "@chakra-ui/react";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -13,12 +14,14 @@ import { Timeago } from "../../utils/Timeago";
 
 const ChildComments = ({ index, seeComments, id, child, user, blogId }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const like = (childCommentId) => {
     if (user.token) {
       dispatch(likeChildComment({ commentId: id, childCommentId }));
     } else {
-      toast.error("Not a user");
+      navigate("/signin", { state: { from: location } });
     }
   };
 
@@ -65,7 +68,9 @@ const ChildComments = ({ index, seeComments, id, child, user, blogId }) => {
                 </Box>
                 <Box w={{ base: "calc(99% - 30px)", lg: "calc(99% - 40px)" }}>
                   <Flex gap={"3px"}>
-                    <h6 className="small-text">{each?.creator?.firstName || "Unknown"}</h6>
+                    <h6 className="small-text">
+                      {each?.creator?.firstName || "Unknown"}
+                    </h6>
                     <h6 className="small-text">{Timeago(each.createdAt)}</h6>
                   </Flex>
                   <p>{each.comment}</p>
@@ -83,14 +88,16 @@ const ChildComments = ({ index, seeComments, id, child, user, blogId }) => {
                       />
                       <h6 className="tiny-text">{each.likes.length}</h6>
                     </Flex>
-
-                    <Icon
-                      boxSize={4}
-                      _hover={{ color: "red" }}
-                      as={MdOutlineDeleteOutline}
-                      className="cursor"
-                      onClick={() => deleteCom(each._id)}
-                    />
+                    {each?.creator?.userName === user.userName &&
+                      user.userName && (
+                        <Icon
+                          boxSize={4}
+                          _hover={{ color: "red" }}
+                          as={MdOutlineDeleteOutline}
+                          className="cursor"
+                          onClick={() => deleteCom(each._id)}
+                        />
+                      )}
                   </Flex>
                 </Box>
               </Flex>

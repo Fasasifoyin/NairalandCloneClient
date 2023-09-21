@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Navbar from "../components/layouts/Navbar";
 import Search from "../components/Detailed/Search";
@@ -12,7 +12,6 @@ import { tagsList } from "../utils/Data";
 import DetailedForm from "../components/Detailed/DetailedForm";
 import Footer from "../components/layouts/Footer";
 import Comment from "../components/Detailed/Comment";
-import { toast } from "react-hot-toast";
 import useDidMountEffect from "../hooks/useDidMountEffect";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +44,8 @@ const check = (array, id, number) => {
 const DetailedPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const user = useSelector(UserDetails);
 
   const blog = useSelector(Details);
@@ -142,7 +143,7 @@ const DetailedPage = () => {
       dispatch(createComment(form));
       onSubmitProps.resetForm();
     } else {
-      toast.error("You are a guest");
+      navigate("/signin", { state: { from: location } });
     }
   };
 
@@ -261,7 +262,6 @@ const DetailedPage = () => {
                       key={each}
                       each={each}
                       index={index}
-                      slugg={blog.slug}
                       reply={reply}
                       setReply={setReply}
                       seeComments={seeComments}

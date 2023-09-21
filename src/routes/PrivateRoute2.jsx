@@ -7,13 +7,16 @@ import { useSelector } from "react-redux";
 const PrivateRoute2 = ({ children }) => {
   const user = useSelector(UserDetails);
   const location = useLocation();
-  const { search } = useLocation();
-  const redirectURL = new URLSearchParams(search).get("redirect");
-  const redirect = redirectURL ? redirectURL : "/";
+  const { from } = location.state || { from: { pathname: "/" } };
+  console.log(from);
 
   return (
     <>
-      {user.token ? <Navigate to={redirect} state={{ from: location }} /> : children}
+      {user.token ? (
+        <Navigate to={from.pathname} state={{ from: location }} />
+      ) : (
+        children
+      )}
     </>
   );
 };
