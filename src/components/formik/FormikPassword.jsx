@@ -4,6 +4,7 @@ import {
   Box,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Icon,
   Input,
 } from "@chakra-ui/react";
@@ -11,7 +12,7 @@ import { Field } from "formik";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
 
 const FormikPassword = (props) => {
-  const { name, placeholder } = props;
+  const { name, placeholder, label, defaultLabel, base, lg } = props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -19,6 +20,17 @@ const FormikPassword = (props) => {
     <Field name={name}>
       {({ field, meta }) => (
         <FormControl isInvalid={meta.error && meta.touched}>
+          {label && (
+            <FormLabel width={"max-content"}>
+              {defaultLabel ? (
+                <p style={{ color: "rgb(0,0,0,0.7)" }}>{label}</p>
+              ) : (
+                <h3 style={{ marginBottom: "10px" }} className="fw-medium">
+                  {label}
+                </h3>
+              )}
+            </FormLabel>
+          )}
           <Box pos={"relative"}>
             <Input
               type={showPassword ? "text" : "password"}
@@ -28,7 +40,7 @@ const FormikPassword = (props) => {
               focusBorderColor="#175616"
               borderRadius={"5px"}
               fontSize={{ md: "18px", base: "14px" }}
-              h={"56px"}
+              h={{ base: base ? base : "56px", lg: lg ? lg : "56px" }}
               border={"1px solid #175616"}
               paddingLeft={"17px"}
               _placeholder={{ color: "rgb(0, 0, 0, 0.7)" }}

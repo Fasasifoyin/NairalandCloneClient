@@ -1,50 +1,66 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, SimpleGrid } from "@chakra-ui/react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdLogout } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser } from "../../app/actions/User";
-import { useEffect, useState } from "react";
+import { deleteUser, updatePassword } from "../../app/actions/User";
+import { useState } from "react";
 import ConfirmationModal from "../layouts/ConfirmationModal";
-import { DeleteStatus } from "../../app/slice/ProfileSlice";
+import { DeleteStatus, PasswordStatus } from "../../app/slice/ProfileSlice";
 import { LOGOUT } from "../../app/slice/UserSlice";
 import { useNavigate } from "react-router-dom";
-import useDidMountEffect from "../../hooks/useDidMountEffect";
+import { Formik, Form } from "formik";
+import FormikControl from "../formik/FormikControl";
+import { updatePasswordValidation } from "../formik/FormikValidation";
 
 const Actions = ({ userProfile }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const deleteStatus = useSelector(DeleteStatus);
+  const passwordStatus = useSelector(PasswordStatus);
   const [remove, setRemove] = useState(false);
   const [log, setLog] = useState(false);
+  const [password, setPassword] = useState(false);
+
+  const initialValues = {
+    password: "",
+    newPassword: "",
+  };
 
   const deleteHelper = () => {
-    dispatch(deleteUser(userProfile.userName));
+    dispatch(
+      deleteUser({
+        userName: userProfile.userName,
+        dispatch,
+        navigate,
+        setRemove,
+      })
+    );
   };
 
   const loggingOut = () => {
-    dispatch(LOGOUT());
     navigate("/");
+    dispatch(LOGOUT());
     setLog(false);
   };
 
-  useEffect(() => {
-    if (deleteStatus === "success" || deleteStatus === "failed") {
-      setRemove(false);
-    }
-  }, [deleteStatus]);
-
-  useDidMountEffect(() => {
-    if (deleteStatus === "success") {
-      loggingOut();
-    }
-  }, deleteStatus);
+  const onSubmit = (values) => {
+    const data = { ...values, userName: userProfile.userName, setPassword };
+    dispatch(updatePassword(data));
+  };
 
   return (
     <Box>
-      <Flex justify={"space-between"} align={"center"}>
-        <Box></Box>
-        <Flex gap={"20px"}>
+      <Flex  justify={"space-between"} align={"center"}>
+        <Box>
+          <h4
+            onClick={() => setPassword(!password)}
+            className="medium-text cursor text-green text-green-light-5-hover"
+          >
+            Change Password
+          </h4>
+        </Box>
+        <Flex gap={"20px"} direction={{ base: "column", sm: "row" }}>
           <Flex
             gap={"5px"}
             align={"center"}
@@ -71,6 +87,58 @@ const Actions = ({ userProfile }) => {
           </Flex>
         </Flex>
       </Flex>
+
+      {password && (
+        <Box mt={"30px"}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={updatePasswordValidation}
+            onSubmit={onSubmit}
+          >
+            {() => (
+              <Form>
+                <SimpleGrid
+                  columns={{ base: 1, md: 2 }}
+                  gap={"30px"}
+                  mb={"30px"}
+                >
+                  <Box>
+                    <FormikControl
+                      control="Password"
+                      name="password"
+                      placeholder=""
+                      base={"35px"}
+                      lg={"56px"}
+                      defaultLabel
+                      label={"Password"}
+                    />
+                  </Box>
+                  <Box>
+                    <FormikControl
+                      control="Password"
+                      name="newPassword"
+                      placeholder=""
+                      base={"35px"}
+                      lg={"56px"}
+                      defaultLabel
+                      label={"New Password"}
+                    />
+                  </Box>
+                </SimpleGrid>
+                <Flex justify={"flex-end"}>
+                  <Button
+                    isLoading={passwordStatus === "pending"}
+                    type="submit"
+                    className="bg-green text-white"
+                  >
+                    Update Password
+                  </Button>
+                </Flex>
+              </Form>
+            )}
+          </Formik>
+        </Box>
+      )}
       {remove && (
         <ConfirmationModal
           actiontype={"Are you sure you want to delete your account"}

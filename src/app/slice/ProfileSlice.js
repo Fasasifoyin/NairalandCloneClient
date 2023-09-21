@@ -4,6 +4,7 @@ import {
   deleteUser,
   profile,
   updateAddress,
+  updatePassword,
   updatePhoto,
   updateProfile,
 } from "../actions/User";
@@ -16,6 +17,7 @@ const initialState = {
   updateStatus: "idle",
   addressStatus: "idle",
   deleteStatus: "idle",
+  passwordStatus: "idle",
 };
 
 const porfileSlice = createSlice({
@@ -86,6 +88,15 @@ const porfileSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.deleteStatus = "failed";
+      })
+      .addCase(updatePassword.pending, (state, action) => {
+        state.passwordStatus = "pending";
+      })
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        state.passwordStatus = "success";
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.passwordStatus = "failed";
       });
   },
 });
@@ -97,5 +108,6 @@ export const PhotoStatus = (state) => state.profile.photoStatus;
 export const UpdateStatus = (state) => state.profile.updateStatus;
 export const AddressStatus = (state) => state.profile.addressStatus;
 export const DeleteStatus = (state) => state.profile.deleteStatus;
+export const PasswordStatus = (state) => state.profile.passwordStatus;
 
 export default porfileSlice.reducer;

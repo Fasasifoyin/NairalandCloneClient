@@ -38,8 +38,8 @@ const routes = [
         path: "/signin",
         element: (
           <PrivateRoute2>
-            <Signin />
-          </PrivateRoute2>
+          <Signin />
+        </PrivateRoute2>
         ),
       },
       {

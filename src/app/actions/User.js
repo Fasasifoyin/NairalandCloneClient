@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 import { toast } from "react-hot-toast";
+import { LOGOUT } from "../slice/UserSlice";
 
 export const signUp = createAsyncThunk(
   "/user/signUp",
-  async (formData, { rejectWithValue }) => {
-    const { firstName, lastName, userName, email, password, navigate } =
-      formData;
+  async (data, { rejectWithValue }) => {
+    const { firstName, lastName, userName, email, password } = data;
     try {
       const { data, status } = await api.signUp({
         firstName,
@@ -16,9 +16,8 @@ export const signUp = createAsyncThunk(
         password,
       });
       if (status === 201) {
-        localStorage.setItem("nairalandUser", JSON.stringify(data));
         toast.success(`Welcome ${data.firstName} ${data.lastName}`);
-        navigate("/");
+        localStorage.setItem("nairalandUser", JSON.stringify(data));
       }
       return data;
     } catch (error) {
@@ -34,17 +33,16 @@ export const signUp = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "/user/login",
-  async (formData, { rejectWithValue }) => {
-    const { userName, password, navigate, remember, redirect } = formData;
+  async (data, { rejectWithValue }) => {
+    const { userName, password, remember } = data;
     try {
       const { data, status } = await api.signIn({
         userName,
         password,
       });
       if (status === 200) {
-        localStorage.setItem("nairalandUser", JSON.stringify(data));
         toast.success(`Welcome back ${data.firstName} ${data.lastName}`);
-        navigate(redirect);
+        localStorage.setItem("nairalandUser", JSON.stringify(data));
         if (remember.length > 0) {
           localStorage.setItem(
             "rememberUser",
@@ -154,15 +152,41 @@ export const updateAddress = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk(
   "/profile/deleteUser",
-  async (userName, { rejectWithValue }) => {
+  async (body, { rejectWithValue }) => {
+    const { navigate, dispatch, setRemove } = body;
     try {
-      const { data, status } = await api.deleteUser(userName);
+      const { data, status } = await api.deleteUser(body.userName);
       if (status === 200) {
+        setRemove(false);
+        navigate("/");
+        dispatch(LOGOUT());
         toast.success(data.message);
       }
       return data;
     } catch (error) {
-      console.log(error);
+      setRemove(false);
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  "/profile/updatePassword",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { setPassword } = body;
+      const { data, status } = await api.updatePassword(body);
+      if (status === 200) {
+        setPassword(false);
+        toast.success(data.message);
+      }
+      return data;
+    } catch (error) {
       const outputError =
         error.response && error.response.data.message
           ? error.response.data.message

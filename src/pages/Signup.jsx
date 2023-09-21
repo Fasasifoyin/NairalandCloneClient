@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AccountLayout from "../components/account/AccountLayout";
 import { Form, Formik } from "formik";
 import { signUpSchema } from "../components/formik/FormikValidation";
@@ -12,7 +12,6 @@ import { signUp } from "../app/actions/User";
 import { UserStatus } from "../app/slice/UserSlice";
 
 const Signup = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const status = useSelector(UserStatus);
 
@@ -53,7 +52,7 @@ const Signup = () => {
   };
 
   const onSubmit = (values) => {
-    dispatch(signUp({ ...values, navigate }));
+    dispatch(signUp({ ...values }));
   };
 
   return (

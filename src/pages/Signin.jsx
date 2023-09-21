@@ -5,7 +5,7 @@ import { signinSliders } from "../utils/Data";
 import { Formik, Form } from "formik";
 import FormikControl from "../components/formik/FormikControl";
 import { loginSchema } from "../components/formik/FormikValidation";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../app/actions/User";
@@ -13,13 +13,8 @@ import { UserStatus } from "../app/slice/UserSlice";
 import { useEffect, useState } from "react";
 
 const Signin = () => {
-  const { search } = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const status = useSelector(UserStatus);
-  const redirectURL = new URLSearchParams(search).get("redirect");
-  const redirect = redirectURL ? redirectURL : "/";
-  console.log(redirect);
   const [remember, setRemember] = useState(
     localStorage.getItem("rememberUser")
       ? JSON.parse(localStorage.getItem("rememberUser"))
@@ -43,7 +38,7 @@ const Signin = () => {
   };
 
   const onSubmit = (values) => {
-    const formData = { ...values, navigate, redirect };
+    const formData = { ...values };
     dispatch(login(formData));
   };
 
