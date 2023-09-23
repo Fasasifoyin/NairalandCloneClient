@@ -8,7 +8,6 @@ const PrivateRoute2 = ({ children }) => {
   const user = useSelector(UserDetails);
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
-  console.log(from);
 
   return (
     <>

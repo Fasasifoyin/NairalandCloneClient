@@ -10,6 +10,7 @@ import New from "../pages/New";
 import DetailedPage from "../pages/DetailedPage";
 import Edit from "../pages/Edit";
 import Profile from "../pages/Profile";
+import Reset from "../pages/reset";
 
 const routes = [
   {
@@ -78,6 +79,14 @@ const routes = [
           <PrivateRoute>
             <Profile />
           </PrivateRoute>
+        ),
+      },
+      {
+        path: "/reset",
+        element: (
+          <PrivateRoute2>
+            <Reset />
+          </PrivateRoute2>
         ),
       },
     ],

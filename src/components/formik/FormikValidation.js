@@ -127,3 +127,26 @@ export const updatePasswordValidation = yup.object().shape({
     })
     .required("Enter New Password"),
 });
+
+export const emailValidation = yup.object().shape({
+  email: yup
+  .string()
+  .email("Please enter a valid email")
+  .required("Enter Email"),
+})
+
+export const resetPasswordValidation = yup.object().shape({
+  password: yup
+    .string()
+    .min(5)
+    .matches(/^\S*$/, "Password cannot contain space")
+    .matches(passwordRules, {
+      message:
+        "Minimum of 5 characters, 1 uppercase, 1 lowercase, 1 numeric digit",
+    })
+    .required("Enter Password"),
+  confirm: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Password must match")
+    .required("Confirm Password"),
+});

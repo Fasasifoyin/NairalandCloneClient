@@ -196,3 +196,69 @@ export const updatePassword = createAsyncThunk(
     }
   }
 );
+
+export const generateotp = createAsyncThunk(
+  "/reset/generateotp",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { setSteps, setNumber } = body;
+      const { data, status } = await api.verifyEmailandGenerateOTP(body.email);
+      if (status === 200) {
+        toast.success(data.message);
+        setSteps(2);
+        setNumber(60);
+      }
+      return data;
+    } catch (error) {
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);
+
+export const verifyotp = createAsyncThunk(
+  "/reset/verifyotp",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { setSteps } = body;
+      const { data, status } = await api.verifyotp(body.code);
+      if (status === 200) {
+        toast.success(data.message);
+        setSteps(3);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);
+export const resetPassword = createAsyncThunk(
+  "/reset/resetPassword",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { data, status } = await api.resetPassword(body);
+      if (status === 201) {
+        toast.success(data.message);
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      return rejectWithValue(outputError);
+    }
+  }
+);

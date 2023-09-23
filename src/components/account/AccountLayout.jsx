@@ -21,7 +21,7 @@ const AccountLayout = ({ children, slides }) => {
           px={"15px"}
           py={"30px"}
         >
-          <Box mb={"50px"}>
+          <Box mb={"50px"} width={"max-content"}>
             <Link to="/">
               <Logo color={"#175616"} fs={"logo-large-text"} />
             </Link>

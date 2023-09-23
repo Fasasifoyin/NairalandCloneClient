@@ -84,9 +84,11 @@ const Signin = () => {
                   options={options}
                 />
               </Box>
-              <h6 className="tiny-text text-green text-green-light-5-hover cursor">
-                Forget password?
-              </h6>
+              <Link to={"/reset"}>
+                <h6 className="tiny-text text-green text-green-light-5-hover cursor">
+                  Forget password?
+                </h6>
+              </Link>
             </Flex>
             <Button
               className="bg-green text-cream bg-hover-cream2 text-hover-green"

@@ -62,3 +62,8 @@ export const getRelatedTags = (query) =>
 export const randomTags = (qty) => API.get(`/api/blogs/random/tags/${qty}`);
 export const randomBlogs = (qty) => API.get(`/api/blogs/random/blogs/${qty}`);
 export const footer = (qty) => API.get(`/api/blogs/footer/${qty}`);
+
+export const verifyEmailandGenerateOTP = (mail) =>
+  API.get(`/api/users/generateotp/${mail}`);
+export const verifyotp = (code) => API.get(`/api/users/verifyotp/${code}`);
+export const resetPassword = (body) => API.patch(`/api/users/resetpassword`, body)

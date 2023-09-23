@@ -12,6 +12,7 @@ import detailedLatestSlice from "./slice/Detailed/DetailedLatest";
 import detailedRelatedSlice from "./slice/Detailed/DetailedRelated";
 import commentSlice from "./slice/Detailed/CommentSlice";
 import profileSlice from "./slice/ProfileSlice";
+import resetSlice from "./slice/ResetSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,5 +29,6 @@ export const store = configureStore({
     detailedRelated: detailedRelatedSlice,
     comment: commentSlice,
     profile: profileSlice,
+    reset: resetSlice,
   },
 });
