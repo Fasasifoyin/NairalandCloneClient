@@ -82,7 +82,7 @@ const routes = [
         ),
       },
       {
-        path: "/reset",
+        path: "/password/reset",
         element: (
           <PrivateRoute2>
             <Reset />

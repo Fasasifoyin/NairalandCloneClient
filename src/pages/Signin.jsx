@@ -84,7 +84,7 @@ const Signin = () => {
                   options={options}
                 />
               </Box>
-              <Link to={"/reset"}>
+              <Link to={"/password/reset"}>
                 <h6 className="tiny-text text-green text-green-light-5-hover cursor">
                   Forget password?
                 </h6>
