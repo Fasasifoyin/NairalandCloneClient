@@ -10,7 +10,7 @@ import New from "../pages/New";
 import DetailedPage from "../pages/DetailedPage";
 import Edit from "../pages/Edit";
 import Profile from "../pages/Profile";
-import Reset from "../pages/reset";
+import Reset from "../pages/Reset";
 
 const routes = [
   {
