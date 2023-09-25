@@ -22,7 +22,7 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
   const onUpload = async (e) => {
     if (e.target.files[0].size > 1000000) {
       e.target.value = null;
-      return toast.error("Image cannot be larger than 7MB");
+      return toast.error("Image cannot be larger than 1MB");
     }
     const base64 = await convertImageToBase64(e.target.files[0]);
     console.log(e.target.files[0]);
