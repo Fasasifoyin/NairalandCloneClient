@@ -13,13 +13,19 @@ import { Field, FieldArray } from "formik";
 import { convertImageToBase64 } from "../../utils/Convert";
 import { useState } from "react";
 import { HiOutlineCamera } from "react-icons/hi";
+import toast from "react-hot-toast";
 
 // eslint-disable-next-line react/prop-types
 const AddImage = ({ name, setBlogImages, blogImages }) => {
   const [imageNumber, setImageNumber] = useState(-1);
 
   const onUpload = async (e) => {
+    if (e.target.files[0].size > 7168) {
+      e.target.value = null;
+      return toast.error("Image cannot be larger than 7MB");
+    }
     const base64 = await convertImageToBase64(e.target.files[0]);
+    console.log(e.target.files[0]);
     setBlogImages((currentArray) =>
       currentArray.map((each, index) => (index === imageNumber ? base64 : each))
     );
@@ -115,6 +121,7 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
                                 e.target.value
                               );
                             }}
+                            accept="image/png, image/jpeg"
                             name={field.name}
                             id={field.name}
                             display={"none"}

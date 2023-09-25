@@ -53,6 +53,7 @@ const ProfileImage = ({ file, onUpload, userProfile, onSubmit, user }) => {
                 id="profile"
                 display={"none"}
                 onChange={onUpload}
+                accept="image/png, image/jpeg" 
               />
             </FormControl>
           </Box>

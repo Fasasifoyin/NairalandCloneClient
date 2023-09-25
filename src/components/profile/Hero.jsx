@@ -9,6 +9,7 @@ import ConfirmationModal from "../layouts/ConfirmationModal";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePhoto } from "../../app/actions/User";
 import { PhotoStatus } from "../../app/slice/ProfileSlice";
+import toast from "react-hot-toast";
 
 const Hero = ({ userProfile, user }) => {
   const clearStatus = useSelector(PhotoStatus);
@@ -19,6 +20,10 @@ const Hero = ({ userProfile, user }) => {
   const dispatch = useDispatch();
 
   const onUpload = async (e) => {
+    if (e.target.files[0].size > 10240) {
+      e.target.value = null;
+      return toast.error("Image cannot be larger than 10MB");
+    }
     const base64 = await convertImageToBase64(e.target.files[0]);
     setFile(base64);
   };
@@ -31,7 +36,6 @@ const Hero = ({ userProfile, user }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     if (button === 1) {
       e.target.reset();
       dispatch(updatePhoto({ file, userName: userProfile.userName, setFile }));
