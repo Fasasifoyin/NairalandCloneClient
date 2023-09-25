@@ -20,7 +20,7 @@ const Hero = ({ userProfile, user }) => {
   const dispatch = useDispatch();
 
   const onUpload = async (e) => {
-    if (e.target.files[0].size > 10240) {
+    if (e.target.files[0].size > 1000000) {
       e.target.value = null;
       return toast.error("Image cannot be larger than 10MB");
     }

@@ -20,7 +20,7 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
   const [imageNumber, setImageNumber] = useState(-1);
 
   const onUpload = async (e) => {
-    if (e.target.files[0].size > 7168) {
+    if (e.target.files[0].size > 1000000) {
       e.target.value = null;
       return toast.error("Image cannot be larger than 7MB");
     }
