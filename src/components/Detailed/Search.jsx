@@ -1,19 +1,26 @@
+/* eslint-disable react/prop-types */
 import { Box, Flex, Icon, Input } from "@chakra-ui/react";
 import { FiSearch } from "react-icons/fi";
+import { TbLetterX } from "react-icons/tb";
 
-const Search = () => {
+const Search = ({ placeholder, search, setSearch, onSearch, cancel }) => {
   return (
-    <Flex hideBelow={"lg"} h={"40px"} mb={"150px"}>
+    <Flex h={"40px"} w={"100%"}>
       <Input
         borderColor={"rgba(0,0,0, 0.5)"}
         h={"100%"}
         bg={"white"}
-        focusBorderColor={"#1B481D"}
+        focusBorderColor={"#175616"}
+        _focus={{
+          shadow: "none",
+        }}
         borderRightRadius={"0px"}
         borderLeftRadius={"7px"}
         width={"85%"}
         type="text"
-        placeholder="Search"
+        placeholder={placeholder}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
       <Box
         display={"flex"}
@@ -23,8 +30,14 @@ const Search = () => {
         h={"100%"}
         width={"15%"}
         bg={"#175616"}
+        onClick={onSearch}
+        className="cursor"
       >
-        <Icon color={"white"} boxSize={5} as={FiSearch} />
+        <Icon
+          color={"white"}
+          boxSize={5}
+          as={cancel && search.length ? TbLetterX : FiSearch}
+        />
       </Box>
     </Flex>
   );

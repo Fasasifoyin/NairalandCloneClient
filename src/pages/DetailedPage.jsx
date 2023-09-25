@@ -232,7 +232,9 @@ const DetailedPage = () => {
             )}
           </Box>
           <Box width={{ base: "100%", lg: "25%" }}>
-            <Search />
+            <Box hideBelow={"lg"} mb={"150px"}>
+              <Search placeholder={"Search"} />
+            </Box>
             <Box hideBelow={"lg"} mb={"150px"}>
               <h4
                 style={{ marginBottom: "20px" }}

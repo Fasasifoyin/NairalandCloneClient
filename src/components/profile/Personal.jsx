@@ -169,7 +169,7 @@ const Personal = ({ userProfile, user }) => {
                 />
               </Box>
             ) : (
-              <InfoBox title={"About"} body={userProfile.about} />
+              <InfoBox title={"About"} body={userProfile.about} about />
             )}
             {edit && (
               <Flex justify={"flex-end"}>

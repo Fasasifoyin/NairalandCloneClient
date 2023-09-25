@@ -43,7 +43,7 @@ const Comment = ({
   const user = useSelector(UserDetails);
   const time = Timeago(comment.createdAt);
   const [deleteModal, setDeleteModal] = useState(false);
-  console.log(comment.creator);
+  // console.log(comment.creator);
   // const [viewChildComments, setViewChildComments] = useState(-1);
   // const [viewLikes, setViewLikes] = useState(-1);
 

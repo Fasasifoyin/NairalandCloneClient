@@ -30,6 +30,7 @@ export const updatePassword = (body) =>
 
 export const createBlog = (form) => API.post("/api/blogs/create", form);
 export const updateBlog = (form) => API.patch("/api/blogs/update", form);
+export const deleteBlog = (blogId) => API.delete(`/api/blogs/delete/${blogId}`);
 
 export const createComment = (form) =>
   API.post("/api/blogs/create/comment", form);
@@ -66,4 +67,5 @@ export const footer = (qty) => API.get(`/api/blogs/footer/${qty}`);
 export const verifyEmailandGenerateOTP = (mail) =>
   API.get(`/api/users/generateotp/${mail}`);
 export const verifyotp = (code) => API.get(`/api/users/verifyotp/${code}`);
-export const resetPassword = (body) => API.patch(`/api/users/resetpassword`, body)
+export const resetPassword = (body) =>
+  API.patch(`/api/users/resetpassword`, body);

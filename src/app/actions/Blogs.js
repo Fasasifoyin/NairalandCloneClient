@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
-// import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export const createBlog = createAsyncThunk(
   "/blog/createBlog",
@@ -46,6 +46,29 @@ export const editBlog = createAsyncThunk(
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message;
+      return rejectWithValue(outputError);
+    }
+  }
+);
+
+export const deleteBlog = createAsyncThunk(
+  "/profile/deleteBlog",
+  async (body, { rejectWithValue }) => {
+    const { blogId, setRemove } = body;
+    try {
+      const { data, status } = await api.deleteBlog(blogId);
+      if (status === 200) {
+        setRemove(false);
+        toast.success("Blog deleted successfully")
+      }
+      return data;
+    } catch (error) {
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      toast.error(outputError);
+      setRemove(false);
       return rejectWithValue(outputError);
     }
   }

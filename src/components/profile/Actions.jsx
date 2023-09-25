@@ -50,8 +50,8 @@ const Actions = ({ userProfile }) => {
   };
 
   return (
-    <Box>
-      <Flex  justify={"space-between"} align={"center"}>
+    <Box mb={{ base: "50px", lg: "70px" }}>
+      <Flex justify={"space-between"} align={"center"}>
         <Box>
           <h4
             onClick={() => setPassword(!password)}

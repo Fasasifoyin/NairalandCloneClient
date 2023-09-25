@@ -1,17 +1,19 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex, Icon, Image, SimpleGrid } from "@chakra-ui/react";
 import { convertDate } from "../../utils/Date";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BsFacebook } from "react-icons/bs";
+import { useState } from "react";
 
 const HeroSection = ({ blog }) => {
   const date = convertDate(blog.createdAt);
-  const navigate = useNavigate();
+
+  const [index, setIndex] = useState(1);
+  const number = index * 2000;
 
   return (
     <Box mb={"40px"}>
       <Box
-        onClick={() => navigate(`/blog/edit/${blog.slug}`)}
         h={{ md: "600px", base: "350px" }}
         mb={{ base: "10px", md: "18px" }}
       >
@@ -35,9 +37,50 @@ const HeroSection = ({ blog }) => {
       <Box mb={{ base: "12px", md: "20px" }}>
         <h3 className="fw-bold">{blog.title}</h3>
       </Box>
+
       <Box mb={{ base: "15px", md: "30px" }}>
-        <p>{blog.body}</p>
+        <p>
+          {blog.body
+            .slice(0, number)
+            .trim()
+            .split("\n\n")
+            .map((paragraph, index) => (
+              <span style={{ display: "block" }} key={index}>
+                {paragraph
+                  .split("\n")
+                  .reduce((total, line, index) => [
+                    total,
+                    <br key={index} />,
+                    line,
+                  ])}
+                {index ===
+                  blog.body.slice(0, number).trim().split("\n\n").length -
+                    1 && (
+                  <span>
+                    {number <= blog.body.length && (
+                      <span
+                        onClick={() => setIndex((prev) => prev + 1)}
+                        className="text-green text-green-light-5-hover cursor"
+                      >
+                        ...Read More
+                      </span>
+                    )}
+                    {number >= blog.body.length && blog.body.length > 2000 && (
+                      <span
+                        onClick={() => setIndex(1)}
+                        className="text-green text-green-light-5-hover cursor"
+                      >
+                        {" "}
+                        See less
+                      </span>
+                    )}
+                  </span>
+                )}
+              </span>
+            ))}
+        </p>
       </Box>
+
       {blog.images.length > 1 && (
         <SimpleGrid
           mb={{ base: "15px", md: "30px" }}

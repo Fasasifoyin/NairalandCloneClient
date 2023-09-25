@@ -8,6 +8,7 @@ import {
   updatePhoto,
   updateProfile,
 } from "../actions/User";
+import { deleteBlog } from "../actions/Blogs";
 
 const initialState = {
   userDetails: {},
@@ -18,6 +19,7 @@ const initialState = {
   addressStatus: "idle",
   deleteStatus: "idle",
   passwordStatus: "idle",
+  deleteBlogStatus: "idle",
 };
 
 const porfileSlice = createSlice({
@@ -97,6 +99,19 @@ const porfileSlice = createSlice({
       })
       .addCase(updatePassword.rejected, (state, action) => {
         state.passwordStatus = "failed";
+      })
+      .addCase(deleteBlog.pending, (state, action) => {
+        state.deleteBlogStatus = "pending";
+      })
+      .addCase(deleteBlog.fulfilled, (state, { payload }) => {
+        const allBlogs = state.userDetails.allBlogs.filter(
+          (each) => each._id !== payload._id
+        );
+        state.userDetails = { ...state.userDetails, allBlogs };
+        state.deleteBlogStatus = "success";
+      })
+      .addCase(deleteBlog.rejected, (state, action) => {
+        state.deleteBlogStatus = "failed";
       });
   },
 });
@@ -109,5 +124,6 @@ export const UpdateStatus = (state) => state.profile.updateStatus;
 export const AddressStatus = (state) => state.profile.addressStatus;
 export const DeleteStatus = (state) => state.profile.deleteStatus;
 export const PasswordStatus = (state) => state.profile.passwordStatus;
+export const DeleteBlogStatus = (state) => state.profile.deleteBlogStatus;
 
 export default porfileSlice.reducer;

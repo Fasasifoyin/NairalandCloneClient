@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
 import Navbar from "../components/layouts/Navbar";
 import TriangleLoader from "../components/loaders/TriangleLoader";
@@ -17,6 +17,7 @@ import {
 import { UserDetails } from "../app/slice/UserSlice";
 import Address from "../components/profile/Address";
 import Actions from "../components/profile/Actions";
+import Blogs from "../components/profile/Blogs";
 
 const Profile = () => {
   const { userName } = useParams();
@@ -65,6 +66,22 @@ const Profile = () => {
             <Address userProfile={userProfile} user={user} />
             {userProfile.userName === user.userName && (
               <Actions userProfile={userProfile} />
+            )}
+            {userProfile?.allBlogs?.length ? (
+              <Blogs userProfile={userProfile} user={user} />
+            ) : (
+              <Box>
+                <h5 className="large-text fw-bold">Blogs Posted</h5>
+
+                <h5 className="medium-text">
+                  You have no blog on our website. To create your own blog{" "}
+                  <Link to={"/blog/create"}>
+                    <span className="medium-text text-green text-green-light-5-hover">
+                      click here
+                    </span>
+                  </Link>
+                </h5>
+              </Box>
             )}
           </Box>
         </Box>
