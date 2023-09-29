@@ -20,7 +20,14 @@ const GoogleButton = ({ text, signup, status }) => {
   const Login = useGoogleLogin({
     onSuccess: handleGoogleLoginSuccess,
     onError: (error) => console.log(error.message),
+    redirect_uri: `https://nairaland-clone-client.vercel.app/${
+      signup ? "signup" : "signin"
+    }`,
   });
+
+  console.log(
+    `https://nairaland-clone-client.vercel.app/${signup ? "signup" : "signin"}`
+  );
 
   return (
     <Box mt={"15px"}>
