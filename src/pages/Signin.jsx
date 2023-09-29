@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../app/actions/User";
 import { UserStatus } from "../app/slice/UserSlice";
 import { useEffect, useState } from "react";
+import GoogleButton from "../components/account/GoogleButton";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -102,6 +103,7 @@ const Signin = () => {
           </Form>
         )}
       </Formik>
+      <GoogleButton text={"Sign in with Google"} status={status} />
       <Box mt={"50px"}>
         <h5 className="small-text" style={{ textAlign: "center" }}>
           Don't have an account?{" "}

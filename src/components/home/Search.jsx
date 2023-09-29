@@ -2,13 +2,17 @@
 import { Box, Flex, Icon, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(search);
+    if (search) {
+      navigate(`/search?searchQuery=${search}`);
+    }
   };
 
   return (
@@ -21,7 +25,10 @@ const Search = () => {
         px={"25px"}
       >
         <Box position={"relative"} height={"2.9rem"} width={"80%"}>
-          <form onSubmit={handleSubmit} style={{height:"100%", width:"100%"}}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ height: "100%", width: "100%" }}
+          >
             <Input
               paddingTop={"5px"}
               placeholder="Search"

@@ -32,6 +32,15 @@ export const createBlog = (form) => API.post("/api/blogs/create", form);
 export const updateBlog = (form) => API.patch("/api/blogs/update", form);
 export const deleteBlog = (blogId) => API.delete(`/api/blogs/delete/${blogId}`);
 
+export const Search = (query) =>
+  API.get(
+    `/api/blogs/blog/search?search=${query.search}&title=${
+      query.title || "true"
+    }&body=${query.body || "false"}&category=${
+      query.category || "false"
+    }&categories=${query.categories || "All"}&page=${query.page || 1}`
+  );
+
 export const createComment = (form) =>
   API.post("/api/blogs/create/comment", form);
 export const getComment = (query) =>

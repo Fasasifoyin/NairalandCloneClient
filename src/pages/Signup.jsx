@@ -6,6 +6,7 @@ import { signUpSchema } from "../components/formik/FormikValidation";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import FormikControl from "../components/formik/FormikControl";
 import { signupSliders } from "../utils/Data";
+import GoogleButton from "../components/account/GoogleButton";
 
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../app/actions/User";
@@ -154,19 +155,21 @@ const Signup = () => {
             >
               <h4 className="btn-large-text">Sign up</h4>
             </Button>
-            <Box mt={"50px"}>
-              <h5 className="small-text" style={{ textAlign: "center" }}>
-                Have an account?{" "}
-                <Link to="/signin">
-                  <span className="link text-green fw-bold text-green-light-5-hover">
-                    Log in
-                  </span>
-                </Link>
-              </h5>
-            </Box>
           </Form>
         )}
       </Formik>
+      <GoogleButton signup text="Sign up with Google" status={status} />
+
+      <Box mt={"50px"}>
+        <h5 className="small-text" style={{ textAlign: "center" }}>
+          Have an account?{" "}
+          <Link to="/signin">
+            <span className="link text-green fw-bold text-green-light-5-hover">
+              Log in
+            </span>
+          </Link>
+        </h5>
+      </Box>
     </AccountLayout>
   );
 };

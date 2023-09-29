@@ -11,6 +11,7 @@ import DetailedPage from "../pages/DetailedPage";
 import Edit from "../pages/Edit";
 import Profile from "../pages/Profile";
 import Reset from "../pages/Reset";
+import Search from "../pages/Search";
 
 const routes = [
   {
@@ -88,6 +89,10 @@ const routes = [
             <Reset />
           </PrivateRoute2>
         ),
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },

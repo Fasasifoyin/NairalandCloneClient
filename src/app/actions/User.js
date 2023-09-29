@@ -6,7 +6,7 @@ import { LOGOUT } from "../slice/UserSlice";
 export const signUp = createAsyncThunk(
   "/user/signUp",
   async (data, { rejectWithValue }) => {
-    const { firstName, lastName, userName, email, password } = data;
+    const { firstName, lastName, userName, email, password, googleAccessToken } = data;
     try {
       const { data, status } = await api.signUp({
         firstName,
@@ -14,6 +14,7 @@ export const signUp = createAsyncThunk(
         userName,
         email,
         password,
+        googleAccessToken
       });
       if (status === 201) {
         toast.success(`Welcome ${data.firstName} ${data.lastName}`);
@@ -34,16 +35,17 @@ export const signUp = createAsyncThunk(
 export const login = createAsyncThunk(
   "/user/login",
   async (data, { rejectWithValue }) => {
-    const { userName, password, remember } = data;
+    const { userName, password, remember, googleAccessToken } = data;
     try {
       const { data, status } = await api.signIn({
         userName,
         password,
+        googleAccessToken
       });
       if (status === 200) {
         toast.success(`Welcome back ${data.firstName} ${data.lastName}`);
         localStorage.setItem("nairalandUser", JSON.stringify(data));
-        if (remember.length > 0) {
+        if (remember?.length > 0) {
           localStorage.setItem(
             "rememberUser",
             JSON.stringify({ userName, password })

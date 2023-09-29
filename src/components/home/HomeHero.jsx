@@ -1,5 +1,5 @@
 import { Box, Flex, Image } from "@chakra-ui/react";
-import Search from "../layouts/Search";
+import Search from "./Search";
 
 const HomeHero = () => {
   return (
