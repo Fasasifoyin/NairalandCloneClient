@@ -19,7 +19,7 @@ const GoogleButton = ({ text, signup, status }) => {
 
   const Login = useGoogleLogin({
     onSuccess: handleGoogleLoginSuccess,
-    onError: (error) => console.log(error),
+    onError: (error) => console.log(error.message),
   });
 
   return (
