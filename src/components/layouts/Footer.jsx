@@ -70,7 +70,7 @@ const Footer = () => {
                   <h5 className="text-white medium-text">CATEGORIES</h5>
                   <Flex flexWrap={"wrap"} gap={"7px"}>
                     {tagsList.map((each, index) => (
-                      <Link to={`/tags/${each}`} key={index}>
+                      <Link to={`/tag/${each}`} key={index}>
                         <Box
                           className="bg-white text-green bg-hover-green text-hover-white"
                           p={"5px"}

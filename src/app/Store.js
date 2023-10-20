@@ -14,6 +14,7 @@ import commentSlice from "./slice/Detailed/CommentSlice";
 import profileSlice from "./slice/ProfileSlice";
 import resetSlice from "./slice/ResetSlice";
 import searchSlice from "./slice/SearchSlice";
+import relatedTagsSlice from "./slice/RelatedTags";
 
 export const store = configureStore({
   reducer: {
@@ -32,5 +33,6 @@ export const store = configureStore({
     profile: profileSlice,
     reset: resetSlice,
     search: searchSlice,
+    relatedTags: relatedTagsSlice,
   },
 });

@@ -150,6 +150,12 @@ const DetailedPage = () => {
   const checkMore = Boolean(totalComments > comments.length);
   const [reply, setReply] = useState(-1);
   const [seeComments, setSeeComments] = useState(-1);
+  const [search, setSearch] = useState("");
+  const onSearch = () => {
+    if (search) {
+      navigate(`/search?searchQuery=${search}`);
+    }
+  };
 
   return (
     <Box>
@@ -233,7 +239,12 @@ const DetailedPage = () => {
           </Box>
           <Box width={{ base: "100%", lg: "25%" }}>
             <Box hideBelow={"lg"} mb={"150px"}>
-              <Search placeholder={"Search"} />
+              <Search
+                placeholder={"Search"}
+                search={search}
+                setSearch={setSearch}
+                onSearch={onSearch}
+              />
             </Box>
             <Box hideBelow={"lg"} mb={"150px"}>
               <h4

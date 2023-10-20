@@ -12,6 +12,8 @@ import Edit from "../pages/Edit";
 import Profile from "../pages/Profile";
 import Reset from "../pages/Reset";
 import Search from "../pages/Search";
+import ErrorPage from "../pages/ErrorPage";
+import Tags from "../pages/Tags";
 
 const routes = [
   {
@@ -23,7 +25,7 @@ const routes = [
         element: <Home />,
         children: [
           {
-            path: "tags/:homePage",
+            path: "home/:homePage",
             element: <Home />,
           },
         ],
@@ -91,8 +93,22 @@ const routes = [
         ),
       },
       {
+        path: "/tag/:tagName",
+        element: <Tags />,
+        children: [
+          {
+            path: ":page",
+            element: <Tags />,
+          },
+        ],
+      },
+      {
         path: "/search",
         element: <Search />,
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
       },
     ],
   },

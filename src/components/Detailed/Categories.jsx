@@ -10,7 +10,7 @@ const Categories = ({ categories }) => {
       </h4>
       <Flex flexWrap={"wrap"} gap={"20px"}>
         {categories.map((each) => (
-          <Link key={each} to={`/blogs/tags?tag=${each}`}>
+          <Link key={each} to={`/tag/${each}`}>
             <Box
               className="cursor bg-hover-green text-hover-white"
               borderRadius={"5px"}

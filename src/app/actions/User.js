@@ -6,7 +6,15 @@ import { LOGOUT } from "../slice/UserSlice";
 export const signUp = createAsyncThunk(
   "/user/signUp",
   async (data, { rejectWithValue }) => {
-    const { firstName, lastName, userName, email, password, googleAccessToken } = data;
+    const {
+      firstName,
+      lastName,
+      userName,
+      email,
+      password,
+      googleAccessToken,
+    } = data;
+
     try {
       const { data, status } = await api.signUp({
         firstName,
@@ -14,7 +22,7 @@ export const signUp = createAsyncThunk(
         userName,
         email,
         password,
-        googleAccessToken
+        googleAccessToken,
       });
       if (status === 201) {
         toast.success(`Welcome ${data.firstName} ${data.lastName}`);
@@ -40,7 +48,7 @@ export const login = createAsyncThunk(
       const { data, status } = await api.signIn({
         userName,
         password,
-        googleAccessToken
+        googleAccessToken,
       });
       if (status === 200) {
         toast.success(`Welcome back ${data.firstName} ${data.lastName}`);
@@ -139,6 +147,7 @@ export const updateAddress = createAsyncThunk(
       const { data, status } = await api.updateAddress(body);
       if (status === 200) {
         setEdit(false);
+        toast.success("Address updated successfully");
       }
       return data;
     } catch (error) {

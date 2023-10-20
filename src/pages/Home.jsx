@@ -129,7 +129,7 @@ const Home = () => {
         <Pagination
           currentPage={homePage}
           totalPages={totalPages}
-          route={"/tags"}
+          route={"home"}
           initial={"/"}
         />
       </Flex>

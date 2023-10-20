@@ -66,9 +66,9 @@ const New = () => {
           </Flex>
         </Flex>
         {status === "pending" && (
-                    <Flex justify={"center"}>
-                    <TriangleLoader />
-                  </Flex>
+          <Flex justify={"center"}>
+            <TriangleLoader />
+          </Flex>
         )}
         {status === "failed" && <p>{error}</p>}
         {status === "success" &&

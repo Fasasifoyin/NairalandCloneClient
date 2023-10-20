@@ -1,7 +1,10 @@
 import { Box, Flex, Image } from "@chakra-ui/react";
 import Search from "./Search";
+import { useState } from "react";
 
 const HomeHero = () => {
+  const [search, setSearch] = useState("");
+
   return (
     <Box
       className="bg-cream"
@@ -46,7 +49,11 @@ const HomeHero = () => {
           width={"100%"}
           bottom={{ md: "10%", lg: "14%" }}
         >
-          <Search bgColor={"rgb(255,255,255,0.2)"} />
+          <Search
+            bgColor={"rgb(255,255,255,0.2)"}
+            search={search}
+            setSearch={setSearch}
+          />
         </Box>
       </Flex>
     </Box>

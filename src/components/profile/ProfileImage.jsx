@@ -11,6 +11,7 @@ import {
 import { AiOutlineCamera } from "react-icons/ai";
 
 const ProfileImage = ({ file, onUpload, userProfile, onSubmit, user }) => {
+
   return (
     <form id="profileForm" onSubmit={onSubmit}>
       <Box

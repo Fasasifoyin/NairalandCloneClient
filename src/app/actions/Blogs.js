@@ -59,7 +59,7 @@ export const deleteBlog = createAsyncThunk(
       const { data, status } = await api.deleteBlog(blogId);
       if (status === 200) {
         setRemove(false);
-        toast.success("Blog deleted successfully")
+        toast.success("Blog deleted successfully");
       }
       return data;
     } catch (error) {
@@ -206,6 +206,22 @@ export const getDetailedLatest = createAsyncThunk(
 
 export const getDetailedRelated = createAsyncThunk(
   "detailedRelated",
+  async (query, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getRelatedTags(query);
+      return data;
+    } catch (error) {
+      const outputError =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      return rejectWithValue(outputError);
+    }
+  }
+);
+
+export const getRelatedTags = createAsyncThunk(
+  "/relatedTags/getRelatedTags",
   async (query, { rejectWithValue }) => {
     try {
       const { data } = await api.getRelatedTags(query);

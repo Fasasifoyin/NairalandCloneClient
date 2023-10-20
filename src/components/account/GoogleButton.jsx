@@ -25,10 +25,6 @@ const GoogleButton = ({ text, signup, status }) => {
     }`,
   });
 
-  console.log(
-    `https://nairaland-clone-client.vercel.app/${signup ? "signup" : "signin"}`
-  );
-
   return (
     <Box mt={"15px"}>
       <Box>

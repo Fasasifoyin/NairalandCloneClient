@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -42,7 +42,12 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
   };
 
   return (
-    <Flex gap={"8px"} align={"center"} flexWrap={"wrap"}>
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      gap={{ base: "20px", md: "8px" }}
+      align={"center"}
+      flexWrap={"wrap"}
+    >
       {pages.length > 5 &&
         (!page ? (
           <Box
@@ -52,9 +57,7 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
             className={"disabled"}
             bg={"rgb(0,0,0,0.3)"}
           >
-            <Text fontWeight={"medium"} fontSize={"24px"}>
-              Prev
-            </Text>
+            <h4 className="large-text fw-medium">Prev</h4>
           </Box>
         ) : (
           <Link to={page - 1 > 1 ? `${route}/${page - 1}` : initial || route}>
@@ -66,9 +69,7 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
                 prev();
               }}
             >
-              <Text fontWeight={"medium"} fontSize={"24px"}>
-                Prev
-              </Text>
+              <h4 className="large-text fw-medium">Prev</h4>
             </Box>
           </Link>
         ))}
@@ -92,15 +93,15 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
                 slide(index);
               }}
             >
-              <Text
-                color={
-                  each === (page || 1) || each === hover ? "white" : "black"
-                }
-                fontWeight={"medium"}
-                fontSize={"24px"}
+              <h4
+                className={`${
+                  each === (page || 1) || each === hover
+                    ? "text-white"
+                    : "text-black"
+                } large-text fw-medium`}
               >
                 {each}
-              </Text>
+              </h4>
             </Flex>
           </Link>
         ))}
@@ -114,9 +115,7 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
             className={"disabled"}
             bg={"rgb(0,0,0,0.3)"}
           >
-            <Text fontWeight={"medium"} fontSize={"24px"}>
-              Next
-            </Text>
+            <h4 className="large-text fw-medium">Next</h4>
           </Box>
         ) : (
           <Link to={`${route}/${page ? page + 1 : 2}`}>
@@ -128,9 +127,7 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
                 next();
               }}
             >
-              <Text fontWeight={"medium"} fontSize={"24px"}>
-                Next
-              </Text>
+              <h4 className="large-text fw-medium">Next</h4>
             </Box>
           </Link>
         ))}
