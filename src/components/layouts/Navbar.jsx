@@ -38,7 +38,7 @@ const Navbar = ({ elementRef }) => {
 
   const setLogoutTimer = (expirationTime) => {
     const currentTime = Date.now();
-    const timeoutDuration = expirationTime * 1000 - currentTime;
+    const timeoutDuration = Math.max(0, expirationTime * 1000 - currentTime);
     setTimeout(loggingOut, timeoutDuration);
   };
 
