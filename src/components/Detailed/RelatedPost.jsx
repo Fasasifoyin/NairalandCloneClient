@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import { convertDate } from "../../utils/Date";
 import { Link } from "react-router-dom";
 
@@ -51,37 +51,38 @@ const RelatedPost = ({ each }) => {
             align={"center"}
             gap={"10px"}
           >
-            <p
-              style={{ textTransform: "uppercase", textAlign: "center" }}
+            <Text
+              textTransform={"uppercase"}
+              textAlign={"center"}
               className="text-white"
             >
               {date} /{" "}
-              <span>
+              <Text as={"span"}>
                 <Link to={`/blogs/tags?tag=${blog?.tags[0]}`}>
-                  <span className="text-green-light-4 detailedLink">
+                  <Text as={"span"} className="text-green-light-4 detailedLink">
                     {blog?.tags[0].length > 7
                       ? `${blog?.tags[0].slice(0, 7)}...`
                       : blog?.tags[0]}
-                  </span>
+                  </Text>
                 </Link>
-              </span>
-            </p>
-            <h6
-              className="text-white small-text"
-              style={{ textAlign: "center" }}
-            >
-              {blog?.title.length > 45
+              </Text>
+            </Text>
+            <Text textAlign={"center"} className="text-white small-text">
+              {blog?.title?.length > 45
                 ? `${blog?.title.slice(0, 45).trim()}...`
                 : blog?.title}
-            </h6>
-            <Link to={`/${blog?.slug}`}>
+            </Text>
+            <Link
+              to={`/${blog?.slug}`}
+              state={{ blogId: blog?._id, tags: blog?.tags?.join(",") }}
+            >
               <Button
                 bg={"white"}
                 _hover={{ bg: "white" }}
                 borderRadius={"5px"}
                 size={"sm"}
               >
-                <h6 className="tiny-text">READ MORE</h6>
+                <Text className="tiny-text">READ MORE</Text>
               </Button>
             </Link>
           </Flex>

@@ -3,6 +3,7 @@ $black: #000000;
 $cream: #f6f6ec;
 $white: #ffffff;
 $cream2: #e8ece0;
+$transparent: transparent;
 
 $colors: (
   "green": $green,
@@ -10,7 +11,8 @@ $colors: (
   "white": $white,
   "cream": $cream,
   "cream2": $cream2,
-  "red": #FF0000,
+  "transparent": $transparent,
+  "red": #ff0000,
 );
 
 $regular: 400;

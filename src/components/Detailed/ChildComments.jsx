@@ -1,113 +1,148 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Box, Flex, Icon, Image } from "@chakra-ui/react";
-import { MdOutlineDeleteOutline } from "react-icons/md";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { toast } from "react-hot-toast";
+import { Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
+import { AiOutlineHeart, AiOutlineDelete, AiFillHeart } from "react-icons/ai";
+import { Timeago } from "../../utils/Timeago";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteChildComment,
   likeChildComment,
 } from "../../app/actions/Comment";
-import { Timeago } from "../../utils/Timeago";
+import { LuLoader2 } from "react-icons/lu";
+import {
+  DeleteChildCommentStatus,
+  LikeChildCommentStatus,
+  setEmpty,
+} from "../../app/slice/Detailed/CommentSlice";
 
-const ChildComments = ({ index, seeComments, id, child, user, blogId }) => {
+const ChildComments = ({ data, auth, commentId, blogId }) => {
+  const sortedData = data
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  console.log(auth);
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const like = (childCommentId) => {
-    if (user.token) {
-      dispatch(likeChildComment({ commentId: id, childCommentId }));
+  const [showDelete, setShowDelete] = useState(-1);
+  const [deleteId, setDeleteId] = useState(-1);
+  const [likeId, setLikeId] = useState(-1);
+
+  const deleteStatus = useSelector(DeleteChildCommentStatus);
+  const likeStatus = useSelector(LikeChildCommentStatus);
+
+  const deleteComment = (commentId, childCommentId, blogId) => {
+    if (auth.token) {
+      setDeleteId(childCommentId);
+      dispatch(deleteChildComment({ commentId, childCommentId, blogId }));
     } else {
+      dispatch(setEmpty([]));
       navigate("/signin", { state: { from: location } });
     }
   };
 
-  const deleteCom = (childCommentId) => {
-    if (user.token) {
-      dispatch(deleteChildComment({ commentId: id, childCommentId, blogId }));
+  const likeComment = (commentId, childCommentId, blogId) => {
+    if (auth.token) {
+      setLikeId(childCommentId);
+      dispatch(likeChildComment({ commentId, childCommentId, blogId }));
     } else {
-      toast.error("Not a user");
+      dispatch(setEmpty([]));
+      navigate("/signin", { state: { from: location } });
     }
   };
 
-  // const increaseNumberShown = () => {
-  //   const number = length - numberShown;
-  //   setNumberShown(number < 9 ? numberShown + number : numberShown + 9);
-  // };
-
   return (
-    <Box
-      className={seeComments === index ? "seen" : "not-seen"}
-      m={"10px 10px 10px 0px"}
-      w={{ base: "calc(98% - 70px)", md: "calc(98% - 90px)" }}
-    >
-      <Flex direction={"column"} gap={"20px"}>
-        {child.length ? (
-          child
-            .map((each) => (
-              <Flex key={each._id} justify={"space-between"}>
-                <Box
-                  w={{ base: "30px", md: "40px" }}
-                  h={{ base: "30px", md: "40px" }}
+    <Flex justifyContent={"flex-end"} mt={"25px"}>
+      <Flex width={"calc(100% - 50px)"} direction={"column"} gap={"20px"}>
+        {data.length ? (
+          sortedData.map((each) => (
+            <Flex key={each._id} gap={"5px"}>
+              <Box width={"25px"} h={"25px"} borderRadius={"50%"}>
+                <Image
+                  w={"100%"}
+                  h={"100%"}
                   borderRadius={"50%"}
-                >
-                  <Image
-                    w={"100%"}
-                    h={"100%"}
-                    objectFit={"cover"}
-                    src={
-                      each?.creator?.image ||
-                      "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690553303/Nairaland/default_avatar_cxfqgl.jpg"
-                    }
-                    borderRadius={"50%"}
-                    alt={each?.creator?.userName || "Unknown"}
-                  />
-                </Box>
-                <Box w={{ base: "calc(99% - 30px)", lg: "calc(99% - 40px)" }}>
-                  <Flex gap={"3px"}>
-                    <h6 className="small-text">
-                      {each?.creator?.firstName || "Unknown"}
-                    </h6>
-                    <h6 className="small-text">{Timeago(each.createdAt)}</h6>
-                  </Flex>
-                  <p>{each.comment}</p>
-                  <Flex mt={"3px"} gap={"50px"}>
-                    <Flex gap={"5px"} align={"center"}>
+                  objectFit={"cover"}
+                  src={
+                    each?.creator?.image ||
+                    "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690553303/Nairaland/default_avatar_cxfqgl.jpg"
+                  }
+                  alt={each?.creator?.firstName || "Unknown"}
+                />
+              </Box>
+              <Box flex={1}>
+                <Text className="tiny-text fw-bold">
+                  {auth.userName === each?.creator?.userName
+                    ? "You"
+                    : each?.creator?.firstName
+                    ? each.creator?.firstName
+                    : "Unknown"}{" "}
+                  <Text as={"span"} className="tiny-text fw-regular">
+                    {Timeago(each.createdAt)}
+                  </Text>
+                </Text>
+                <Text className="tiny-text" wordBreak={"break-word"}>
+                  {each.comment}
+                </Text>
+                <Flex gap={"20px"} align={"center"} mt={"4px"}>
+                  <Flex gap={"3px"} align={"center"}>
+                    {likeStatus === "pending" && likeId === each._id ? (
+                      <Icon as={LuLoader2} boxSize={4} />
+                    ) : (
                       <Icon
                         className="cursor"
-                        onClick={() => like(each._id)}
-                        boxSize={3}
                         as={
-                          each.likes.includes(user._id)
+                          each.likes.includes(auth._id)
                             ? AiFillHeart
                             : AiOutlineHeart
                         }
+                        boxSize={4}
+                        onClick={() => likeComment(commentId, each._id, blogId)}
                       />
-                      <h6 className="tiny-text">{each.likes.length}</h6>
-                    </Flex>
-                    {each?.creator?.userName === user.userName &&
-                      user.userName && (
-                        <Icon
-                          boxSize={4}
-                          _hover={{ color: "red" }}
-                          as={MdOutlineDeleteOutline}
-                          className="cursor"
-                          onClick={() => deleteCom(each._id)}
-                        />
-                      )}
+                    )}
+
+                    <Text className="tiny-text">{each.likes.length}</Text>
                   </Flex>
-                </Box>
-              </Flex>
-            ))
-            .reverse()
+                  {each.creator.userName === auth.userName &&
+                    (deleteStatus === "pending" && deleteId === each._id ? (
+                      <Icon as={LuLoader2} boxSize={4} />
+                    ) : showDelete === each._id ? (
+                      <Flex gap={"15px"}>
+                        <Text
+                          className="tiny-text text-red cursor"
+                          onClick={() =>
+                            deleteComment(commentId, each._id, blogId)
+                          }
+                        >
+                          Confirm
+                        </Text>
+                        <Text
+                          className="tiny-text cursor"
+                          onClick={() => setShowDelete(-1)}
+                        >
+                          Cancel
+                        </Text>
+                      </Flex>
+                    ) : (
+                      <Icon
+                        className="cursor"
+                        as={AiOutlineDelete}
+                        boxSize={4}
+                        onClick={() => setShowDelete(each._id)}
+                      />
+                    ))}
+                </Flex>
+              </Box>
+            </Flex>
+          ))
         ) : (
-          <h4>No comment</h4>
+          <Text className="tiny-text">No comment</Text>
         )}
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 

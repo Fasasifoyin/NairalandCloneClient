@@ -11,7 +11,7 @@ import AddImage from "../components/create/AddImage";
 import Footer from "../components/layouts/Footer";
 
 import { useDispatch, useSelector } from "react-redux";
-import { editBlog, getSingleProduct } from "../app/actions/Blogs";
+import { editBlog, getSingleBlog } from "../app/actions/Blogs";
 import { Details, Status, Error } from "../app/slice//Detailed/DetailedSlice";
 import { UserDetails } from "../app/slice/UserSlice";
 import { toast } from "react-hot-toast";
@@ -34,7 +34,7 @@ const Edit = () => {
   const editStatus = useSelector(EditStatus);
 
   useEffect(() => {
-    dispatch(getSingleProduct(slug));
+    dispatch(getSingleBlog(slug));
   }, [dispatch, slug]);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Edit = () => {
 
   return (
     <Box>
-      <Box mb={{ base: "20px", lg: "60px" }}>
+      {/* <Box mb={{ base: "20px", lg: "60px" }}>
         <Navbar
           text={"black"}
           activeText={"#175616"}
@@ -101,7 +101,7 @@ const Edit = () => {
           logoutColor={"#175616"}
           logoutHoverBorder={"#175616"}
         />
-      </Box>
+      </Box> */}
       <Box className="cc-container page_alignment" mb={"100px"}>
         <CreateHero user={user} header={"Edit Blog"} />
         <Box>

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -52,24 +52,24 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
         (!page ? (
           <Box
             border={"1px solid black"}
-            px={"15px"}
-            py={"10px"}
+            px={"10px"}
+            py={"7px"}
             className={"disabled"}
             bg={"rgb(0,0,0,0.3)"}
           >
-            <h4 className="large-text fw-medium">Prev</h4>
+            <Text className="medium-text fw-medium">Prev</Text>
           </Box>
         ) : (
           <Link to={page - 1 > 1 ? `${route}/${page - 1}` : initial || route}>
             <Box
               border={"1px solid black"}
-              px={"15px"}
-              py={"10px"}
+              px={"10px"}
+              py={"7px"}
               onClick={() => {
                 prev();
               }}
             >
-              <h4 className="large-text fw-medium">Prev</h4>
+              <Text className="medium-text fw-medium">Prev</Text>
             </Box>
           </Link>
         ))}
@@ -88,20 +88,20 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
               bg={each === (page || 1) || each === hover ? "#175616" : ""}
               border={"1px solid black"}
               w={"40px"}
-              h={"50px"}
+              h={"30px"}
               onClick={() => {
                 slide(index);
               }}
             >
-              <h4
+              <Text
                 className={`${
                   each === (page || 1) || each === hover
                     ? "text-white"
                     : "text-black"
-                } large-text fw-medium`}
+                } fw-medium`}
               >
                 {each}
-              </h4>
+              </Text>
             </Flex>
           </Link>
         ))}
@@ -110,24 +110,24 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
         (page === pages.length ? (
           <Box
             border={"1px solid black"}
-            px={"15px"}
-            py={"10px"}
+            px={"10px"}
+            py={"7px"}
             className={"disabled"}
             bg={"rgb(0,0,0,0.3)"}
           >
-            <h4 className="large-text fw-medium">Next</h4>
+            <Text className="medium-text fw-medium">Next</Text>
           </Box>
         ) : (
           <Link to={`${route}/${page ? page + 1 : 2}`}>
             <Box
               border={"1px solid black"}
-              px={"15px"}
-              py={"10px"}
+              px={"10px"}
+              py={"7px"}
               onClick={() => {
                 next();
               }}
             >
-              <h4 className="large-text fw-medium">Next</h4>
+              <Text className="medium-text fw-medium">Next</Text>
             </Box>
           </Link>
         ))}

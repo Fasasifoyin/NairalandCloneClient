@@ -12,26 +12,26 @@ import {
 
 const Tags = () => {
   const { tagName, page } = useParams();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
-  const relatedTags = useSelector(allRelatedTagsId);
-  const totalPages = useSelector(TotalPages);
-  const status = useSelector(Status);
-  const error = useSelector(Error);
-  console.log(relatedTags, totalPages, status, error);
+  // const relatedTags = useSelector(allRelatedTagsId);
+  // const totalPages = useSelector(TotalPages);
+  // const status = useSelector(Status);
+  // const error = useSelector(Error);
+  // console.log(relatedTags, totalPages, status, error);
 
-  useEffect(() => {
-    dispatch(getRelatedTags({ page: page || 1, tags: tagName }));
-  }, [tagName, dispatch, page]);
+  // useEffect(() => {
+  //   dispatch(getRelatedTags({ page: page || 1, tags: tagName }));
+  // }, [tagName, dispatch, page]);
 
-  useEffect(() => {
-    if (Number(page) === 1) {
-      navigate(`/tag/${tagName}`);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, navigate, page]);
+  // useEffect(() => {
+  //   if (Number(page) === 1) {
+  //     navigate(`/tag/${tagName}`);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [location, navigate, page]);
 
   return (
     <div>

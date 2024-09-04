@@ -17,12 +17,12 @@ const detailedRelatedSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getDetailedRelated.pending, (state, action) => {
+      .addCase(getDetailedRelated.pending, (state) => {
         state.status = "pending";
       })
       .addCase(getDetailedRelated.fulfilled, (state, { payload }) => {
         state.status = "success";
-        detailedRelated.setAll(state, payload.data);
+        detailedRelated.setAll(state, payload);
       })
       .addCase(getDetailedRelated.rejected, (state, { payload }) => {
         state.status = "failed";

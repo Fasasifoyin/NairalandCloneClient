@@ -1,109 +1,94 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Icon, Image } from "@chakra-ui/react";
-import { FaRegComment } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { useState } from "react";
+import { Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
+import {
+  AiOutlineHeart,
+  AiFillHeart,
+  AiOutlineComment,
+  AiOutlineDelete,
+} from "react-icons/ai";
+import { LuLoader2 } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BsReply } from "react-icons/bs";
-import { MdOutlineDeleteOutline } from "react-icons/md";
 import ChildCommentForm from "./ChildCommentForm";
 import ChildComments from "./ChildComments";
-// import ChildCommentModal from "./ChildCommentModal";
-// import LikesModal from "./LikesModal";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   DeleteCommentStatus,
+  LikeStatus,
   commentId,
+  setEmpty,
 } from "../../app/slice/Detailed/CommentSlice";
-import { UserDetails } from "../../app/slice/UserSlice";
 import {
   likeComment as Like,
-  createChildComment,
-  deleteComment,
+  deleteComment as Delete,
 } from "../../app/actions/Comment";
-import { toast } from "react-hot-toast";
 import { Timeago } from "../../utils/Timeago";
-import { useState } from "react";
-import ConfirmationModal from "../layouts/ConfirmationModal";
 
 const Comment = ({
-  each,
+  commentid,
   index,
-  reply,
-  setReply,
-  seeComments,
-  setSeeComments,
+  auth,
   blogId,
+  likeId,
+  setLikeId,
+  deleteId,
+  setDeleteId,
 }) => {
-  const dispatch = useDispatch();
+  const comment = useSelector((state) => commentId(state, commentid));
+  const time = Timeago(comment.createdAt);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const comment = useSelector((state) => commentId(state, each));
-  const deleteCommentStatus = useSelector(DeleteCommentStatus);
-  const user = useSelector(UserDetails);
-  const time = Timeago(comment.createdAt);
-  const [deleteModal, setDeleteModal] = useState(false);
-  // console.log(comment.creator);
-  // const [viewChildComments, setViewChildComments] = useState(-1);
-  // const [viewLikes, setViewLikes] = useState(-1);
+  const dispatch = useDispatch();
+
+  const likeStatus = useSelector(LikeStatus);
+  const deleteStatus = useSelector(DeleteCommentStatus);
+
+  const [showChildComments, setShowChildComments] = useState(false);
+  const [showChildReply, setShowChildReply] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+
+  const showComments = () => {
+    setShowChildComments(!showChildComments);
+    setShowChildReply(false);
+  };
+
+  const showReply = () => {
+    setShowChildReply(!showChildReply);
+    setShowChildComments(false);
+  };
 
   const likeComment = (commentId) => {
-    if (user.token) {
+    if (auth.token) {
+      setLikeId(commentId);
       dispatch(Like(commentId));
     } else {
+      dispatch(setEmpty([]));
       navigate("/signin", { state: { from: location } });
     }
   };
 
-  const initialValues = {
-    childComment: "",
-  };
-
-  const onSubmit = (values, onSubmitProps) => {
-    if (user.token) {
-      const { childComment } = values;
-      const form = { childComment, commentId: comment._id };
-      onSubmitProps.resetForm();
-      dispatch(createChildComment(form));
+  const deleteComment = (commentId, blogId) => {
+    if (auth.token) {
+      setDeleteId(commentId);
+      dispatch(Delete({ commentId, blogId }));
     } else {
+      dispatch(setEmpty([]));
       navigate("/signin", { state: { from: location } });
     }
   };
 
-  const deleteCom = () => {
-    if (user.token) {
-      dispatch(deleteComment({ commentId: comment._id, blogId }));
-    } else {
-      toast.error("Not a user");
-    }
-  };
-
-  const openReply = (index) => {
-    if (index === reply) {
-      setReply(-1);
-    } else {
-      setSeeComments(-1);
-      setReply(index);
-    }
-  };
-
-  const openSeeComments = (index) => {
-    if (index === seeComments) {
-      setSeeComments(-1);
-    } else {
-      setReply(-1);
-      setSeeComments(index);
-    }
-  };
 
   return (
-    <Box borderRadius={"5px"} bg={index % 2 === 0 ? "#E8ECE0" : "#F6F6EC"}>
-      <Flex p={"10px"} justify={"space-between"} align={"center"}>
-        <Box
-          w={{ base: "50px", md: "70px" }}
-          h={{ base: "50px", md: "70px" }}
-          borderRadius={"50%"}
-        >
+    <Box
+      borderRadius={"5px"}
+      bg={index % 2 === 0 ? "#E8ECE0" : "#F6F6EC"}
+      p={"10px"}
+    >
+      <Flex gap={"10px"}>
+        <Box width={"40px"} h={"40px"} borderRadius={"50%"}>
           <Image
             w={"100%"}
             h={"100%"}
@@ -116,111 +101,93 @@ const Comment = ({
             alt={comment?.creator?.firstName || "Unknown"}
           />
         </Box>
-        <Flex
-          direction={"column"}
-          gap={"5px"}
-          w={{ base: "calc(98% - 50px)", md: "calc(98% - 70px)" }}
-        >
-          <Flex gap={"5px"}>
-            <p>{comment?.creator?.firstName || "Unknown"}</p>
-            <p>{time}</p>
-          </Flex>
-          <h4 className="medium-text">{comment.comment}</h4>
-          <Flex align={"center"} columns={3} gap={{ base: "50px", md: "80px" }}>
+        <Box flex={1}>
+          <Text className="tiny-text fw-bold">
+            {auth.userName === comment?.creator?.userName
+              ? "You"
+              : comment?.creator?.firstName
+              ? comment.creator?.firstName
+              : "Unknown"}{" "}
+            <Text as={"span"} className="tiny-text fw-regular">
+              {time}
+            </Text>
+          </Text>
+          <Text className="small-text" wordBreak={"break-word"}>
+            {comment?.comment}
+          </Text>
+          <Flex gap={"30px"} mt={"5px"} align={"center"}>
             <Icon
-              onClick={() => openReply(index)}
               className="cursor"
               as={BsReply}
-              boxSize={5}
+              boxSize={"22px"}
+              onClick={showReply}
             />
-            <Flex align={"center"} gap={"5px"}>
-              <Icon
-                boxSize={4}
-                onClick={() => openSeeComments(index)}
-                // onClick={() => setViewChildComments(index)}
-                className="cursor"
-                as={FaRegComment}
-              />
-              <h6 className="small-text">{comment.childComments.length}</h6>
+            <Flex
+              gap={"5px"}
+              align={"center"}
+              onClick={showComments}
+              className="cursor"
+            >
+              <Icon as={AiOutlineComment} boxSize={5} />
+              <Text className="small-text">{comment.childComments.length}</Text>
             </Flex>
-            <Flex align={"center"} gap={"5px"}>
-              <Icon
-                boxSize={4}
-                className="cursor"
-                as={
-                  comment.likes.includes(user._id)
-                    ? AiFillHeart
-                    : AiOutlineHeart
-                }
-                onClick={() => likeComment(comment._id)}
-              />
-              <h6 className="small-text">{comment.likes.length}</h6>
+            <Flex gap={"5px"} align={"center"}>
+              {likeStatus === "pending" && likeId === comment._id ? (
+                <Icon as={LuLoader2} boxSize={5} />
+              ) : (
+                <Icon
+                  onClick={() => likeComment(comment._id)}
+                  className="cursor"
+                  as={
+                    comment.likes.includes(auth._id)
+                      ? AiFillHeart
+                      : AiOutlineHeart
+                  }
+                  boxSize={5}
+                />
+              )}
+              <Text className="small-text">{comment.likes.length}</Text>
             </Flex>
-            {comment?.creator?.userName === user.userName && user.userName && (
-              <Icon
-                _hover={{ color: "red" }}
-                className="cursor"
-                as={MdOutlineDeleteOutline}
-                boxSize={5}
-                onClick={() => setDeleteModal(true)}
-              />
-            )}
+            {comment?.creator?._id === auth?._id &&
+              (deleteStatus === "pending" && deleteId === comment?._id ? (
+                <Icon as={LuLoader2} boxSize={5} />
+              ) : showDelete ? (
+                <Flex gap={"15px"}>
+                  <Text
+                    className="tiny-text text-red cursor"
+                    onClick={() => deleteComment(comment?._id, blogId)}
+                  >
+                    Confirm
+                  </Text>
+                  <Text
+                    className="tiny-text cursor"
+                    onClick={() => setShowDelete(false)}
+                  >
+                    Cancel
+                  </Text>
+                </Flex>
+              ) : (
+                <Icon
+                  className="cursor"
+                  as={AiOutlineDelete}
+                  boxSize={5}
+                  onClick={() => setShowDelete(true)}
+                />
+              ))}
           </Flex>
-        </Flex>
+        </Box>
       </Flex>
-      <Flex
-        bg={index % 2 === 0 ? "#F6F6EC" : "#E8ECE0"}
-        justify={"flex-end"}
-        className={reply === index ? "open" : "close"}
-        borderBottomRadius={"5px"}
-      >
-        <ChildCommentForm
-          reply={reply}
-          index={index}
-          onSubmit={onSubmit}
-          initialValues={initialValues}
-        />
-      </Flex>
-      <Flex
-        justify={"flex-end"}
-        className={seeComments === index ? "open" : "close"}
-      >
+      {showChildReply && (
+        <ChildCommentForm commentId={comment._id} auth={auth} />
+      )}
+      {showChildComments && (
         <ChildComments
-          id={comment._id}
-          child={comment.childComments}
-          index={index}
-          seeComments={seeComments}
-          user={user}
+          data={comment.childComments}
+          auth={auth}
+          commentId={comment._id}
           blogId={blogId}
         />
-      </Flex>
-      {deleteModal && (
-        <ConfirmationModal
-          actiontype={"Are you sure you want to delete this comment"}
-          warningNote={"Please note that this action is not reversible"}
-          buttonText={"Delete"}
-          setFalse={setDeleteModal}
-          action={deleteCom}
-          status={deleteCommentStatus}
-        />
       )}
-
-      {/* <ChildCommentModal
-        Comment={comment.comment} 
-        id={comment._id}
-        image={comment.creator.image}
-        User={comment.creator.firstName}
-        child={comment.childComments}
-        view={viewChildComments}
-        setView={setViewChildComments}
-        index={index}
-      /> */}
-      {/* <LikesModal
-        child={comment.likes}
-        view={viewLikes}
-        setView={setViewLikes}
-        index={index}
-      /> */}
     </Box>
   );
 };

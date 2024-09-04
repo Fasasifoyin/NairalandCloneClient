@@ -48,7 +48,7 @@ const Create = () => {
 
   return (
     <Box>
-      <Box mb={{ base: "20px", lg: "60px" }}>
+      {/* <Box mb={{ base: "20px", lg: "60px" }}>
         <Navbar
           text={"black"}
           activeText={"#175616"}
@@ -61,7 +61,7 @@ const Create = () => {
           logoutColor={"#175616"}
           logoutHoverBorder={"#175616"}
         />
-      </Box>
+      </Box> */}
       <Box className="cc-container page_alignment" mb={"100px"}>
         <CreateHero user={user} header={"Create your blog"} />
         <Tags setTags={setTags} tags={tags} />

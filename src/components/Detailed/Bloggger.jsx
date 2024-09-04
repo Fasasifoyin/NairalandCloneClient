@@ -1,81 +1,65 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-const Bloggger = ({ user }) => {
+const Bloggger = ({ blogger, userName }) => {
   return (
-    <Box mb={"30px"}>
+    <Box mt={"20px"}>
       <Box border={"1px solid #175616"} mb={"15px"} />
-      <Flex w={"100%"} justify={"space-between"}>
-        <Box
-          borderRadius={"50%"}
-          w={{ base: "120px", md: "180px", lg: "225px" }}
-          h={{ base: "120px", md: "180px", lg: "225px" }}
-        >
+      <Text className="fw-bold" mb={"20px"}>
+        BLOGGER
+      </Text>
+      <Flex gap={"20px"}>
+        <Box width={"100px"} h={"100px"} borderRadius={"50%"}>
           <Image
             w={"100%"}
             h={"100%"}
             borderRadius={"50%"}
             objectFit={"cover"}
             src={
-              user?.image ||
+              blogger?.image ||
               "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690553303/Nairaland/default_avatar_cxfqgl.jpg"
             }
-            alt={user?.firstName || "unknown"}
+            alt={blogger?.firstName || "unknown"}
           />
         </Box>
-
-        {user?.firstName ? (
-          <Box
-            w={{
-              base: "calc(95% - 120px)",
-              md: "calc(95% - 180px)",
-              lg: "calc(95% - 225px)",
-            }}
-          >
-            <Link to={`/profile/${user.userName}`}>
-              <Box>
-                <h4 className="medium-text">
-                  {user.firstName} {user.lastName}
-                </h4>
-              </Box>
-            </Link>
-            <Box mb={"30px"}>
-              <h6 className="small-text">
-                {user.occupation ? user.occupation : "No occupation"}
-              </h6>
-            </Box>
-            <Box mb={"20px"}>
-              <p>
-                {user.about
-                  ? user.about.length > 200
-                    ? `${user.about.slice(0, 197).trim()}...`
-                    : user.about
+        <Box flex={1}>
+          {blogger?.firstName ? (
+            <>
+              <Text className="fw-bold">
+                {userName === blogger?.userName
+                  ? "You"
+                  : `${blogger.firstName} ${blogger.lastName}`}
+              </Text>
+              <Text className="tiny-text">
+                {blogger?.occupation ? blogger?.occupation : "No occupation"}
+              </Text>
+              <Text mt={"10px"}>
+                {blogger?.about
+                  ? blogger?.about?.length > 200
+                    ? `${blogger?.about.slice(0, 197).trim()}...`
+                    : blogger?.about
                   : "No about"}
-              </p>
-            </Box>
-            <Link to={`/profile/${user.userName}`}>
-              <Box>
-                <Button
-                  size={"sm"}
-                  className="bg-green text-white bg-green-light-5-hover"
-                >
-                  Read more about {user.firstName}
-                </Button>
-              </Box>
-            </Link>
-          </Box>
-        ) : (
-          <Box
-            w={{
-              base: "calc(95% - 120px)",
-              md: "calc(95% - 180px)",
-              lg: "calc(95% - 225px)",
-            }}
-          >
-            <h4 className="medium-text fw-bold">Unknown Author</h4>
-          </Box>
-        )}
+              </Text>
+              <Link to={`/profile/${blogger?.userName}`}>
+                {blogger?.userName !== userName && (
+                  <Text
+                    color={"blue"}
+                    _hover={{
+                      color: "blue.400",
+                    }}
+                    className="small-text"
+                    mt={"5px"}
+                  >
+                    Read more about {blogger?.firstName}
+                  </Text>
+                )}
+              </Link>
+            </>
+          ) : (
+            <Text className="fw-bold">Unknown Author</Text>
+          )}
+        </Box>
       </Flex>
       <Box border={"1px solid #175616"} mt={"15px"} />
     </Box>

@@ -14,6 +14,7 @@ import Reset from "../pages/Reset";
 import Search from "../pages/Search";
 import ErrorPage from "../pages/ErrorPage";
 import Tags from "../pages/Tags";
+import Latest from "../pages/Latest";
 
 const routes = [
   {
@@ -61,6 +62,10 @@ const routes = [
             <Edit />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/latest",
+        element: <Latest />,
       },
       {
         path: "new",

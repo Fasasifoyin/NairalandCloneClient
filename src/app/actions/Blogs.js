@@ -1,6 +1,91 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 import { toast } from "react-hot-toast";
+import { errorHandler } from "../error";
+
+//start
+export const latestNews = createAsyncThunk(
+  "/latest/latestNews",
+  async (page, { rejectWithValue }) => {
+    try {
+      const { data } = await api.latestNews(page);
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const homeLatestNews = createAsyncThunk(
+  "/latest/homeLatestNews",
+  async (page, { rejectWithValue }) => {
+    try {
+      const { data } = await api.latestNews(page);
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getBlogsByTags = createAsyncThunk(
+  "/BBT/getBlogsByTags",
+  async (tagsRequest, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getBlogsByTags(tagsRequest);
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const randomBlogs = createAsyncThunk(
+  "/randomblogs/randomBlogs",
+  async (page, { rejectWithValue }) => {
+    try {
+      const response = await api.getRandomBlogs(page);
+      const newToken = response.headers["x-blog-pagination-token"];
+      if (response.status === 200 && newToken) {
+        localStorage.setItem("blogPaginationToken", JSON.stringify(newToken));
+      }
+      return response.data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getSingleBlog = createAsyncThunk(
+  "/singleBlog/getSingleBlog",
+  async (slug, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getSingleBlog(slug);
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getDetailedRelated = createAsyncThunk(
+  "/detailedRelated/getDetailedRelated",
+  async (tags, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getRelatedTags(tags);
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+//end
 
 export const createBlog = createAsyncThunk(
   "/blog/createBlog",
@@ -106,22 +191,6 @@ export const newPageSlide = createAsyncThunk(
   }
 );
 
-export const getSingleProduct = createAsyncThunk(
-  "/singleBlog/getSingleProduct",
-  async (slug, { rejectWithValue }) => {
-    try {
-      const { data } = await api.getSingleProduct(slug);
-      return data;
-    } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      return rejectWithValue(outputError);
-    }
-  }
-);
-
 export const getNewPageBlogs = createAsyncThunk(
   "/newpage/getNewPageBlogs",
   async (page, { rejectWithValue }) => {
@@ -195,22 +264,6 @@ export const getDetailedLatest = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      return rejectWithValue(outputError);
-    }
-  }
-);
-
-export const getDetailedRelated = createAsyncThunk(
-  "detailedRelated",
-  async (query, { rejectWithValue }) => {
-    try {
-      const { data } = await api.getRelatedTags(query);
-      return data;
-    } catch (error) {
       const outputError =
         error.response && error.response.data.message
           ? error.response.data.message

@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 const FormikInput = (props) => {
-  const { type, name, placeholder, label, base, lg, defaultLabel } = props;
+  const { type, name, placeholder, label, defaultLabel } = props;
 
   return (
     <Field name={name}>
@@ -32,11 +32,8 @@ const FormikInput = (props) => {
             autoComplete="off"
             focusBorderColor="#175616"
             borderRadius={"5px"}
-            fontSize={{ md: "18px", base: "14px" }}
-            h={{ base, lg }}
+            h={"50px"}
             border={"1px solid #175616"}
-            paddingLeft={"17px"}
-            _placeholder={{ color: "rgb(0, 0, 0, 0.7)" }}
           />
           <FormErrorMessage>{meta.error}</FormErrorMessage>
         </FormControl>

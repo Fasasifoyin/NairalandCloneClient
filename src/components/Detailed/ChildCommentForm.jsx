@@ -1,61 +1,108 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Flex } from "@chakra-ui/react";
-import FormikControl from "../formik/FormikControl";
-import { Form, Formik } from "formik";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  Icon,
+  Input,
+} from "@chakra-ui/react";
+import { Field, Form, Formik } from "formik";
+import { useLocation, useNavigate } from "react-router-dom";
 import { childCommentValidation } from "../formik/FormikValidation";
+import { IoIosSend } from "react-icons/io";
 
-import { ChildCommentStatus } from "../../app/slice/Detailed/CommentSlice";
-import { useSelector } from "react-redux";
+import {
+  ChildCommentStatus,
+  setEmpty,
+} from "../../app/slice/Detailed/CommentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createChildComment } from "../../app/actions/Comment";
 
-const ChildCommentForm = ({ initialValues, onSubmit, reply, index }) => {
+const ChildCommentForm = ({ commentId, auth }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const status = useSelector(ChildCommentStatus);
 
+  const initialValues = {
+    childComment: "",
+  };
+
+  const onSubmit = (values, onSubmitProps) => {
+    if (auth.token) {
+      const form = { ...values, commentId };
+      dispatch(createChildComment(form));
+      onSubmitProps.resetForm();
+    } else {
+      dispatch(setEmpty([]));
+      navigate("/signin", { state: { from: location } });
+    }
+  };
+
   return (
-    <Box
-      className={reply === index ? "seen" : "not-seen"}
-      my={"15px"}
-      w={{ base: "calc(98% - 60px)", md: "calc(98% - 80px)" }}
-    >
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={childCommentValidation}
-      >
-        {() => (
-          <Form>
-            <Flex
-              align={{ lg: "center" }}
-              gap={"5px"}
-              justify={"space-between"}
-              direction={{ base: "column", md: "row" }}
-            >
-              <Box width={{ base: "100%", md: "75%" }}>
-                <FormikControl
-                  control="Textarea"
-                  name="childComment"
-                  baseH="px"
-                  mdH="78px"
-                />
-              </Box>
-              <Box width={{ lg: "20%" }}>
-                <Button
-                  width={{ lg: "100%" }}
-                  height={{ md: "40px", base: "30px" }}
-                  type="submit"
-                  bg={"#175616"}
-                  color={"#E8ECE0"}
-                  borderRadius={"5px"}
-                  _hover={{ bg: "#175616" }}
-                  isLoading={status === "pending"}
-                >
-                  <p>Send Comment</p>
-                </Button>
-              </Box>
-            </Flex>
-          </Form>
-        )}
-      </Formik>
-    </Box>
+    <Flex justifyContent={"flex-end"} mt={"25px"} mb={"10px"}>
+      <Box width={"calc(100% - 50px)"} direction={"column"} gap={"10px"}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validationSchema={childCommentValidation}
+        >
+          {() => (
+            <Form>
+              <Field name="childComment">
+                {({ meta, field }) => (
+                  <FormControl isInvalid={meta.error && meta.touched}>
+                    <Box position={"relative"}>
+                      <Input
+                        {...field}
+                        autoComplete="off"
+                        type="text"
+                        pr={"35px"}
+                        placeholder={"Write comment"}
+                        borderRadius={"0px"}
+                        borderTop={"none"}
+                        borderLeft={"none"}
+                        borderRight={"none"}
+                        focusBorderColor="transparent"
+                        _focus={{
+                          borderBottomColor: "black",
+                        }}
+                        _invalid={{
+                          borderBottomColor: "red.500",
+                        }}
+                      />
+                      <Button
+                        type="submit"
+                        pos={"absolute"}
+                        zIndex={10}
+                        top={"50%"}
+                        right={0}
+                        transform={"translateY(-50%)"}
+                        px={0}
+                        bg={"none"}
+                        _hover={{
+                          bg: "none",
+                        }}
+                        isLoading={status === "pending"}
+                      >
+                        <Icon
+                          as={IoIosSend}
+                          boxSize={7}
+                          className="text-green"
+                        />
+                      </Button>
+                    </Box>
+                    <FormErrorMessage>{meta.error}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Flex>
   );
 };
 

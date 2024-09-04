@@ -1,27 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Box, Button, Flex } from "@chakra-ui/react";
-import Navbar from "../components/layouts/Navbar";
-import Search from "../components/Detailed/Search";
+import { useParams } from "react-router-dom";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import HeroSection from "../components/Detailed/HeroSection";
 import Bloggger from "../components/Detailed/Bloggger";
 import RelatedPost from "../components/Detailed/RelatedPost";
 import Latest from "../components/Detailed/Latest";
-import Categories from "../components/Detailed/Categories";
-import { tagsList } from "../utils/Data";
-import DetailedForm from "../components/Detailed/DetailedForm";
-import Footer from "../components/layouts/Footer";
 import Comment from "../components/Detailed/Comment";
-import useDidMountEffect from "../hooks/useDidMountEffect";
+import { useElementHeightContext } from "../hooks/useElementHeightContext";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Details, Status, Error } from "../app/slice//Detailed/DetailedSlice";
 import {
   getDetailedLatest,
   getDetailedRelated,
-  getSingleProduct,
+  getSingleBlog,
 } from "../app/actions/Blogs";
-import { createComment, getComments } from "../app/actions/Comment";
+import { getComments } from "../app/actions/Comment";
 import {
   allDetailedRelatedId,
   Status as RelatedStatus,
@@ -34,266 +29,137 @@ import {
   TotalComments,
 } from "../app/slice/Detailed/CommentSlice";
 import { UserDetails } from "../app/slice/UserSlice";
-
-const check = (array, id, number) => {
-  const first = array.slice(0).filter((each) => each !== id);
-  const second = first.slice(0, number);
-  return second;
-};
+import SendComments from "../components/Detailed/SendComments";
 
 const DetailedPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+
+  const elementHeight = useElementHeightContext();
+
   const user = useSelector(UserDetails);
 
   const blog = useSelector(Details);
   const status = useSelector(Status);
   const error = useSelector(Error);
 
-  const initialRelated = useSelector(allDetailedRelatedId);
-  const [related, setRelated] = useState([]);
+  const related = useSelector(allDetailedRelatedId);
   const relatedStatus = useSelector(RelatedStatus);
-
-  const initialLatest = useSelector(allDetailedLatestId);
-  const [latest, setLatest] = useState([]);
-  const latestSkeleton = ["", "", "", ""];
-
-  const [categories, setCategories] = useState([]);
 
   const comments = useSelector(allCommentIds);
   const commentStatus = useSelector(CommentStatus);
   const totalComments = useSelector(TotalComments);
-  const [index, setIndex] = useState(0);
+  const [likeId, setLikeId] = useState(-1);
+  const [deleteId, setDeleteId] = useState(-1);
 
   useEffect(() => {
-    setLatest([]);
-    setRelated([]);
-    setIndex(0);
-    dispatch(setEmpty([]));
-  }, [slug, dispatch]);
+    dispatch(getSingleBlog(slug)).then((action) => {
+      if (action.type === getSingleBlog.fulfilled.type) {
+        const { tags, _id } = action.payload;
+        if (tags) {
+          dispatch(getDetailedRelated(tags.join(",")));
+        }
+        if (_id) {
+          dispatch(getComments({ blogId: _id, length: 0 }));
+        }
+      }
+    });
 
-  useEffect(() => {
-    dispatch(getSingleProduct(slug));
+    return () => {
+      dispatch(setEmpty([]));
+    };
   }, [dispatch, slug]);
 
-  useDidMountEffect(
-    () => {
-      if (status === "success") {
-        const tags = blog.tags.join(",");
-        dispatch(getDetailedRelated({ page: 1, tags }));
-      }
-    },
-    blog._id,
-    status,
-    dispatch
-  );
-
-  useDidMountEffect(
-    () => {
-      if (status === "success") {
-        dispatch(getDetailedLatest(5));
-      }
-    },
-    status,
-    dispatch
-  );
-
-  useDidMountEffect(
-    () => {
-      if (status === "success") {
-        dispatch(getComments({ blogId: blog._id, index }));
-      }
-    },
-    blog._id,
-    status,
-    dispatch,
-    index
-  );
-
   useEffect(() => {
-    setCategories(
-      [...tagsList].sort(() => (Math.random() > 0.5 ? 1 : -1)).slice(0, 8)
-    );
-  }, [slug]);
-
-  useDidMountEffect(() => {
-    setLatest(check(initialLatest, blog._id, 4));
-  }, initialLatest);
-
-  useDidMountEffect(() => {
-    setRelated(check(initialRelated, blog._id, 5));
-  }, initialRelated);
-
-  useDidMountEffect(() => {
-    if (error === "Blog not found") {
-      dispatch(getDetailedLatest(5));
+    if (blog && blog.slug === slug) {
+      dispatch(getComments({ blogId: blog._id, length: comments.length }));
     }
-  }, error);
-
-  const initialValues = {
-    comment: "",
-  };
-
-  const onSubmit = (values, onSubmitProps) => {
-    const { comment } = values;
-    const form = { comment, blogId: blog._id };
-    if (user.token) {
-      dispatch(createComment(form));
-      onSubmitProps.resetForm();
-    } else {
-      navigate("/signin", { state: { from: location } });
-    }
-  };
-
-  const checkMore = Boolean(totalComments > comments.length);
-  const [reply, setReply] = useState(-1);
-  const [seeComments, setSeeComments] = useState(-1);
-  const [search, setSearch] = useState("");
-  const onSearch = () => {
-    if (search) {
-      navigate(`/search?searchQuery=${search}`);
-    }
-  };
+  }, [dispatch, page]);
 
   return (
-    <Box>
-      <Box className="bg-cream" mb={"60px"}>
-        <Navbar
-          text={"black"}
-          hover={"#175616"}
-          buttonBg={"#175616"}
-          buttonColor={"white"}
-          btnHover={"white"}
-          btnColorHover={"green"}
-          logoutBg={"none"}
-          logoutColor={"#175616"}
-          logoutHoverBorder={"#175616"}
-        />
-      </Box>
-      <Box mb={"100px"} className="page_alignment cc-container">
-        <Flex
-          mb={"40px"}
-          direction={{ base: "column", lg: "row" }}
-          justify={
-            blog?.title || status === "failed" ? "space-between" : "flex-end"
-          }
-        >
-          <Box width={{ base: "100%", lg: "67%" }}>
-            <Box mb={"30px"}>
-              {status === "pending" && <p>Loading...</p>}
-              {status === "failed" && <p>{error}</p>}
-              {status === "success" && (
-                <Box>
-                  <HeroSection blog={blog} />
-                  <Bloggger user={blog.author} />
-                  {relatedStatus === "success" && (
-                    <Box>
-                      <Box mb={"20px"}>
-                        <h4 className="medium-text fw-bold">
-                          POSTS YOU MIGHT LIKE
-                        </h4>
-                      </Box>
-                      {related.length ? (
-                        <Box className="relatedScroller snaps scrollbody">
-                          {related.map((each) => (
-                            <RelatedPost key={each} each={each} />
-                          ))}
-                        </Box>
-                      ) : (
-                        <p className="large-text fw-bold">No related post</p>
-                      )}
-                      <Box border={"1px solid #175616"} mt={"30px"} />
+    <Box className="cc-container page-alignment" mt={"30px"}>
+      <Flex w={"100%"} justifyContent={"space-between"} position={"relative"}>
+        <Box width={{ base: "100%", lg: "60%" }}>
+          {status === "pending" && <Text>Loading...</Text>}
+          {status === "failed" && <Text>{error}</Text>}
+          {status === "success" && (
+            <>
+              <HeroSection blog={blog} />
+              <Bloggger blogger={blog.author} userName={user.userName} />
+              {relatedStatus === "success" && (
+                <Box mt={"15px"}>
+                  <Text className="fw-bold" mb={"20px"}>
+                    POSTS YOU MIGHT LIKE
+                  </Text>
+                  {related.length > 0 ? (
+                    <Box className="relatedScroller snaps scrollbody">
+                      {related
+                        .filter((each) => each !== blog._id)
+                        .map((each) => (
+                          <RelatedPost key={each} each={each} />
+                        ))}
                     </Box>
+                  ) : (
+                    <Text className="small-text">No related Post</Text>
                   )}
+                  <Box border={"1px solid #175616"} mt={"15px"} />
                 </Box>
               )}
-            </Box>
-            <Box hideFrom={"lg"} mb={"30px"}>
-              <h4
-                style={{ marginBottom: "20px" }}
-                className="medium-text fw-medium"
-              >
-                Latest Posts
-              </h4>
-              <Box className="scroller scrollbody snaps">
-                {(latest.length ? latest : latestSkeleton).map(
-                  (each, index) => (
-                    <Latest latest={each} key={index} />
-                  )
-                )}
-              </Box>
-            </Box>
-            <Box hideFrom={"lg"} mb={"30px"}>
-              <Categories categories={categories} />
-            </Box>
-            {status === "success" && (
-              <Box>
-                <DetailedForm
-                  onSubmit={onSubmit}
-                  initialValues={initialValues}
+              <SendComments blogId={blog._id} auth={user.token} />
+            </>
+          )}
+        </Box>
+        {/* latest begin */}
+        <Box
+          hideBelow={"lg"}
+          h={"min-content"}
+          width={"30%"}
+          border={"1px solid blue"}
+          position={"sticky"}
+          top={`${elementHeight}px`}
+          right={0}
+        ></Box>
+        {/* latest end */}
+      </Flex>
+      {status === "success" && (
+        <Box mt={"30px"}>
+          <Text className="fw-bold">
+            Comments {commentStatus === "success" && `(${totalComments})`}
+          </Text>
+          {comments?.length ? (
+            <Flex mt={"10px"} direction={"column"} gap={"20px"}>
+              {comments?.map((each, index) => (
+                <Comment
+                  key={each}
+                  commentid={each}
+                  index={index}
+                  auth={user}
+                  blogId={blog._id}
+                  likeId={likeId}
+                  setLikeId={setLikeId}
+                  deleteId={deleteId}
+                  setDeleteId={setDeleteId}
                 />
-              </Box>
-            )}
-          </Box>
-          <Box width={{ base: "100%", lg: "25%" }}>
-            <Box hideBelow={"lg"} mb={"150px"}>
-              <Search
-                placeholder={"Search"}
-                search={search}
-                setSearch={setSearch}
-                onSearch={onSearch}
-              />
-            </Box>
-            <Box hideBelow={"lg"} mb={"150px"}>
-              <h4
-                style={{ marginBottom: "20px" }}
-                className="medium-text fw-medium"
-              >
-                Latest Posts
-              </h4>
-              <Box className="scroller">
-                {(latest.length ? latest : latestSkeleton).map(
-                  (each, index) => (
-                    <Latest latest={each} key={index} />
-                  )
-                )}
-              </Box>
-            </Box>
-            <Box hideBelow={"lg"}>
-              <Categories categories={categories} />
-            </Box>
-          </Box>
-        </Flex>
-        {status === "success" && (
-          <Box>
-            <Flex mb={"10px"} direction={"column"} gap={"20px"}>
-              {comments.length
-                ? comments.map((each, index) => (
-                    <Comment
-                      key={each}
-                      each={each}
-                      index={index}
-                      reply={reply}
-                      setReply={setReply}
-                      seeComments={seeComments}
-                      setSeeComments={setSeeComments}
-                      blogId={blog._id}
-                    />
-                  ))
-                : commentStatus === "success" && <p>No Comment</p>}
+              ))}
             </Flex>
-            {commentStatus === "pending" && <p>Loading...</p>}
-            {checkMore && commentStatus === "success" && (
-              <Button onClick={() => setIndex(comments.length)}>
-                Read More
-              </Button>
-            )}
-          </Box>
-        )}
-      </Box>
-      <Footer />
+          ) : (
+            commentStatus === "success" && <Text mt={"10px"}>No comment</Text>
+          )}
+          {commentStatus === "pending" && (
+            <Text mt={"10px"}>Loading comments...</Text>
+          )}
+          {comments.length < totalComments && commentStatus === "success" && (
+            <Text
+              className="cursor"
+              mt={"10px"}
+              onClick={() => setPage((prev) => prev + 1)}
+            >
+              See more comments
+            </Text>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

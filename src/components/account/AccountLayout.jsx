@@ -10,18 +10,18 @@ const AccountLayout = ({ children, slides }) => {
       <Flex
         h={{ lg: "100vh" }}
         minH={"100vh"}
-        overflowY={{ lg: "scroll" }}
         w={{ base: "100%", lg: "50%" }}
+        overflowY={{ lg: "scroll" }}
         className="scrollbody"
       >
         <Box
           margin={"auto"}
-          width={"100%"}
-          maxW={"504px"}
-          px={"15px"}
-          py={"30px"}
+          w={"100%"}
+          maxW={"500px"}
+          py={"50px"}
+          px={{ base: "1.25rem", sm: "2.1875rem", md: "3.125rem", lg: "35px" }}
         >
-          <Box mb={"50px"} width={"max-content"}>
+          <Box mb={"20px"} width={"max-content"}>
             <Link to="/">
               <Logo color={"#175616"} fs={"logo-large-text"} />
             </Link>
@@ -29,9 +29,7 @@ const AccountLayout = ({ children, slides }) => {
           {children}
         </Box>
       </Flex>
-      <Box h={"100vh"} w={"50%"} hideBelow={"lg"} pos={"relative"}>
-        <Fade slides={slides} />
-      </Box>
+      <Fade slides={slides} />
     </Flex>
   );
 };

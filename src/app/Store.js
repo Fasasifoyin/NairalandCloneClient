@@ -15,6 +15,10 @@ import profileSlice from "./slice/ProfileSlice";
 import resetSlice from "./slice/ResetSlice";
 import searchSlice from "./slice/SearchSlice";
 import relatedTagsSlice from "./slice/RelatedTags";
+import latestSlice from "./slice/latestSlice";
+import BBTSlice from "./slice/BBT";
+
+import randomSlice from "./slice/home/RandomBlog";
 
 export const store = configureStore({
   reducer: {
@@ -34,5 +38,8 @@ export const store = configureStore({
     reset: resetSlice,
     search: searchSlice,
     relatedTags: relatedTagsSlice,
+    latest: latestSlice,
+    BBT: BBTSlice,
+    random: randomSlice,
   },
 });

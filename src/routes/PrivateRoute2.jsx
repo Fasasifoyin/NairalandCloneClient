@@ -9,15 +9,7 @@ const PrivateRoute2 = ({ children }) => {
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
 
-  return (
-    <>
-      {user.token ? (
-        <Navigate to={from.pathname} state={{ from: location }} />
-      ) : (
-        children
-      )}
-    </>
-  );
+  return <>{user.token ? <Navigate to={from.pathname} /> : children}</>;
 };
 
 export default PrivateRoute2;

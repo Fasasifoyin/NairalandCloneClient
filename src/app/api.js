@@ -11,11 +11,48 @@ API.interceptors.request.use((req) => {
     }`;
   }
 
+  if (localStorage.getItem("blogPaginationToken")) {
+    req.headers["x-blog-pagination-token"] = JSON.parse(
+      localStorage.getItem("blogPaginationToken")
+    );
+  }
+
   return req;
 });
 
+//start
 export const signUp = (form) => API.post("/api/users/signup", form);
 export const signIn = (form) => API.post("/api/users/signin", form);
+
+export const latestNews = (page) => API.get(`/api/blogs/latest/${page}`);
+export const getBlogsByTags = (tagRequest) =>
+  API.post("/api/blogs/getblogsbytags", tagRequest);
+export const getRandomBlogs = (page) =>
+  API.get(`/api/blogs/randomblogs?page=${page}`);
+
+export const getSingleBlog = (slug) => API.get(`/api/blogs/${slug}`);
+export const getRelatedTags = (tags) =>
+  API.get(`/api/blogs/tags/related?tags=${tags}`);
+export const getComment = (query) =>
+  API.get(
+    `/api/blogs/get/comment?blogId=${query.blogId}&length=${query.length}`
+  );
+export const createComment = (form) =>
+  API.post("/api/blogs/create/comment", form);
+export const createChildComment = (form) =>
+  API.patch("/api/blogs/comment/childcomment", form);
+export const likeComment = (commentId) =>
+  API.patch(`/api/blogs/comment/like/${commentId}`);
+export const deleteComment = (query) =>
+  API.delete(
+    `/api/blogs/comment/delete?commentId=${query.commentId}&blogId=${query.blogId}`
+  );
+export const deleteChildComment = (body) =>
+  API.patch("/api/blogs/comment/deletechildcomment", body);
+export const likeChildComment = (form) =>
+  API.patch("/api/blogs/comment/childcomment/like", form);
+//end
+
 export const profile = (userName) => API.get(`/api/users/profile/${userName}`);
 export const updatePhoto = (body) =>
   API.patch("/api/users/profile/updatePhoto", body);
@@ -41,33 +78,11 @@ export const Search = (query) =>
     }&categories=${query.categories || "All"}&page=${query.page || 1}`
   );
 
-export const createComment = (form) =>
-  API.post("/api/blogs/create/comment", form);
-export const getComment = (query) =>
-  API.get(`/api/blogs/get/comment?blogId=${query.blogId}&index=${query.index}`);
-export const likeComment = (commentId) =>
-  API.patch(`/api/blogs/comment/like/${commentId}`);
-export const createChildComment = (form) =>
-  API.patch("/api/blogs/comment/childcomment", form);
-export const likeChildComment = (form) =>
-  API.patch("/api/blogs/comment/childcomment/like", form);
-export const deleteComment = (query) =>
-  API.delete(
-    `/api/blogs/comment/delete?commentId=${query.commentId}&blogId=${query.blogId}`
-  );
-export const deleteChildComment = (body) =>
-  API.patch("/api/blogs/comment/deletechildcomment", body);
-
 export const homePageTags = (page) => API.get(`/api/blogs/homepage/${page}`);
 
 export const newPageSlide = (qty) =>
   API.get(`/api/blogs/newpage/slider/${qty}`);
 export const newPage = (page) => API.get(`/api/blogs/new/${page}`);
-
-export const getSingleProduct = (slug) => API.get(`/api/blogs/${slug}`);
-
-export const getRelatedTags = (query) =>
-  API.get(`/api/blogs/tags/related?page=${query.page}&tags=${query.tags}`);
 
 export const randomTags = (qty) => API.get(`/api/blogs/random/tags/${qty}`);
 export const randomBlogs = (qty) => API.get(`/api/blogs/random/blogs/${qty}`);

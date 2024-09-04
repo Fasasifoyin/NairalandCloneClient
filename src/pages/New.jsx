@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
-import Navbar from "../components/layouts/Navbar";
 import Slider from "../components/new/Slider";
 import GridLayout from "../components/new/GridLayout";
 import Pagination from "../components/layouts/Pagination";
-import Footer from "../components/layouts/Footer";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -44,19 +42,7 @@ const New = () => {
       flexDir={"column"}
       justifyContent={"space-between"}
     >
-      <Box pos={"absolute"} top={0} left={0} width={"100%"}>
-        <Navbar
-          logo
-          text={"white"}
-          activeText={"white"}
-          hover={"#175616"}
-          buttonBg={"#175616"}
-          buttonColor={"white"}
-          logoutBg={"white"}
-          logoutColor={"#175616"}
-          currentLoc="New"
-        />
-      </Box>
+     
       <Slider />
       <Box className="cc-container page_alignment" mb={"60px"} pt={"5rem"}>
         <Flex hideFrom={"lg"} justify={"center"} mb={"20px"}>
@@ -91,7 +77,6 @@ const New = () => {
           route={"/new"}
         />
       </Flex>
-      <Footer />
     </Box>
   );
 };

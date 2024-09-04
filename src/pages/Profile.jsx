@@ -34,7 +34,7 @@ const Profile = () => {
 
   return (
     <Box>
-      <Box pos={"absolute"} top={0} left={0} width={"100%"}>
+      {/* <Box pos={"absolute"} top={0} left={0} width={"100%"}>
         <Navbar
           text={"black"}
           activeText={"white"}
@@ -45,7 +45,7 @@ const Profile = () => {
           currentLoc={`/profile/${userName}`}
           baseLogoColor={profileStatus === "success" ? "white" : "#175616"}
         />
-      </Box>
+      </Box> */}
       {profileStatus === "pending" && (
         <Flex h={"100vh"} justify={"center"} align={"center"}>
           <TriangleLoader />

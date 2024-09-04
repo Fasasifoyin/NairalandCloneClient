@@ -1,212 +1,187 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-import { Box, Button, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
 import Logo from "./Logo";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { RiMenu5Fill } from "react-icons/ri";
-import { CiSearch } from "react-icons/ci";
+import { GoSearch } from "react-icons/go";
 
-import { useSelector, useDispatch } from "react-redux";
-import { UserDetails } from "../../app/slice/UserSlice";
-import { LOGOUT } from "../../app/slice/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { LOGOUT, UserDetails } from "../../app/slice/UserSlice";
 import jwtDecode from "jwt-decode";
 import Sidebar from "./Sidebar";
+import { pages, tagsList } from "../../utils/Data";
+import NavButtons from "./NavButtons";
+import { setEmpty } from "../../app/slice/Detailed/CommentSlice";
 
-const Navbar = ({
-  logo,
-  baseLogoColor,
-  text,
-  activeText,
-  hover,
-  buttonBg,
-  buttonColor,
-  btnHover,
-  btnColorHover,
-  logoutBg,
-  logoutHoverBorder,
-  logoutColor,
-  currentLoc,
-}) => {
+const Navbar = ({ elementRef }) => {
   const user = useSelector(UserDetails);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const loggingOut = () => {
     dispatch(LOGOUT());
+    dispatch(setEmpty([]));
     navigate("/");
   };
 
-  const pages = [
-    {
-      page: "Home",
-      path: "/",
-    },
-    {
-      page: "Trending",
-      path: "/trending",
-    },
-    {
-      page: "Recent",
-      path: "/recent",
-    },
-    {
-      page: "New",
-      path: "/new",
-    },
-    {
-      page: "Create Blog",
-      path: "/blog/create",
-    },
-  ];
+  const decodeToken = (token) => {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.log("Failed to decode token", error);
+      return null;
+    }
+  };
 
-  // useEffect(() => {
-  //   const token = user?.token;
+  const setLogoutTimer = (expirationTime) => {
+    const currentTime = Date.now();
+    const timeoutDuration = expirationTime * 1000 - currentTime;
+    setTimeout(loggingOut, timeoutDuration);
+  };
 
-  //   if (!token) {
-  //     return;
-  //   }
+  useEffect(() => {
+    const token = user?.token;
+    if (!token) {
+      return;
+    }
+    if (token) {
+      const decodedToken = decodeToken(token);
+      if (decodedToken && decodedToken.exp) {
+        setLogoutTimer(decodedToken.exp);
+      }
+    }
+  }, [user?.token]);
 
-  //   if (token) {
-  //     const decodedToken = jwtDecode(token).exp;
-  //     const now = Date.now().valueOf() / 1000;
-
-  //     if (decodedToken < now) {
-  //       loggingOut();
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [location, user?.token]);
+  const { tagName } = useParams();
+  const currentTag = tagsList.find(
+    (t) => t.name.toLowerCase() === tagName?.toLowerCase()
+  );
+  const currentTagId = currentTag ? currentTag.id : null;
 
   return (
-    <>
-      <Flex
-        pos={"relative"}
-        zIndex={20}
-        className="page_alignment cc-container"
-        justifyContent={`space-between`}
-        alignItems={`center`}
-        height={`4.688rem`}
-      >
-        <Link to="/">
-          <Logo
-            color={logo ? "white" : "#175616"}
-            fs={"logo-medium-text"}
-            baseLogoColor={baseLogoColor}
-          />
-        </Link>
-        <Flex hideBelow={"lg"} gap={{ lg: "40px", xl: "80px" }}>
-          {pages.map((each, index) => (
-            <Box
-              key={each.path}
-              display={
-                index === pages.length - 1 && !user.token ? "none" : "block"
-              }
-            >
-              <NavLink
-                style={({ isActive }) => ({
-                  color: isActive ? activeText : text,
-                })}
-                to={each.path}
-                className={({ isActive }) => (isActive ? "link-navbar" : "")}
+    <Box
+      ref={elementRef}
+      position={"fixed"}
+      top={0}
+      left={0}
+      w={"100%"}
+      zIndex={100}
+      bg={"white"}
+    >
+      <Box>
+        <Flex
+          className="cc-container page-alignment"
+          align={"center"}
+          justify={"space-between"}
+          mb={{ base: "15px", lg: "20px" }}
+          mt={"20px"}
+        >
+          <Link to="/">
+            <Logo color={"#175616"} fs={"logo-medium-text"} />
+          </Link>
+          <Flex hideBelow={"lg"} gap={{ lg: "40px", xl: "70px" }}>
+            {pages.map((each) => (
+              <Box
+                key={each.id}
+                display={
+                  each.id === pages.length && !user.token ? "none" : "block"
+                }
               >
-                <Text
-                  fontSize={"14px"}
-                  _hover={{
-                    color: hover && each.page !== currentLoc ? hover : text,
-                  }}
-                  textShadow={"0px 0px 5px rgba(0, 0, 0, 0.2)"}
+                <NavLink
+                  to={each.path}
+                  className={({ isActive }) =>
+                    isActive ? "link-navbar text-green fw-bold" : "text-black"
+                  }
                 >
-                  {each.page}
-                </Text>
-              </NavLink>
-            </Box>
-          ))}
-        </Flex>
-        <Flex gap={"20px"}>
-          {user?.token && currentLoc !== location.pathname && (
-            <Box hideBelow={"lg"}>
-              <Link to={`/profile/${user.userName}`}>
-                <Button
-                  bg={buttonBg}
-                  color={buttonColor}
-                  className={`bg-hover-${btnHover} text-hover-${btnColorHover}`}
-                  w={"94px"}
-                  h={"34px"}
-                  rounded={0}
-                >
-                  PROFILE
-                </Button>
-              </Link>
-            </Box>
-          )}
-          {user?.token ? (
-            <Box hideBelow={"lg"}>
-              <Button
-                bg={logoutBg}
-                color={logoutColor}
-                w={"94px"}
-                h={"34px"}
-                rounded={0}
-                _hover={{ border: `1px solid ${logoutHoverBorder}` }}
-                onClick={loggingOut}
-              >
-                LOGOUT
-              </Button>
-            </Box>
-          ) : (
-            <Box hideBelow={"lg"}>
-              <Link to="/signin">
-                <Button
-                  w={"94px"}
-                  h={"34px"}
-                  className={`bg-hover-${btnHover} text-hover-${btnColorHover}`}
-                  rounded={0}
-                  bg={buttonBg}
-                  color={buttonColor}
-                >
-                  LOGIN
-                </Button>
-              </Link>
-            </Box>
-          )}
+                  <Text fontSize={"13px"}>{each.page}</Text>
+                </NavLink>
+              </Box>
+            ))}
+          </Flex>
+          <Flex gap={"20px"} align={"center"}>
+            <NavButtons
+              user={user}
+              base={"none"}
+              lg={"flex"}
+              loggingOut={loggingOut}
+            />
+            <Icon
+              as={GoSearch}
+              boxSize={"25px"}
+              className="text-green text-green-light-5-hover cursor"
+            />
+            <Icon
+              hideFrom={"lg"}
+              as={RiMenu5Fill}
+              boxSize={"25px"}
+              className="text-green text-green-light-5-hover cursor"
+              onClick={onOpen}
+            />
+          </Flex>
         </Flex>
         <Box
-          display={"flex"}
-          gap={"7px"}
-          alignItems={"center"}
-          hideFrom={"lg"}
-          className="cursor"
+          borderTop={"1px solid black"}
+          borderBottom={"1px solid black"}
+          py={"10px"}
         >
-          <Icon
-            hideFrom={"md"}
-            as={CiSearch}
-            boxSize={7}
-            color={{
-              base: baseLogoColor ? baseLogoColor : "#175616",
-              lg: logo ? "white" : "#175616",
-            }}
-          />
-          <Icon
-            onClick={onOpen}
-            as={RiMenu5Fill}
-            boxSize={7}
-            color={{
-              base: baseLogoColor ? baseLogoColor : "#175616",
-              lg: logo ? "white" : "#175616",
-            }}
-          />
+          <Box className="cc-container page-alignment">
+            <Flex
+              justifyContent={"space-between"}
+              overflow={"auto"}
+              className="scrollbody"
+            >
+              {tagsList.map((each, index) => (
+                <Box
+                  key={each.id}
+                  ref={(el) => {
+                    if (currentTagId === each.id && el) {
+                      el.scrollIntoView({
+                        behavior: "smooth",
+                        inline: "center",
+                      });
+                    }
+                  }}
+                  paddingRight={
+                    tagsList.length - 1 === index
+                      ? ""
+                      : { base: "13px", md: "20px" }
+                  }
+                  paddingLeft={index === 0 ? "" : { base: "13px", md: "20px" }}
+                  borderRight={
+                    tagsList.length - 1 === index ? "" : "1px solid black"
+                  }
+                >
+                  <NavLink
+                    to={`/tag/${each.name}`}
+                    className={({ isActive }) =>
+                      isActive ? "text-green fw-bold" : "text-black"
+                    }
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      className="text-hover-green"
+                      // overflow="hidden"
+                      // textOverflow="ellipsis"
+                    >
+                      {each.name}
+                    </Text>
+                  </NavLink>
+                </Box>
+              ))}
+            </Flex>
+          </Box>
         </Box>
-      </Flex>
+      </Box>
       <Sidebar
-        loggingOut={loggingOut}
         isOpen={isOpen}
         user={user}
         onClose={onClose}
-        pages={pages}
+        loggingOut={loggingOut}
       />
-    </>
+    </Box>
   );
 };
 

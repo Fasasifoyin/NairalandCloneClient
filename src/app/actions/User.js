@@ -2,10 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 import { toast } from "react-hot-toast";
 import { LOGOUT } from "../slice/UserSlice";
+import { errorHandler } from "../error";
 
 export const signUp = createAsyncThunk(
   "/user/signUp",
-  async (data, { rejectWithValue }) => {
+  async (form, { rejectWithValue }) => {
     const {
       firstName,
       lastName,
@@ -13,8 +14,7 @@ export const signUp = createAsyncThunk(
       email,
       password,
       googleAccessToken,
-    } = data;
-
+    } = form;
     try {
       const { data, status } = await api.signUp({
         firstName,
@@ -24,18 +24,16 @@ export const signUp = createAsyncThunk(
         password,
         googleAccessToken,
       });
+
       if (status === 201) {
         toast.success(`Welcome ${data.firstName} ${data.lastName}`);
         localStorage.setItem("nairalandUser", JSON.stringify(data));
       }
+
       return data;
     } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      toast.error(outputError);
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error, toast: true });
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -50,10 +48,11 @@ export const login = createAsyncThunk(
         password,
         googleAccessToken,
       });
+
       if (status === 200) {
         toast.success(`Welcome back ${data.firstName} ${data.lastName}`);
         localStorage.setItem("nairalandUser", JSON.stringify(data));
-        if (remember?.length > 0) {
+        if (remember) {
           localStorage.setItem(
             "rememberUser",
             JSON.stringify({ userName, password })
@@ -63,14 +62,11 @@ export const login = createAsyncThunk(
             localStorage.removeItem("rememberUser");
         }
       }
+      
       return data;
     } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      toast.error(outputError);
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error, toast: true });
+      return rejectWithValue(errorMessage);
     }
   }
 );

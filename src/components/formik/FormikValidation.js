@@ -39,10 +39,7 @@ export const signUpSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password"), null], "Password must match")
     .required("Confirm Password"),
-  agree: yup
-    .array()
-    .min(1, "Please agree to our terms and privacy policy")
-    .required("Please agree to our terms and privacy policy"),
+  agree: yup.boolean().required("Please agree to our terms and privacy policy"),
 });
 
 export const loginSchema = yup.object().shape({
@@ -68,17 +65,11 @@ export const createValidation = yup.object().shape({
 });
 
 export const commentValidation = yup.object().shape({
-  comment: yup
-    .string()
-    .min(10, "Your comment cannot be less than 10 characters")
-    .required("Comment"),
+  comment: yup.string().required("Write a comment"),
 });
 
 export const childCommentValidation = yup.object().shape({
-  childComment: yup
-    .string()
-    .min(5, "Your comment cannot be less than 5 characters")
-    .required("Comment"),
+  childComment: yup.string().required("Write a comment"),
 });
 
 export const updateProfileValidation = yup.object().shape({
@@ -130,10 +121,10 @@ export const updatePasswordValidation = yup.object().shape({
 
 export const emailValidation = yup.object().shape({
   email: yup
-  .string()
-  .email("Please enter a valid email")
-  .required("Enter Email"),
-})
+    .string()
+    .email("Please enter a valid email")
+    .required("Enter Email"),
+});
 
 export const resetPasswordValidation = yup.object().shape({
   password: yup

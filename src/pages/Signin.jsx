@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import AccountLayout from "../components/account/AccountLayout";
 import { signinSliders } from "../utils/Data";
 import { Formik, Form } from "formik";
@@ -10,8 +11,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../app/actions/User";
 import { UserStatus } from "../app/slice/UserSlice";
-import { useEffect, useState } from "react";
 import GoogleButton from "../components/account/GoogleButton";
+// import GoogleButton from "../components/account/GoogleButton";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -30,12 +31,10 @@ const Signin = () => {
     );
   }, []);
 
-  const options = [{ key: "Remember me", value: "true" }];
-
   const initialValues = {
     userName: remember.userName || "",
     password: remember.password || "",
-    remember: remember.password ? ["true"] : [],
+    remember: remember.password ? true : "",
   };
 
   const onSubmit = (values) => {
@@ -45,12 +44,12 @@ const Signin = () => {
 
   return (
     <AccountLayout slides={signinSliders}>
-      <h4 className="fw-bold Xlarge-text" style={{ marginBottom: "7px" }}>
-        Log In To Your Account
-      </h4>
-      <h5 className="small-text" style={{ marginBottom: "30px" }}>
-        <i>Welcome Back!</i>
-      </h5>
+      <Text className="fw-bold large-text" mb={"7px"}>
+        Login to your account
+      </Text>
+      <Text className="small-text" as={"i"}>
+        Welcome back
+      </Text>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -58,61 +57,58 @@ const Signin = () => {
       >
         {() => (
           <Form>
-            <Box mb={"10px"}>
+            <Flex mt={"20px"} mb={"30px"} direction={"column"} gap={"20px"}>
               <FormikControl
                 control="Input"
                 name="userName"
                 placeholder="User Name"
                 type="text"
-                base={"56px"}
-                lg={"56px"}
               />
-            </Box>
-            <Box w={"100%"} mb={"25px"}>
               <FormikControl
                 control="Password"
                 name="password"
                 placeholder="Password"
-                base={"56px"}
-                lg={"56px"}
               />
-            </Box>
-            <Flex mb={"40px"} justify={"space-between"}>
-              <Box>
-                <FormikControl
-                  control="Checkbox"
-                  name="remember"
-                  options={options}
-                />
-              </Box>
-              <Link to={"/password/reset"}>
-                <h6 className="tiny-text text-green text-green-light-5-hover cursor">
-                  Forget password?
-                </h6>
-              </Link>
+              <Flex align={"center"} justify={"space-between"}>
+                <Box width={"65%"}>
+                  <FormikControl
+                    control="Checkbox"
+                    name="remember"
+                    label2={"Remember me"}
+                  />
+                </Box>
+                <Link to={"/password/reset"}>
+                  <Text className="tiny-text text-green text-green-light-5-hover cursor">
+                    Forget password?
+                  </Text>
+                </Link>
+              </Flex>
             </Flex>
             <Button
               className="bg-green text-cream bg-hover-cream2 text-hover-green"
-              h={"53px"}
               w={"100%"}
               isLoading={status === "pending"}
               type="submit"
+              py={"25px"}
             >
-              <h4 className="btn-large-text">Log In</h4>
+              <Text className="medium-text">Log in</Text>
             </Button>
           </Form>
         )}
       </Formik>
       <GoogleButton text={"Sign in with Google"} status={status} />
-      <Box mt={"50px"}>
-        <h5 className="small-text" style={{ textAlign: "center" }}>
+      <Box mt={"30px"}>
+        <Text className="small-text" textAlign={"center"}>
           Don't have an account?{" "}
           <Link to="/signup">
-            <span className="link text-green fw-bold text-green-light-5-hover">
-              Sign Up
-            </span>
+            <Text
+              as={"span"}
+              className="link text-green fw-bold text-green-light-5-hover"
+            >
+              Sign up
+            </Text>
           </Link>
-        </h5>
+        </Text>
       </Box>
     </AccountLayout>
   );

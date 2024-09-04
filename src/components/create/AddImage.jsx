@@ -141,10 +141,7 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
                         background: "red",
                       }}
                       color={"white"}
-                      onClick={() => {
-                        remove(index);
-                        removeImage(index);
-                      }}
+                 
                     >
                       Remove
                     </Button>

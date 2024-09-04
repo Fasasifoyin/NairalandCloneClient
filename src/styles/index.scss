@@ -1,19 +1,30 @@
 @import "./variables";
 
 @import "./colors";
-
 @import "./base";
 @import "./typo";
-@import "./account";
 @import "./checkbox";
 @import "./skeleton";
 @import "./new";
 @import "./detailed";
 @import "./accordion";
 
-.page_alignment {
+.page-alignment {
   padding: 0 1.25rem;
 
+  @media (min-width: 480px) {
+    padding: 0 2.1875rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0 3.125rem;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 0 6.25rem !important;
+  }
+}
+.page-alignment2 {
   @media (min-width: 768px) {
     padding: 0 3.125rem;
   }
@@ -28,6 +39,15 @@
   width: 100% !important;
   margin: 0 auto;
 }
+
+.link-navbar {
+  text-decoration: underline !important;
+  text-underline-offset: 8px;
+  text-decoration-color: #175616 !important;
+  text-decoration-thickness: 2px !important;
+}
+
+
 
 .footer_input:focus {
   border-bottom: 2px solid #175616 !important;

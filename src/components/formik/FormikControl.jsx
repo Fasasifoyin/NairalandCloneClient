@@ -15,7 +15,7 @@ const FormikControl = (props) => {
     case "Checkbox":
       return <FormikCheckbox {...rest} />;
     case "Textarea":
-      return <FormikTextArea{...rest} />;
+      return <FormikTextArea {...rest} />;
   }
 };
 

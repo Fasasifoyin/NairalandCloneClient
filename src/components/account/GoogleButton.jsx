@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useGoogleLogin } from "@react-oauth/google";
 
 import { useDispatch } from "react-redux";
@@ -28,10 +28,11 @@ const GoogleButton = ({ text, signup, status }) => {
   return (
     <Box mt={"15px"}>
       <Box>
-        <p className="fw-bold" style={{ textAlign: "center" }}>
+        <Text className="fw-bold" textAlign={"center"}>
           OR
-        </p>
+        </Text>
       </Box>
+
       {status === "pending" ? (
         <Flex
           alignItems={"center"}
@@ -41,8 +42,8 @@ const GoogleButton = ({ text, signup, status }) => {
           bg={" rgba(240, 240, 240, 0.3)"}
           color={"rgb(84, 84, 84)"}
           border={"rgba(118, 118, 118, 0.3)"}
-          h={"53px"}
           w={"100%"}
+          h={"45px"}
           type="submit"
           className="disabled"
         >
@@ -55,7 +56,7 @@ const GoogleButton = ({ text, signup, status }) => {
               src="https://res.cloudinary.com/dbxvk3apv/image/upload/v1695920977/Nairaland/768px-Google__22G_22_Logo.svg_nktfyk.webp"
             />
           </Box>
-          <h4 className="medium-text">{text}</h4>
+          <Text>{text}</Text>
         </Flex>
       ) : (
         <Flex
@@ -70,7 +71,7 @@ const GoogleButton = ({ text, signup, status }) => {
             border: "1px solid rgb(0,0,0)",
             transition: "0.3s ease-in-out",
           }}
-          h={"53px"}
+          h={"45px"}
           w={"100%"}
           type="submit"
           onClick={() => Login()}
@@ -85,7 +86,7 @@ const GoogleButton = ({ text, signup, status }) => {
               src="https://res.cloudinary.com/dbxvk3apv/image/upload/v1695920977/Nairaland/768px-Google__22G_22_Logo.svg_nktfyk.webp"
             />
           </Box>
-          <h4 className="medium-text">{text}</h4>
+          <Text>{text}</Text>
         </Flex>
       )}
     </Box>

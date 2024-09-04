@@ -34,6 +34,10 @@
       }
     }
 
+    .bg-#{$key}-light-#{$i} {
+     background-color: mix(white, $val, $i * 10%) !important;
+    }
+
     .bg-#{$key}-light-#{$i}-hover {
       &:hover {
         background-color: mix(white, $val, $i * 10%) !important;

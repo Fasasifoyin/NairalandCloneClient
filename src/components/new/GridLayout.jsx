@@ -74,7 +74,10 @@ const GridLayout = ({ index, each }) => {
         </h5>
         <h6 className="small-text">{newBlog.body.slice(0, 120).trim()}...</h6>
         <Box hideBelow={"lg"} width={"max-content"}>
-          <Link to={`/${newBlog.slug}`}>
+          <Link
+            to={`/${newBlog.slug}`}
+            state={{ blogId: newBlog?._id, tags: newBlog?.tags?.join(",") }}
+          >
             <h6 className="small-text fw-bold text-green-light-5-hover">
               READ MORE
             </h6>

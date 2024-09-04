@@ -1,46 +1,19 @@
-/* eslint-disable react/no-unescaped-entities */
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import AccountLayout from "../components/account/AccountLayout";
-import { Form, Formik } from "formik";
-import { signUpSchema } from "../components/formik/FormikValidation";
-import { Box, Button, Flex } from "@chakra-ui/react";
-import FormikControl from "../components/formik/FormikControl";
 import { signupSliders } from "../utils/Data";
+import { Form, Formik } from "formik";
+import FormikControl from "../components/formik/FormikControl";
+import { signUpSchema } from "../components/formik/FormikValidation";
 import GoogleButton from "../components/account/GoogleButton";
 
 import { useDispatch, useSelector } from "react-redux";
-import { signUp } from "../app/actions/User";
 import { UserStatus } from "../app/slice/UserSlice";
+import { signUp } from "../app/actions/User";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const status = useSelector(UserStatus);
-
-  const options = [
-    {
-      key: (
-        <span className="tiny-text">
-          I agree to all{" "}
-          <span
-            onClick={() => console.log("terms")}
-            color={"#175616"}
-            className="link tiny-text"
-          >
-            Terms
-          </span>{" "}
-          &{" "}
-          <span
-            onClick={() => console.log("policy")}
-            color={"#175616"}
-            className="link tiny-text"
-          >
-            Privacy Policy
-          </span>
-        </span>
-      ),
-      value: "true",
-    },
-  ];
 
   const initialValues = {
     firstName: "",
@@ -49,22 +22,21 @@ const Signup = () => {
     email: "",
     password: "",
     confirm: "",
-    agree: [],
+    agree: "",
   };
 
   const onSubmit = (values) => {
-    
     dispatch(signUp({ ...values }));
   };
 
   return (
     <AccountLayout slides={signupSliders}>
-      <h4 className="fw-bold Xlarge-text" style={{ marginBottom: "7px" }}>
+      <Text className="fw-bold large-text" mb={"7px"}>
         Create Your Account
-      </h4>
-      <h5 className="small-text" style={{ marginBottom: "30px" }}>
-        <i>Hi! Come Join Us</i>
-      </h5>
+      </Text>
+      <Text className="small-text" as={"i"}>
+        Hi! Come Join Us
+      </Text>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -72,104 +44,90 @@ const Signup = () => {
       >
         {() => (
           <Form>
-            <Flex
-              justify={"space-between"}
-              width={"100%"}
-              mb={"10px"}
-              direction={{ base: "column", lg: "row" }}
-            >
-              <Box width={{ lg: "47%" }} mb={{ base: "10px", lg: "0px" }}>
-                <FormikControl
-                  name="firstName"
-                  placeholder="First Name"
-                  type="text"
-                  control="Input"
-                  base={"56px"}
-                  lg={"56px"}
-                />
-              </Box>
-              <Box width={{ lg: "47%" }}>
-                <FormikControl
-                  name="lastName"
-                  placeholder="Last Name"
-                  type="text"
-                  control="Input"
-                  base={"56px"}
-                  lg={"56px"}
-                />
-              </Box>
-            </Flex>
-            <Box width={"100%"} mb={"10px"}>
+            <Flex mt={"20px"} mb={"30px"} direction={"column"} gap={"20px"}>
+              <Flex
+                justify={"space-between"}
+                direction={{ base: "column", lg: "row" }}
+              >
+                <Box width={{ lg: "48%" }} mb={{ base: "20px", lg: 0 }}>
+                  <FormikControl
+                    name="firstName"
+                    placeholder="First Name"
+                    type="text"
+                    control="Input"
+                  />
+                </Box>
+                <Box width={{ lg: "48%" }}>
+                  <FormikControl
+                    name="lastName"
+                    placeholder="Last Name"
+                    type="text"
+                    control="Input"
+                  />
+                </Box>
+              </Flex>
               <FormikControl
                 name="userName"
                 placeholder="Username"
                 type="text"
                 control="Input"
-                base={"56px"}
-                lg={"56px"}
               />
-            </Box>
-            <Box width={"100%"} mb={"10px"}>
               <FormikControl
                 name="email"
                 placeholder="E-mail Address"
                 type="text"
                 control="Input"
-                base={"56px"}
-                lg={"56px"}
               />
-            </Box>
-            <Flex
-              justify={"space-between"}
-              width={"100%"}
-              mb={"25px"}
-              direction={{ base: "column", lg: "row" }}
-            >
-              <Box width={{ lg: "49%" }} mb={{ base: "10px", lg: "0px" }}>
-                <FormikControl
-                  name="password"
-                  placeholder="Password"
-                  control="Password"
-                />
-              </Box>
-              <Box width={{ lg: "49%" }}>
-                <FormikControl
-                  name="confirm"
-                  placeholder="Confirm Password"
-                  control="Password"
-                />
-              </Box>
-            </Flex>
-            <Box mb={"40px"}>
+              <Flex
+                justify={"space-between"}
+                direction={{ base: "column", lg: "row" }}
+              >
+                <Box width={{ lg: "48%" }} mb={{ base: "20px", lg: 0 }}>
+                  <FormikControl
+                    name="password"
+                    placeholder="Password"
+                    control="Password"
+                  />
+                </Box>
+                <Box width={{ lg: "48%" }}>
+                  <FormikControl
+                    name="confirm"
+                    placeholder="Confirm Password"
+                    control="Password"
+                  />
+                </Box>
+              </Flex>
               <FormikControl
                 control="Checkbox"
                 name="agree"
-                options={options}
+                label2={"I agree to Terms and Privacy Policy"}
               />
-            </Box>
+            </Flex>
             <Button
               className="bg-green text-cream bg-hover-cream2 text-hover-green"
-              h={"53px"}
               w={"100%"}
               isLoading={status === "pending"}
               type="submit"
+              py={"25px"}
             >
-              <h4 className="btn-large-text">Sign up</h4>
+              <Text className="medium-text">Sign up</Text>
             </Button>
           </Form>
         )}
       </Formik>
-      <GoogleButton signup text="Sign up with Google" status={status} />
-
-      <Box mt={"50px"}>
-        <h5 className="small-text" style={{ textAlign: "center" }}>
+       <GoogleButton signup text="Sign up with Google" status={status} />
+      <Box mt={"30px"}>
+        <Text className="small-text" textAlign={"center"}>
           Have an account?{" "}
           <Link to="/signin">
-            <span className="link text-green fw-bold text-green-light-5-hover">
+            <Text
+              as={"span"}
+              className="link text-green fw-bold text-green-light-5-hover"
+            >
               Log in
-            </span>
+            </Text>
           </Link>
-        </h5>
+        </Text>
       </Box>
     </AccountLayout>
   );

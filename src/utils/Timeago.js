@@ -1,11 +1,18 @@
-import { parseISO, formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
-export const Timeago = (timeStamp) => {
-  let timeAgo = "";
-  const date = parseISO(timeStamp);
-  const timePeriod = formatDistanceToNowStrict(date);
-  timeAgo = `${timePeriod} ago`;
-  const convert = timeAgo.split(" ")
-  const convert2 = convert[1].slice(0, 1)
-  return `${convert[0]}${convert2}`;
+export const Timeago = (createdAt) => {
+  const formattedTime = formatDistanceToNow(new Date(createdAt), {
+    // addSuffix: true,
+  });
+  const shortenedTime = formattedTime
+    .replace(" seconds", "s")
+    .replace(" second", "s")
+    .replace(" minutes", "m")
+    .replace(" minute", "m")
+    .replace(" hours", "h")
+    .replace(" hour", "h")
+    .replace(" days", "d")
+    .replace(" day", "d")
+    .replace(/^about /, "")
+  return shortenedTime;
 };

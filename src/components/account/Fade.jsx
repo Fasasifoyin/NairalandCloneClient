@@ -1,24 +1,28 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 
 const Fade = ({ slides }) => {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(1);
 
   const next = () => {
-    setCurrent(current === slides.length - 1 ? 0 : current + 1);
+    setCurrent(current === slides.length ? 1 : current + 1);
   };
 
   setTimeout(next, 5000);
 
   return (
-    <>
-      {slides.map((each, index) => (
+    <Box hideBelow={"lg"} w={"50%"} h={"100vh"} pos={"relative"}>
+      {slides.map((each) => (
         <React.Fragment key={each._id}>
           <Box
+            position={"absolute"}
             w={"100%"}
             h={"100%"}
-            className={current === index ? "slide-active" : "slide"}
+            top={0}
+            left={0}
+            opacity={current === each._id ? 1 : 0}
+            transition={"opacity ease-in-out 0.7s"}
           >
             <Image
               objectFit={"cover"}
@@ -29,24 +33,22 @@ const Fade = ({ slides }) => {
             />
           </Box>
           <Box
-            width={"70%"}
-            h={"70%"}
             pos={"absolute"}
-            top={"30%"}
+            height={"30%"}
+            bottom={"70px"}
+            w={"85%"}
             left={"50%"}
+            opacity={current === each._id ? 1 : 0}
             transform={"translateX(-50%)"}
-            display={"flex"}
-            alignItems={"center"}
+            transition={"opacity ease-in-out 0.7s"}
           >
-            <Box
-              className={current === index ? "slide-text-active" : "slide-text"}
-            >
-              <h3 className="text-cream">{each.text}</h3>
-            </Box>
+            <Text className="text-cream Xlarge-text">
+              {each.text}
+            </Text>
           </Box>
         </React.Fragment>
       ))}
-    </>
+    </Box>
   );
 };
 

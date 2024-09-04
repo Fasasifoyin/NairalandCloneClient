@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
-import { getSingleProduct } from "../../actions/Blogs";
+import { getSingleBlog } from "../../actions/Blogs";
 
 const initialState = {
   blog: {},
@@ -13,15 +13,16 @@ const detailedSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getSingleProduct.pending, (state, action) => {
+    builder.addCase(getSingleBlog.pending, (state) => {
       state.status = "pending";
+      state.error = null;
     });
-    builder.addCase(getSingleProduct.fulfilled, (state, { payload }) => {
+    builder.addCase(getSingleBlog.fulfilled, (state, { payload }) => {
       state.status = "success";
       state.error = null;
       state.blog = payload;
     });
-    builder.addCase(getSingleProduct.rejected, (state, { payload }) => {
+    builder.addCase(getSingleBlog.rejected, (state, { payload }) => {
       state.status = "failed";
       state.error = payload;
     });

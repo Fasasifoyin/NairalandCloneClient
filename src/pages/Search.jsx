@@ -57,7 +57,7 @@ const Search = () => {
 
   return (
     <Box>
-      <Box mb={"60px"}>
+      {/* <Box mb={"60px"}>
         <Navbar
           text={"black"}
           hover={"#175616"}
@@ -69,7 +69,7 @@ const Search = () => {
           logoutColor={"#175616"}
           logoutHoverBorder={"#175616"}
         />
-      </Box>
+      </Box> */}
       <input
         onChange={() => onChange("title")}
         checked={title === "true"}

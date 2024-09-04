@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import useWindowSize from "../../hooks/useWindowSize";
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
@@ -8,15 +8,9 @@ const Logo = ({ fs, color, baseLogoColor }) => {
   return (
     <Flex>
       <Box pos={"relative"}>
-        <h6
-          className={`${fs} fw-bold`}
-          style={{
-            color:
-              width >= 992 ? color : baseLogoColor ? baseLogoColor : "#175616",
-          }}
-        >
+        <Text className={`${fs} fw-bold`} color={color}>
           N
-        </h6>
+        </Text>
         <Box pos={"absolute"} top={0} left={0} w={"100%"} h={"100%"}>
           <Flex
             h={"100%"}
@@ -24,35 +18,15 @@ const Logo = ({ fs, color, baseLogoColor }) => {
             justifyContent={"center"}
             gap={"7%"}
           >
-            <Box
-              width={"100%"}
-              h={"7%"}
-              bg={{
-                base: baseLogoColor ? baseLogoColor : "#175616",
-                lg: color,
-              }}
-            />
-            <Box
-              width={"100%"}
-              h={"7%"}
-              bg={{
-                base: baseLogoColor ? baseLogoColor : "#175616",
-                lg: color,
-              }}
-            />
+            <Box width={"100%"} h={"7%"} bg={color} />
+            <Box width={"100%"} h={"7%"} bg={color} />
           </Flex>
         </Box>
       </Box>
       <Box>
-        <h6
-          className={`${fs} fw-bold`}
-          style={{
-            color:
-              width >= 992 ? color : baseLogoColor ? baseLogoColor : "#175616",
-          }}
-        >
+        <Text className={`${fs} fw-bold`} color={color}>
           airaland
-        </h6>
+        </Text>
       </Box>
     </Flex>
   );
