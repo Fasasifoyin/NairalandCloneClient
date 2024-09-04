@@ -31,31 +31,36 @@ const Navbar = ({ elementRef }) => {
     try {
       return jwtDecode(token);
     } catch (error) {
-      console.log("Failed to decode token", error);
       return null;
     }
   };
 
-  const setLogoutTimer = (expirationTime) => {
-    const currentTime = Date.now();
-    const timeoutDuration = Math.max(0, expirationTime * 1000 - currentTime);
-    console.log(timeoutDuration);
-    setTimeout(loggingOut, timeoutDuration);
-  };
-
-  useEffect(() => {
+  const checkTokenExpiration = () => {
     const token = user?.token;
-    console.log(token);
     if (!token) {
       return;
     }
-    if (token) {
-      const decodedToken = decodeToken(token);
-      if (decodedToken && decodedToken.exp) {
-        setLogoutTimer(decodedToken.exp);
+    const decodedToken = decodeToken(token);
+    if (decodedToken && decodedToken.exp) {
+      const expirationTime = decodedToken.exp * 1000;
+      const currentTime = Date.now();
+      if (currentTime >= expirationTime) {
+        loggingOut();
       }
     }
-  }, [user?.token]);
+  };
+
+  useEffect(() => {
+    checkTokenExpiration();
+
+    const intervalId = setInterval(() => {
+      checkTokenExpiration();
+    }, 60000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const { tagName } = useParams();
   const currentTag = tagsList.find(
