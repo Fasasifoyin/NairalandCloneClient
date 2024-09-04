@@ -39,11 +39,13 @@ const Navbar = ({ elementRef }) => {
   const setLogoutTimer = (expirationTime) => {
     const currentTime = Date.now();
     const timeoutDuration = Math.max(0, expirationTime * 1000 - currentTime);
+    console.log(timeoutDuration);
     setTimeout(loggingOut, timeoutDuration);
   };
 
   useEffect(() => {
     const token = user?.token;
+    console.log(token);
     if (!token) {
       return;
     }
