@@ -44,9 +44,7 @@ const Navbar = ({ elementRef }) => {
     if (decodedToken && decodedToken.exp) {
       const expirationTime = decodedToken.exp * 1000;
       const currentTime = Date.now();
-      console.log(expirationTime, currentTime)
       if (currentTime >= expirationTime) {
-        console.log("out")
         loggingOut();
       }
     }

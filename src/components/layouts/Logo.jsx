@@ -1,10 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import useWindowSize from "../../hooks/useWindowSize";
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
 const Logo = ({ fs, color, baseLogoColor }) => {
-  const { width } = useWindowSize();
-
   return (
     <Flex>
       <Box pos={"relative"}>

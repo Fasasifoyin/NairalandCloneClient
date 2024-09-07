@@ -68,7 +68,7 @@ span {
 }
 
 .logo-large-text {
-  @include fluid-type($min_width, $max_width, 33px, 43px);
+  @include fluid-type($min_width, $max_width, 28px, 40px);
 }
 
 .logo-medium-text {

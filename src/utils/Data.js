@@ -1,3 +1,5 @@
+import { FaGithub, FaLinkedin, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
+
 export const signinSliders = [
   {
     _id: 1,
@@ -125,5 +127,28 @@ export const tagRequest = [
   {
     tag: "World",
     number: 7,
+  },
+];
+
+export const mySocials = [
+  {
+    id: 1,
+    linkTo: "https://wa.link/b5zn3u",
+    icon: FaWhatsapp,
+  },
+  {
+    id: 2,
+    linkTo: "https://x.com/foyinjohn",
+    icon: FaXTwitter,
+  },
+  {
+    id: 3,
+    linkTo: "https://www.linkedin.com/in/foyinfasasi/",
+    icon: FaLinkedin,
+  },
+  {
+    id: 4,
+    linkTo: "https://github.com/Fasasifoyin",
+    icon: FaGithub,
   },
 ];
