@@ -27,7 +27,7 @@ const latestSlice = createSlice({
         state.status = "success";
         state.error = null;
         state.totalPages = payload.totalPages;
-        latestAdapter.upsertMany(state, payload.data);
+        latestAdapter.setAll(state, payload.data);
       })
       .addCase(latestNews.rejected, (state, { payload }) => {
         state.status = "failed";

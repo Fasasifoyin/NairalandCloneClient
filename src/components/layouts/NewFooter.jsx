@@ -123,7 +123,7 @@ const NewFooter = () => {
             <Link
               target="_blank"
               rel="noopener noreferrer"
-              to={"https://x.com/foyinjohn"}
+              to={"https://foyin.vercel.app/"}
             >
               <Text as={"span"} color={"blue"} className="tiny-text">
                 Fasasi Foyin{" "}

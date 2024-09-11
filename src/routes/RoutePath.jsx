@@ -64,8 +64,14 @@ const routes = [
         ),
       },
       {
-        path: "/latest",
+        path: "latest",
         element: <Latest />,
+        children: [
+          {
+            path: ":latestpage",
+            element: <Latest />,
+          },
+        ],
       },
       {
         path: "new",

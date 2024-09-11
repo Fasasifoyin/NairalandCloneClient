@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Pagination = ({ totalPages, currentPage, route, initial }) => {
@@ -13,17 +13,18 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(5);
 
-  const slide = (index) => {
+  const slide = (index, each) => {
     if (index === 4) {
       setStart((prevValue) =>
-        prevValue + 4 > pages.length - 6 ? pages.length - 5 : prevValue + 3
+        totalPages - each >= 3 ? prevValue + 3 : prevValue + (totalPages - each)
       );
       setEnd((prevValue) =>
-        prevValue + 4 > pages.length ? pages.length : prevValue + 3
+        totalPages - each >= 3 ? prevValue + 3 : totalPages
       );
-    } else if (index === 0) {
-      setStart((prevValue) => (prevValue - 4 < 0 ? 0 : prevValue - 3));
-      setEnd((prevValue) => (prevValue - 4 < 5 ? 5 : prevValue - 3));
+    }
+    if (index === 0) {
+      setStart((prevValue) => (prevValue - 3 >= 0 ? prevValue - 3 : 0));
+      setEnd((prevValue) => (prevValue - 3 >= 5 ? prevValue - 3 : 5));
     }
   };
 
@@ -40,6 +41,14 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
     setStart((prevValue) => (prevValue - 1 < 0 ? 0 : prevValue - 1));
     setEnd((prevValue) => (prevValue - 1 < 5 ? 5 : prevValue - 1));
   };
+
+  useEffect(() => {
+    if (totalPages > 5 && page > 4) {
+      setStart(totalPages - page >= 3 ? page - 2 : totalPages - 5);
+      setEnd(totalPages - page >= 3 ? page + 3 : totalPages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Flex
@@ -90,7 +99,7 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
               w={"40px"}
               h={"30px"}
               onClick={() => {
-                slide(index);
+                slide(index, each);
               }}
             >
               <Text

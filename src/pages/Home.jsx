@@ -57,37 +57,34 @@ const Home = () => {
           </Flex>
         )}
         {status === "failed" && <Text textAlign={"center"}>{error}</Text>}
-        {status === "success" && (
-          <Box>
-            {blogs.length ? (
-              <Box>
-                <Flex direction={"column"}>
-                  {blogs.map((each, index) => (
-                    <RandomBlogs key={each} id={each} index={index} />
-                  ))}
-                </Flex>
-                <Flex justify={"center"} mt={"20px"}>
-                  <Pagination
-                    currentPage={homePage}
-                    totalPages={totalPages}
-                    route={"home"}
-                    initial={"/"}
-                  />
-                </Flex>
-              </Box>
-            ) : (
-              <Flex justify={"center"}>
-                <Text className="fw-bold">No Blog</Text>
+        {status === "success" &&
+          (blogs.length ? (
+            <Box>
+              <Flex direction={"column"}>
+                {blogs.map((each, index) => (
+                  <RandomBlogs key={each} id={each} index={index} />
+                ))}
               </Flex>
-            )}
-            <Text mt={"7px"} textAlign={"center"} className="tiny-text">
-              Available pages:{" "}
-              <Text className="fw-bold tiny-text" as={"span"}>
-                {totalPages}
+              <Flex justify={"center"} mt={"20px"}>
+                <Pagination
+                  currentPage={homePage}
+                  totalPages={totalPages}
+                  route={"home"}
+                  initial={"/"}
+                />
+              </Flex>
+              <Text mt={"7px"} textAlign={"center"} className="tiny-text">
+                Available pages:{" "}
+                <Text className="fw-bold tiny-text" as={"span"}>
+                  {totalPages}
+                </Text>
               </Text>
+            </Box>
+          ) : (
+            <Text className="fw-bold" textAlign={"center"}>
+              No Blog
             </Text>
-          </Box>
-        )}
+          ))}
       </Box>
     </Box>
   );
