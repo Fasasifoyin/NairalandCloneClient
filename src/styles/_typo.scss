@@ -42,7 +42,7 @@ h3 {
 }
 
 .medium-text {
-  @include fluid-type($min_width, $max_width, 18px, 22px);
+  @include fluid-type($min_width, $max_width, 18px, 21px);
 }
 
 .large-text {
