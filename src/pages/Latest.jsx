@@ -1,6 +1,6 @@
 import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LatestDesign from "../components/latest/LatestDesign";
 import Pagination from "../components/layouts/Pagination";
 
@@ -16,6 +16,7 @@ import {
 const Latest = () => {
   const { latestpage } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const blogs = useSelector(allLatestId);
   const status = useSelector(Status);
@@ -23,11 +24,17 @@ const Latest = () => {
   const totalPages = useSelector(TotalPages);
 
   const checkSize = useBreakpointValue({ base: false, lg: true });
-  // console.log(checkSize);
 
   useEffect(() => {
     dispatch(latestNews(latestpage || 1));
   }, [dispatch, latestpage]);
+
+  useEffect(() => {
+    if (Number(latestpage) === 1) {
+      navigate(`/latest`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, latestpage]);
 
   return (
     <Box mt={"30px"} className="cc-container page-alignment">
@@ -127,7 +134,7 @@ const Latest = () => {
             {blogs.length > 13 && (
               <Flex
                 mt={"50px"}
-                p={{lg:"30px"}}
+                p={{ lg: "30px" }}
                 className={checkSize ? "bg-green-light-9" : ""}
                 direction={{ base: "column", lg: "row" }}
                 justifyContent={"space-between"}
@@ -138,14 +145,16 @@ const Latest = () => {
                   gap={"30px"}
                 >
                   {blogs.slice(13, blogs.length).map((each) => (
-                    <LatestDesign key={each} id={each}/>
+                    <LatestDesign key={each} id={each} />
                   ))}
                 </Flex>
                 <Box
                   width={{ base: "100%", lg: "calc(25% - 15px)" }}
                   bg={"rgb(240, 240, 240)"}
                 >
-                  <Text className="tiny-text" textAlign={"center"} p={"10px"}>ADVERTISMENT</Text>
+                  <Text className="tiny-text" textAlign={"center"} p={"10px"}>
+                    ADVERTISMENT
+                  </Text>
                 </Box>
               </Flex>
             )}

@@ -31,8 +31,8 @@ export const getRandomBlogs = (page) =>
   API.get(`/api/blogs/randomblogs?page=${page}`);
 
 export const getSingleBlog = (slug) => API.get(`/api/blogs/${slug}`);
-export const getRelatedTags = (tags) =>
-  API.get(`/api/blogs/tags/related?tags=${tags}`);
+export const getRelatedTags = (query) =>
+  API.get(`/api/blogs/tags/related?tags=${query.tags}&page=${query.page}`);
 export const getComment = (query) =>
   API.get(
     `/api/blogs/get/comment?blogId=${query.blogId}&length=${query.length}`

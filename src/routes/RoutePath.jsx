@@ -104,7 +104,7 @@ const routes = [
         ),
       },
       {
-        path: "/tag/:tagName",
+        path: "tag/:tagName",
         element: <Tags />,
         children: [
           {

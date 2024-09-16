@@ -46,6 +46,7 @@ const DetailedPage = () => {
 
   const related = useSelector(allDetailedRelatedId);
   const relatedStatus = useSelector(RelatedStatus);
+  console.log(relatedStatus);
 
   const comments = useSelector(allCommentIds);
   const commentStatus = useSelector(CommentStatus);
@@ -58,7 +59,7 @@ const DetailedPage = () => {
       if (action.type === getSingleBlog.fulfilled.type) {
         const { tags, _id } = action.payload;
         if (tags) {
-          dispatch(getDetailedRelated(tags.join(",")));
+          dispatch(getDetailedRelated({ tags: tags.join(",") }));
         }
         if (_id) {
           dispatch(getComments({ blogId: _id, length: 0 }));
@@ -101,7 +102,7 @@ const DetailedPage = () => {
                         ))}
                     </Box>
                   ) : (
-                    <Text className="small-text">No related Post</Text>
+                    <Text className="small-text">No related post</Text>
                   )}
                   <Box border={"1px solid #175616"} mt={"15px"} />
                 </Box>

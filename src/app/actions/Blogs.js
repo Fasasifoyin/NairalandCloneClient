@@ -75,9 +75,22 @@ export const getSingleBlog = createAsyncThunk(
 
 export const getDetailedRelated = createAsyncThunk(
   "/detailedRelated/getDetailedRelated",
-  async (tags, { rejectWithValue }) => {
+  async (query, { rejectWithValue }) => {
     try {
-      const { data } = await api.getRelatedTags(tags);
+      const { data } = await api.getRelatedTags(query);
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getTagBlogs = createAsyncThunk(
+  "/tagBlogs/getTagBlogs",
+  async (query, { rejectWithValue }) => {
+    try {
+      const { data } = await api.getRelatedTags(query);
       return data;
     } catch (error) {
       const errorMessage = errorHandler({ error });

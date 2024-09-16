@@ -1,8 +1,8 @@
 import { formatDistanceToNow } from "date-fns";
 
-export const Timeago = (createdAt) => {
+export const Timeago = (createdAt, addSuffix) => {
   const formattedTime = formatDistanceToNow(new Date(createdAt), {
-    // addSuffix: true,
+    addSuffix,
   });
   const shortenedTime = formattedTime
     .replace(" seconds", "s")

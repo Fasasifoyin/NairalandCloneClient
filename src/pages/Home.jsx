@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import HomeHero from "../components/home/HomeHero";
 import RandomTags from "../components/home/RandomTags";
@@ -35,8 +35,10 @@ import {
 import RandomBlogs from "../components/home/RandomBlogs";
 
 const Home = () => {
-  const dispatch = useDispatch();
   const { homePage } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const blogs = useSelector(allRandomId);
   const status = useSelector(Status);
   const error = useSelector(Error);
@@ -45,6 +47,13 @@ const Home = () => {
   useEffect(() => {
     dispatch(randomBlogs(homePage || 1));
   }, [dispatch, homePage]);
+
+  useEffect(() => {
+    if (Number(homePage) === 1) {
+      navigate(`/`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, homePage]);
 
   return (
     <Box mt={"30px"}>

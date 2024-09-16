@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { getRelatedTags } from "../actions/Blogs";
+import { getTagBlogs } from "../actions/Blogs";
 
 const relatedTagsAdapter = createEntityAdapter({
   selectId: (e) => e._id,
@@ -13,31 +12,29 @@ const initialState = relatedTagsAdapter.getInitialState({
 });
 
 const relatedTagsSlice = createSlice({
-  name: "relatedTags",
+  name: "tagBlogs",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getRelatedTags.pending, (state, action) => {
+      .addCase(getTagBlogs.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(getRelatedTags.fulfilled, (state, { payload }) => {
+      .addCase(getTagBlogs.fulfilled, (state, { payload }) => {
         state.status = "success";
+        state.error = null;
         state.totalPages = payload.totalPages;
         relatedTagsAdapter.setAll(state, payload.data);
       })
-      .addCase(getRelatedTags.rejected, (state, { payload }) => {
+      .addCase(getTagBlogs.rejected, (state, { payload }) => {
         state.status = "failed";
         state.error = payload;
       });
   },
 });
 
-export const {
-  selectAll: relatedTags,
-  selectById: relatedTagsId,
-  selectIds: allRelatedTagsId,
-} = relatedTagsAdapter.getSelectors((state) => state.relatedTags);
+export const { selectById: relatedTagsId, selectIds: allRelatedTagsId } =
+  relatedTagsAdapter.getSelectors((state) => state.relatedTags);
 
 export const TotalPages = (state) => state.relatedTags.totalPages;
 export const Error = (state) => state.relatedTags.error;
