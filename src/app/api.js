@@ -51,6 +51,11 @@ export const deleteChildComment = (body) =>
   API.patch("/api/blogs/comment/deletechildcomment", body);
 export const likeChildComment = (form) =>
   API.patch("/api/blogs/comment/childcomment/like", form);
+
+export const Search = (query) =>
+  API.get(
+    `/api/blogs/blog/search?search=${query.search}&title=${query.title}&body=${query.body}&tags=${query.tags}&page=${query.page}`
+  );
 //end
 
 export const profile = (userName) => API.get(`/api/users/profile/${userName}`);
@@ -68,15 +73,6 @@ export const updatePassword = (body) =>
 export const createBlog = (form) => API.post("/api/blogs/create", form);
 export const updateBlog = (form) => API.patch("/api/blogs/update", form);
 export const deleteBlog = (blogId) => API.delete(`/api/blogs/delete/${blogId}`);
-
-export const Search = (query) =>
-  API.get(
-    `/api/blogs/blog/search?search=${query.search}&title=${
-      query.title || "true"
-    }&body=${query.body || "false"}&category=${
-      query.category || "false"
-    }&categories=${query.categories || "All"}&page=${query.page || 1}`
-  );
 
 export const homePageTags = (page) => API.get(`/api/blogs/homepage/${page}`);
 

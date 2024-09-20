@@ -11,9 +11,33 @@ import Logo from "./Logo";
 import { MdOutlineUnsubscribe } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
 import { mySocials, tagsList } from "../../utils/Data";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const NewFooter = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const searchQuery = query.get("searchQuery") || "";
+  const [search, setSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    setSearch(searchQuery);
+  }, [searchQuery]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (search) {
+      const newSearchParams = new URLSearchParams({
+        searchQuery: search,
+        page: 1,
+      });
+      navigate(`/blog/search?${newSearchParams.toString()}`);
+    } else {
+      return;
+    }
+  };
+
   return (
     <Box bg={"black"} py={"40px"}>
       <Box className="page-alignment cc-container">
@@ -51,21 +75,25 @@ const NewFooter = () => {
               maxW={{ base: "300px", lg: "100%" }}
             >
               <Box position={"relative"}>
-                <Input
-                  bg={"rgb(77, 77, 77)"}
-                  color={"white"}
-                  fontWeight={"bold"}
-                  border={"none"}
-                  placeholder="Search"
-                  _placeholder={{
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
-                  focusBorderColor="none"
-                  borderRadius={"20px"}
-                  h={"45px"}
-                  paddingRight={"48px"}
-                />
+                <form onSubmit={handleSubmit}>
+                  <Input
+                    bg={"rgb(77, 77, 77)"}
+                    color={"white"}
+                    fontWeight={"bold"}
+                    border={"none"}
+                    placeholder="Search"
+                    _placeholder={{
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                    focusBorderColor="none"
+                    borderRadius={"20px"}
+                    h={"45px"}
+                    paddingRight={"48px"}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </form>
                 <Flex
                   position={"absolute"}
                   top={"0"}
@@ -77,6 +105,8 @@ const NewFooter = () => {
                   zIndex={"50"}
                   align={"center"}
                   justifyContent={"center"}
+                  onClick={handleSubmit}
+                  className="cursor"
                 >
                   <Icon as={GoSearch} boxSize={"20px"} />
                 </Flex>

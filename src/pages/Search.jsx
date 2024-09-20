@@ -1,41 +1,39 @@
 import { useEffect, useState } from "react";
-import { Box } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
-import Navbar from "../components/layouts/Navbar";
+import { Box, Flex, Input, Select, Text } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { tagsList } from "../utils/Data.js";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Error, Status, allSearchBlogId } from "../app/slice/SearchSlice";
 import { search as searchApi } from "../app/actions/Search";
+import Searchdesign from "../components/search/Searchdesign.jsx";
 
 const Search = () => {
-  const { search } = useLocation();
-  const query = new URLSearchParams(search);
-  const searchQuery = query.get("searchQuery");
-
   const dispatch = useDispatch();
-  const searches = useSelector(allSearchBlogId);
-  const status = useSelector(Status);
-  const error = useSelector(Error);
-  // console.log(searches);
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const query = new URLSearchParams(location.search);
+  const page = query.get("page");
+  const searchQuery = query.get("searchQuery") || "";
+
+  const [search, setSearch] = useState(searchQuery);
   const [title, setTitle] = useState("true");
   const [body, setBody] = useState("false");
-  const [category, setCategory] = useState("false");
-  const [categories, setCategories] = useState([]);
-  console.log(searches, error);
-  console.log(categories);
+  const [tags, setTags] = useState("");
 
-  useEffect(() => {
-    dispatch(
-      searchApi({
-        search: searchQuery,
-        title,
-        body,
-        category,
-        categories: categories.length ? categories.join(",") : "All",
-      })
-    );
-  }, [dispatch, searchQuery, title, body, category, categories]);
+  const blogs = useSelector(allSearchBlogId);
+  const status = useSelector(Status);
+  const error = useSelector(Error);
+
+  const updateSearch = (newSearch) => {
+    setSearch(newSearch);
+    const newSearchParams = new URLSearchParams({
+      searchQuery: newSearch,
+      page: 1,
+    });
+    navigate(`/blog/search?${newSearchParams.toString()}`);
+  };
 
   const onChange = (value) => {
     if (value === "title") {
@@ -43,69 +41,97 @@ const Search = () => {
     } else if (value === "body") {
       setBody((prev) => (prev === "true" ? "false" : "true"));
     } else {
-      setCategory((prev) => (prev === "true" ? "false" : "true"));
+      setTags(value);
     }
+    const newSearchParams = new URLSearchParams({
+      searchQuery: search,
+      page: 1,
+    });
+    navigate(`/blog/search?${newSearchParams.toString()}`);
   };
 
-  const categoriesFunction = (value) => {
-    setCategories((prev) =>
-      prev.includes(value)
-        ? prev.filter((cur) => cur !== value)
-        : [...prev, value]
-    );
-  };
+  useEffect(() => {
+    setSearch(searchQuery);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      dispatch(
+        searchApi({
+          search,
+          page,
+          title,
+          body,
+          tags,
+        })
+      );
+    }, 1000);
+    return () => {
+      clearTimeout(delayDebounce);
+    };
+  }, [dispatch, search, page, title, body, tags]);
 
   return (
-    <Box>
-      {/* <Box mb={"60px"}>
-        <Navbar
-          text={"black"}
-          hover={"#175616"}
-          buttonBg={"#175616"}
-          buttonColor={"white"}
-          btnHover={"white"}
-          btnColorHover={"green"}
-          logoutBg={"none"}
-          logoutColor={"#175616"}
-          logoutHoverBorder={"#175616"}
+    <Box mt={"30px"} className="cc-container page-alignment">
+      <Flex
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        flexWrap={"wrap"}
+        gap={"20px"}
+      >
+        <Input
+          size={"sm"}
+          w={{ base: "100%", lg: "35%" }}
+          placeholder="Search"
+          value={search}
+          onChange={(e) => updateSearch(e.target.value)}
+          fontWeight={"bold"}
+          focusBorderColor="black"
         />
-      </Box> */}
-      <input
-        onChange={() => onChange("title")}
-        checked={title === "true"}
-        id="title"
-        type="checkbox"
-      />
-      <label htmlFor="title">Title</label>
-      <input
-        onChange={() => onChange("body")}
-        checked={body === "true"}
-        id="body"
-        type="checkbox"
-      />
-      <label htmlFor="body">Body</label>
-      <input
-        onChange={() => onChange("")}
-        checked={category === "true"}
-        id="category"
-        type="checkbox"
-      />
-      <label htmlFor="category">Category</label>
-
-      <input
-        onChange={() => categoriesFunction("Politics")}
-        type="checkbox"
-        id="Pro"
-        checked={categories.includes("Politics")}
-      />
-      <label htmlFor="Pro">Politics</label>
-      <input
-        onChange={() => categoriesFunction("Prob")}
-        type="checkbox"
-        id="Prob"
-        checked={categories.includes("Prob")}
-      />
-      <label htmlFor="Prob">Prob</label>
+        <Select
+          size={"sm"}
+          onChange={(e) => onChange(e.target.value)}
+          width={{ base: "40%", sm: "50%", lg: "35%" }}
+          focusBorderColor="black"
+        >
+          <option value={""}>All</option>
+          {tagsList.map((each) => (
+            <option key={each.id} value={each.name}>
+              {each.name}
+            </option>
+          ))}
+        </Select>
+        <Flex gap={"5px"} alignItems={"center"}>
+          <input
+            onChange={() => onChange("title")}
+            checked={title === "true"}
+            id="title"
+            type="checkbox"
+          />
+          <label htmlFor="title">Title</label>
+        </Flex>
+        <Flex gap={"5px"} alignItems={"center"}>
+          <input
+            onChange={() => onChange("body")}
+            checked={body === "true"}
+            id="body"
+            type="checkbox"
+          />
+          <label htmlFor="body">Content</label>
+        </Flex>
+      </Flex>
+      {status === "pending" && <Text mt={"50px"}>Loading...</Text>}
+      {status === "failed" && <Text mt={"50px"}>{error}</Text>}
+      {status === "success" &&
+        (blogs.length > 0 ? (
+          <Flex direction={"column"} mt={"50px"} gap={"30px"}>
+            {blogs.map((each) => (
+              <Searchdesign key={each} id={each} />
+            ))}
+          </Flex>
+        ) : (
+          <Text mt={"50px"}>No blog contain your search</Text>
+        ))}
     </Box>
   );
 };

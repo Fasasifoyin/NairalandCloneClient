@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import Pagination from "../components/layouts/Pagination";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -22,8 +22,6 @@ const Tags = () => {
   const status = useSelector(Status);
   const totalPages = useSelector(TotalPages);
   const error = useSelector(Error);
-
-  console.log(blogs);
 
   useEffect(() => {
     dispatch(getTagBlogs({ tags: tagName, page: page || 1 }));
@@ -63,6 +61,18 @@ const Tags = () => {
                 </Flex>
               )}
             </Flex>
+            {blogs.length > 4 && (
+              <SimpleGrid
+                mt={"70px"}
+                columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+                spacing={5}
+              >
+                {blogs.slice(4, blogs.length).map((each) => (
+                  <TagsDesign key={each} id={each} />
+                ))}
+              </SimpleGrid>
+            )}
+
             <Flex justify={"center"} mt={"20px"}>
               <Pagination
                 currentPage={page}

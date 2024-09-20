@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-// import { convertDate } from "../../utils/Date";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { Timeago } from "../../utils/Timeago";
 
@@ -9,9 +8,8 @@ import { Link } from "react-router-dom";
 
 const TagsDesign = ({ id, designType }) => {
   const blog = useSelector((state) => relatedTagsId(state, id));
-  //   const date = convertDate(blog?.createdAt);
   const time = Timeago(blog?.createdAt, true);
-  console.log(blog.title.length);
+  console.log(blog.author);
 
   if (designType === 1) {
     return (
@@ -44,7 +42,6 @@ const TagsDesign = ({ id, designType }) => {
                 : blog.title}
             </Text>
           </Link>
-
           <Text color={"white"}>{time}</Text>
         </Flex>
       </Box>
@@ -81,6 +78,31 @@ const TagsDesign = ({ id, designType }) => {
           />
         </Box>
       </Flex>
+    );
+  } else {
+    return (
+      <Box>
+        <Box w={"100%"} h={"200px"} mb={"20px"}>
+          <Image
+            w={"100%"}
+            h={"100%"}
+            objectFit={"cover"}
+            alt={blog?.title}
+            src={blog?.images[0]}
+          />
+        </Box>
+        <Link to={`/${blog?.slug}`}>
+          <Text className="fw-bold">
+            {" "}
+            {blog?.title.length > 65
+              ? `${blog.title.slice(0, 62).trim()}...`
+              : blog.title}
+          </Text>
+        </Link>
+        <Text className="small-text" color={"rgb(0, 0, 0, 0.3)"} mt={"10px"}>
+          {time}
+        </Text>
+      </Box>
     );
   }
 };

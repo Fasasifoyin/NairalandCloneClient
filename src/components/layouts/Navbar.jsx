@@ -1,25 +1,57 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
-import { Box, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Flex, Icon, Input, Text, useDisclosure } from "@chakra-ui/react";
 import Logo from "./Logo";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import NavButtons from "./NavButtons";
 import { RiMenu5Fill } from "react-icons/ri";
 import { GoSearch } from "react-icons/go";
+import { TbLetterXSmall } from "react-icons/tb";
+import Sidebar from "./Sidebar";
+import jwtDecode from "jwt-decode";
+import { pages, tagsList } from "../../utils/Data";
 
 import { useDispatch, useSelector } from "react-redux";
 import { LOGOUT, UserDetails } from "../../app/slice/UserSlice";
-import jwtDecode from "jwt-decode";
-import Sidebar from "./Sidebar";
-import { pages, tagsList } from "../../utils/Data";
-import NavButtons from "./NavButtons";
 import { setEmpty } from "../../app/slice/Detailed/CommentSlice";
 
 const Navbar = ({ elementRef }) => {
   const user = useSelector(UserDetails);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const searchQuery = query.get("searchQuery") || "";
+  const [search, setSearch] = useState(searchQuery);
+  const [showSearch, setShowSearch] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (search) {
+      const newSearchParams = new URLSearchParams({
+        searchQuery: search,
+        page: 1,
+      });
+      navigate(`/blog/search?${newSearchParams.toString()}`);
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    setSearch(searchQuery);
+  }, [searchQuery]);
 
   const loggingOut = () => {
     dispatch(LOGOUT());
@@ -109,17 +141,65 @@ const Navbar = ({ elementRef }) => {
             ))}
           </Flex>
           <Flex gap={"20px"} align={"center"}>
-            <NavButtons
-              user={user}
-              base={"none"}
-              lg={"flex"}
-              loggingOut={loggingOut}
-            />
-            <Icon
-              as={GoSearch}
-              boxSize={"25px"}
-              className="text-green text-green-light-5-hover cursor"
-            />
+            {showSearch ? (
+              <Flex align={"center"} gap={"10px"}>
+                <Box
+                  pos={"relative"}
+                  w={{ base: "150px", sm: "200px", md: "240px" }}
+                >
+                  <form onSubmit={handleSubmit}>
+                    <Input
+                      className="bg-green-light-9"
+                      fontWeight={"bold"}
+                      placeholder="Search"
+                      focusBorderColor="black"
+                      h={"35px"}
+                      borderRadius={"5px"}
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      paddingRight={{ base: "32px", sm: "42px" }}
+                      autoFocus
+                    />
+                  </form>
+                  <Flex
+                    position={"absolute"}
+                    top={"0"}
+                    right={0}
+                    width={{ base: "30px", sm: "40px" }}
+                    h={"35px"}
+                    borderRightRadius={"5px"}
+                    className="bg-green cursor"
+                    zIndex={"50"}
+                    align={"center"}
+                    justifyContent={"center"}
+                    onClick={handleSubmit}
+                  >
+                    <Icon as={GoSearch} boxSize={"20px"} color={"white"} />
+                  </Flex>
+                </Box>
+                <Icon
+                  className="cursor"
+                  boxSize={"25px"}
+                  as={TbLetterXSmall}
+                  onClick={() => setShowSearch(false)}
+                />
+              </Flex>
+            ) : (
+              <Flex gap={"20px"} align={"center"}>
+                <NavButtons
+                  user={user}
+                  base={"none"}
+                  lg={"flex"}
+                  loggingOut={loggingOut}
+                />
+                <Icon
+                  as={GoSearch}
+                  boxSize={"25px"}
+                  className="text-green text-green-light-5-hover cursor"
+                  onClick={() => setShowSearch(true)}
+                />
+              </Flex>
+            )}
             <Icon
               hideFrom={"lg"}
               as={RiMenu5Fill}

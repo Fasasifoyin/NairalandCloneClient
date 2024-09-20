@@ -17,7 +17,7 @@ const searchSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(search.pending, (state, action) => {
+      .addCase(search.pending, (state) => {
         state.status = "pending";
       })
       .addCase(search.fulfilled, (state, { payload }) => {

@@ -114,7 +114,7 @@ const routes = [
         ],
       },
       {
-        path: "/search",
+        path: "/blog/search",
         element: <Search />,
       },
       {

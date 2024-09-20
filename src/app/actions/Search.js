@@ -1,19 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
+import { errorHandler } from "../error";
 
 export const search = createAsyncThunk(
   "/search/search",
   async (query, { rejectWithValue }) => {
     try {
+      console.log(query);
       const { data } = await api.Search(query);
       return data;
     } catch (error) {
-      console.log(error);
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
     }
   }
 );
