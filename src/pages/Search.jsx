@@ -4,9 +4,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { tagsList } from "../utils/Data.js";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Error, Status, allSearchBlogId } from "../app/slice/SearchSlice";
+import {
+  Error,
+  Status,
+  TotalPages,
+  allSearchBlogId,
+} from "../app/slice/SearchSlice";
 import { search as searchApi } from "../app/actions/Search";
 import Searchdesign from "../components/search/Searchdesign.jsx";
+import Pagination from "../components/layouts/Pagination.jsx";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -25,6 +31,8 @@ const Search = () => {
   const blogs = useSelector(allSearchBlogId);
   const status = useSelector(Status);
   const error = useSelector(Error);
+  const totalPages = useSelector(TotalPages);
+  console.log(totalPages);
 
   const updateSearch = (newSearch) => {
     setSearch(newSearch);
@@ -124,11 +132,26 @@ const Search = () => {
       {status === "failed" && <Text mt={"50px"}>{error}</Text>}
       {status === "success" &&
         (blogs.length > 0 ? (
-          <Flex direction={"column"} mt={"50px"} gap={"30px"}>
-            {blogs.map((each) => (
-              <Searchdesign key={each} id={each} />
-            ))}
-          </Flex>
+          <Box>
+            <Flex direction={"column"} mt={"50px"} gap={"30px"}>
+              {blogs.map((each) => (
+                <Searchdesign key={each} id={each} />
+              ))}
+            </Flex>
+            <Flex justify={"center"} mt={"20px"}>
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                search={search}
+              />
+            </Flex>
+            <Text mt={"7px"} textAlign={"center"} className="tiny-text">
+              Available pages:{" "}
+              <Text className="fw-bold tiny-text" as={"span"}>
+                {totalPages}
+              </Text>
+            </Text>
+          </Box>
         ) : (
           <Text mt={"50px"}>No blog contain your search</Text>
         ))}

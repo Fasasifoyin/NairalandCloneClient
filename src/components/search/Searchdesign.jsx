@@ -3,6 +3,7 @@ import { Box, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { searchBlogId } from "../../app/slice/SearchSlice";
 import { convertDate } from "../../utils/Date";
+import { Link } from "react-router-dom";
 
 const Searchdesign = ({ id }) => {
   const blog = useSelector((state) => searchBlogId(state, id));
@@ -32,11 +33,14 @@ const Searchdesign = ({ id }) => {
         justifyContent={"space-between"}
       >
         <Box>
-          <Text className={checkSize ? "fw-bold medium-text" : "fw-bold"}>
-            {blog?.title?.length > 80
-              ? `${blog?.title?.slice(0, 77).trim()}...`
-              : blog?.title}
-          </Text>
+          <Link to={`/${blog?.slug}`}>
+            <Text className={checkSize ? "fw-bold medium-text" : "fw-bold"}>
+              {blog?.title?.length > 80
+                ? `${blog?.title?.slice(0, 77).trim()}...`
+                : blog?.title}
+            </Text>
+          </Link>
+
           <Text hideBelow={"lg"} mt={"5px"}>
             {blog?.body?.length > 350
               ? `${blog?.body?.slice(0, 347).trim()}...`

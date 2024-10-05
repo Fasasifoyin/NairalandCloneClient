@@ -9,6 +9,7 @@ const searchAdapter = createEntityAdapter({
 const initialState = searchAdapter.getInitialState({
   status: "idle",
   error: null,
+  totalPages: 0,
 });
 
 const searchSlice = createSlice({
@@ -23,7 +24,8 @@ const searchSlice = createSlice({
       .addCase(search.fulfilled, (state, { payload }) => {
         state.status = "success";
         state.error = null;
-        searchAdapter.setAll(state, payload);
+        state.totalPages = payload.totalPages;
+        searchAdapter.setAll(state, payload.data);
       })
       .addCase(search.rejected, (state, { payload }) => {
         state.status = "failed";
@@ -41,5 +43,6 @@ export const {
 
 export const Status = (state) => state.search.status;
 export const Error = (state) => state.search.error;
+export const TotalPages = (state) => state.search.totalPages;
 
 export default searchSlice.reducer;

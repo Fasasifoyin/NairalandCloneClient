@@ -3,7 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Pagination = ({ totalPages, currentPage, route, initial }) => {
+const Pagination = ({ totalPages, currentPage, route, initial, search }) => {
   const pages = [];
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
@@ -12,6 +12,31 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
   const [hover, setHover] = useState(null);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(5);
+
+  const createSearchParams = (page) => {
+    const searchParams = new URLSearchParams({
+      searchQuery: search,
+      page,
+    });
+
+    return `/blog/search?${searchParams.toString()}`;
+  };
+
+  const createNextOrPrevSearchParams = (action) => {
+    const searchParams = new URLSearchParams({
+      searchQuery: search,
+      page:
+        action === "prev"
+          ? page - 1 > 1
+            ? page - 1
+            : 1
+          : page + 1 > totalPages
+          ? page
+          : page + 1,
+    });
+
+    return `/blog/search?${searchParams.toString()}`;
+  };
 
   const slide = (index, each) => {
     if (index === 4) {
@@ -58,7 +83,7 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
       flexWrap={"wrap"}
     >
       {pages.length > 5 &&
-        (!page ? (
+        (!page || page === 1 ? (
           <Box
             border={"1px solid black"}
             px={"10px"}
@@ -69,7 +94,15 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
             <Text className="medium-text fw-medium">Prev</Text>
           </Box>
         ) : (
-          <Link to={page - 1 > 1 ? `${route}/${page - 1}` : initial || route}>
+          <Link
+            to={
+              search
+                ? createNextOrPrevSearchParams("prev")
+                : page - 1 > 1
+                ? `${route}/${page - 1}`
+                : initial || route
+            }
+          >
             <Box
               border={"1px solid black"}
               px={"10px"}
@@ -86,7 +119,13 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
         {pages.slice(start, end).map((each, index) => (
           <Link
             key={each}
-            to={each > 1 ? `${route}/${each}` : initial || route}
+            to={
+              search
+                ? createSearchParams(each)
+                : each > 1
+                ? `${route}/${each}`
+                : initial || route
+            }
           >
             <Flex
               onMouseEnter={() => setHover(each)}
@@ -127,7 +166,13 @@ const Pagination = ({ totalPages, currentPage, route, initial }) => {
             <Text className="medium-text fw-medium">Next</Text>
           </Box>
         ) : (
-          <Link to={`${route}/${page ? page + 1 : 2}`}>
+          <Link
+            to={
+              search
+                ? createNextOrPrevSearchParams("next")
+                : `${route}/${page ? page + 1 : 2}`
+            }
+          >
             <Box
               border={"1px solid black"}
               px={"10px"}
