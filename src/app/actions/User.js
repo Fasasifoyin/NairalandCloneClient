@@ -4,26 +4,12 @@ import { toast } from "react-hot-toast";
 import { LOGOUT } from "../slice/UserSlice";
 import { errorHandler } from "../error";
 
+//start
 export const signUp = createAsyncThunk(
   "/user/signUp",
   async (form, { rejectWithValue }) => {
-    const {
-      firstName,
-      lastName,
-      userName,
-      email,
-      password,
-      googleAccessToken,
-    } = form;
     try {
-      const { data, status } = await api.signUp({
-        firstName,
-        lastName,
-        userName,
-        email,
-        password,
-        googleAccessToken,
-      });
+      const { data, status } = await api.signUp(form);
 
       if (status === 201) {
         toast.success(`Welcome ${data.firstName} ${data.lastName}`);
@@ -40,8 +26,8 @@ export const signUp = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "/user/login",
-  async (data, { rejectWithValue }) => {
-    const { userName, password, remember, googleAccessToken } = data;
+  async (form, { rejectWithValue }) => {
+    const { userName, password, remember, googleAccessToken } = form;
     try {
       const { data, status } = await api.signIn({
         userName,
@@ -62,7 +48,7 @@ export const login = createAsyncThunk(
             localStorage.removeItem("rememberUser");
         }
       }
-      
+
       return data;
     } catch (error) {
       const errorMessage = errorHandler({ error, toast: true });
@@ -73,19 +59,30 @@ export const login = createAsyncThunk(
 
 export const profile = createAsyncThunk(
   "/profile/profile",
-  async (userName, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const { data } = await api.profile(userName);
+      const { data } = await api.profile(params);
       return data;
     } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
     }
   }
 );
+
+export const profileSearchedBlogs = createAsyncThunk(
+  "/profile/profileSearchedBlogs",
+  async (query, { rejectWithValue }) => {
+    try {
+      const { data } = await api.profileSearchedBlogs(query);
+      return { ...data, page: query.page };
+    } catch (error) {
+      const errorMessage = errorHandler({ error });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+//end
 
 export const updatePhoto = createAsyncThunk(
   "/profile/updatePhoto",

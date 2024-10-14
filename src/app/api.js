@@ -56,9 +56,15 @@ export const Search = (query) =>
   API.get(
     `/api/blogs/blog/search?search=${query.search}&title=${query.title}&body=${query.body}&tags=${query.tags}&page=${query.page}`
   );
+
+export const profile = (params) =>
+  API.get(`/api/users/profile/${params.userName}/${params.page}`);
+export const profileSearchedBlogs = (query) =>
+  API.get(
+    `/api/users/profile/search?search=${query.search}&userName=${query.userName}&page=${query.page}`
+  );
 //end
 
-export const profile = (userName) => API.get(`/api/users/profile/${userName}`);
 export const updatePhoto = (body) =>
   API.patch("/api/users/profile/updatePhoto", body);
 export const updateProfile = (body) =>

@@ -13,7 +13,7 @@ const NavButtons = ({ user, base, lg, loggingOut }) => {
           w={"100%"}
         >
           <Box>
-            <Link>
+            <Link to={`/profile/${user.userName}`}>
               <Button
                 className="bg-green text-white bg-hover-transparent text-hover-green"
                 w={{ base: "100%", lg: "94px" }}
