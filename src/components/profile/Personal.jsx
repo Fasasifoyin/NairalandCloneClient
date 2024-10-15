@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { Box, Button, Flex, Icon, SimpleGrid } from "@chakra-ui/react";
-import { AiFillEdit } from "react-icons/ai";
+import { Box, Button, SimpleGrid, Text } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import FormikControl from "../formik/FormikControl";
 import InfoBox from "./InfoBox";
@@ -13,10 +11,10 @@ import { updateProfile } from "../../app/actions/User";
 import { UpdateStatus } from "../../app/slice/ProfileSlice";
 
 const Personal = ({ userProfile, user }) => {
-  const status = useSelector(UpdateStatus);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [edit, setEdit] = useState(false);
+
+  const status = useSelector(UpdateStatus);
 
   const initialValues = {
     firstName: userProfile.firstName || "",
@@ -26,165 +24,113 @@ const Personal = ({ userProfile, user }) => {
     phone: userProfile.phone || "",
     occupation: userProfile.occupation || "",
     about: userProfile.about || "",
+    country: userProfile.country || "",
+    state: userProfile.state || "",
+    postalCode: userProfile.postalCode || "",
   };
 
   const onSubmit = (values) => {
-    const body = { ...values, user: userProfile.userName, setEdit, navigate };
+    const body = { ...values, user: userProfile.userName, navigate };
     dispatch(updateProfile(body));
   };
 
   return (
-    <Box mb={{ base: "50px", lg: "70px" }}>
-      <Flex mb={"30px"} justify={"space-between"} align={"center"}>
-        <h5 className="large-text fw-bold">Personal information</h5>
-        {userProfile.userName === user.userName && (
-          <Flex
-            className="cursor"
-            gap={"5px"}
-            align={"center"}
-            border={"1px solid #175616"}
-            borderRadius={"20px"}
-            padding={"5px 10px"}
-            onClick={() => setEdit(!edit)}
+    <Box className="cc-container page-alignment" mt={"60px"}>
+      <Text className="fw-bold medium-text">Personal Information</Text>
+      <Box mt={"15px"}>
+        {userProfile.userName === user.userName ? (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={updateProfileValidation}
           >
-            {edit && <p>Clear</p>}
-            {!edit && <p style={{ fontStyle: "italic" }}>Edit</p>}
-            {!edit && <Icon as={AiFillEdit} />}
-          </Flex>
-        )}
-      </Flex>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={updateProfileValidation}
-      >
-        {() => (
-          <Form>
-            <SimpleGrid columns={{ base: 2, md: 3 }} gap={"30px"} mb={"30px"}>
-              {edit ? (
-                <Box>
+            {() => (
+              <Form>
+                <SimpleGrid columns={{ base: 2, md: 3 }} gap={"30px"}>
                   <FormikControl
                     control="Input"
                     name="firstName"
-                    placeholder=""
                     type="text"
-                    base={"35px"}
-                    lg={"56px"}
                     defaultLabel
                     label={"First Name"}
                   />
-                </Box>
-              ) : (
-                <InfoBox title={"First Name"} body={userProfile.firstName} />
-              )}
-              {edit ? (
-                <Box>
                   <FormikControl
                     control="Input"
                     name="lastName"
-                    placeholder=""
                     type="text"
-                    base={"35px"}
-                    lg={"56px"}
                     defaultLabel
                     label={"Last Name"}
                   />
-                </Box>
-              ) : (
-                <InfoBox title={"Last Name"} body={userProfile.lastName} />
-              )}
-              {edit ? (
-                <Box>
                   <FormikControl
                     control="Input"
                     name="userName"
-                    placeholder=""
                     type="text"
-                    base={"35px"}
-                    lg={"56px"}
                     defaultLabel
                     label={"User Name"}
                   />
-                </Box>
-              ) : (
-                <InfoBox title={"User Name"} body={userProfile.userName} />
-              )}
-              {edit ? (
-                <Box>
                   <FormikControl
                     control="Input"
                     name="email"
-                    placeholder=""
                     type="email"
-                    base={"35px"}
-                    lg={"56px"}
                     defaultLabel
-                    label={"E-mail Address"}
+                    label={"E-mail"}
                   />
-                </Box>
-              ) : (
-                <InfoBox title={"E-mail Address"} body={userProfile.email} />
-              )}
-              {edit ? (
-                <Box>
                   <FormikControl
                     control="Input"
                     name="phone"
-                    placeholder=""
                     type="number"
-                    base={"35px"}
-                    lg={"56px"}
                     defaultLabel
                     label={"Phone Number"}
                   />
-                </Box>
-              ) : (
-                <InfoBox title={"Phone Number"} body={userProfile.phone} />
-              )}
-              {edit ? (
-                <Box>
                   <FormikControl
                     control="Input"
                     name="occupation"
-                    placeholder=""
                     type="text"
-                    base={"35px"}
-                    lg={"56px"}
                     defaultLabel
                     label={"Occupation"}
                   />
-                </Box>
-              ) : (
-                <InfoBox title={"Occupation"} body={userProfile.occupation} />
-              )}
-            </SimpleGrid>
-            {edit ? (
-              <Box mb={"30px"}>
-                <FormikControl
-                  control="Textarea"
-                  name="about"
-                  label={"About"}
-                  defaultLabel
-                  placeholder=""
-                />
-              </Box>
-            ) : (
-              <InfoBox title={"About"} body={userProfile.about} about />
-            )}
-            {edit && (
-              <Flex justify={"flex-end"}>
-                <Button
-                  isLoading={status === "pending"}
-                  type="submit"
-                  className="bg-green text-white"
-                >
-                  Edit Profile
+                  <FormikControl
+                    control="Input"
+                    name="country"
+                    type="text"
+                    defaultLabel
+                    label={"Country"}
+                  />
+                  <FormikControl
+                    control="Input"
+                    name="state"
+                    type="text"
+                    defaultLabel
+                    label={"State"}
+                  />
+                  <FormikControl
+                    control="Input"
+                    name="postalCode"
+                    type="number"
+                    defaultLabel
+                    label={"Postal Code"}
+                  />
+                </SimpleGrid>
+                <Button isLoading={status === "pending"} type="submit" mt={"30px"} bg={"green"} color={"white"}>
+                  Edit profile
                 </Button>
-              </Flex>
+              </Form>
             )}
-          </Form>
+          </Formik>
+        ) : (
+          <SimpleGrid columns={{ base: 2, md: 3 }} gap={"30px"}>
+            <InfoBox title={"First Name"} body={userProfile.firstName} />
+            <InfoBox title={"Last Name"} body={userProfile.lastName} />
+            <InfoBox title={"User Name"} body={userProfile.userName} />
+            <InfoBox title={"Email address"} body={userProfile.email} />
+            <InfoBox title={"Phone"} body={userProfile.phone} />
+            <InfoBox title={"Occupation"} body={userProfile.occupation} />
+            <InfoBox title={"Country"} body={userProfile.country} />
+            <InfoBox title={"State"} body={userProfile.state} />
+            <InfoBox title={"Postal Code"} body={userProfile.postalCode} />
+          </SimpleGrid>
         )}
-      </Formik>
+      </Box>
     </Box>
   );
 };

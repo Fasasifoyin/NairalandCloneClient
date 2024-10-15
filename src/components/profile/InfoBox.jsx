@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 const InfoBox = ({ title, body, about }) => {
@@ -8,7 +8,18 @@ const InfoBox = ({ title, body, about }) => {
 
   return (
     <Box>
-      <p style={{ color: "rgb(0,0,0,0.7)" }}>{title}</p>
+      <Text className="fw-bold">{title}</Text>
+      {body ? (
+        <Text color={"rgb(0,0,0,0.5)"} className="fw-bold">
+          {body}
+        </Text>
+      ) : (
+        <Text color={"rgb(0,0,0,0.5)"} className="fw-bold tiny-text">
+          Not provided
+        </Text>
+      )}
+
+      {/* 
       {!about && <h5 className="medium-text fw-bold">{body}</h5>}
       {about && (
         <h5>
@@ -55,7 +66,7 @@ const InfoBox = ({ title, body, about }) => {
                 </span>
               ))}
         </h5>
-      )}
+      )} */}
     </Box>
   );
 };

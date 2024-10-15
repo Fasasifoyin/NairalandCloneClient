@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { profile, profileSearchedBlogs } from "../actions/User";
+import { profile, profileSearchedBlogs, updateProfile } from "../actions/User";
 
 const initialState = {
   user: {},
@@ -12,6 +12,8 @@ const initialState = {
   searchStatus: "idle",
   searchError: null,
   searchTotalPages: 0,
+
+  updateStatus: "idle",
 };
 
 const profileSlice = createSlice({
@@ -60,6 +62,28 @@ const profileSlice = createSlice({
       .addCase(profileSearchedBlogs.rejected, (state, { payload }) => {
         state.searchStatus = "failed";
         state.searchError = payload;
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.updateStatus = "pending";
+      })
+      .addCase(updateProfile.fulfilled, (state, { payload }) => {
+        (state.updateStatus = "success"),
+          (state.user = {
+            ...state.user,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            userName: payload.userName,
+            email: payload.email,
+            phone: payload.phone,
+            occupation: payload.occupation,
+            about: payload.about,
+            country: payload.country,
+            state: payload.state,
+            postalCode: payload.postalCode,
+          });
+      })
+      .addCase(updateProfile.rejected, (state) => {
+        state.updateStatus = "failed";
       });
   },
 });
@@ -75,10 +99,11 @@ export const SearchStatus = (state) => state.profile.searchStatus;
 export const SearchError = (state) => state.profile.searchError;
 export const SearchTotalPages = (state) => state.profile.searchTotalPages;
 
+export const UpdateStatus = (state) => state.profile.updateStatus;
+
 export const { setEmpty, setSearchEmpty } = profileSlice.actions;
 
 export const PhotoStatus = (state) => state.profile.photoStatus;
-export const UpdateStatus = (state) => state.profile.updateStatus;
 export const AddressStatus = (state) => state.profile.addressStatus;
 export const DeleteStatus = (state) => state.profile.deleteStatus;
 export const PasswordStatus = (state) => state.profile.passwordStatus;
@@ -136,25 +161,25 @@ export default profileSlice.reducer;
 //       .addCase(updatePhoto.rejected, (state, action) => {
 //         state.photoStatus = "failed";
 //       })
-//       .addCase(updateProfile.pending, (state, action) => {
-//         state.updateStatus = "pending";
-//       })
-//       .addCase(updateProfile.fulfilled, (state, { payload }) => {
-//         (state.updateStatus = "success"),
-//           (state.userDetails = {
-//             ...state.userDetails,
-//             firstName: payload.firstName,
-//             lastName: payload.lastName,
-//             userName: payload.userName,
-//             email: payload.email,
-//             phone: payload.phone,
-//             occupation: payload.occupation,
-//             about: payload.about,
-//           });
-//       })
-//       .addCase(updateProfile.rejected, (state, action) => {
-//         state.updateStatus = "failed";
-//       })
+// .addCase(updateProfile.pending, (state, action) => {
+//   state.updateStatus = "pending";
+// })
+// .addCase(updateProfile.fulfilled, (state, { payload }) => {
+//   (state.updateStatus = "success"),
+//     (state.userDetails = {
+//       ...state.userDetails,
+//       firstName: payload.firstName,
+//       lastName: payload.lastName,
+//       userName: payload.userName,
+//       email: payload.email,
+//       phone: payload.phone,
+//       occupation: payload.occupation,
+//       about: payload.about,
+//     });
+// })
+// .addCase(updateProfile.rejected, (state, action) => {
+//   state.updateStatus = "failed";
+// })
 //       .addCase(updateAddress.pending, (state, action) => {
 //         state.addressStatus = "pending";
 //       })

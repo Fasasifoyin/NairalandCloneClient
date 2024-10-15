@@ -65,7 +65,7 @@ const Hero = ({ userProfile, user }) => {
             </Text>
             <Text
               className="fw-bold"
-              color={{ base: "rgb(255,255,255,0.3)", lg: "rgb(0,0,0,0.3)" }}
+              color={{ base: "rgb(255,255,255,0.3)", md: "rgb(0,0,0,0.3)" }}
             >
               @{userProfile.userName}
             </Text>

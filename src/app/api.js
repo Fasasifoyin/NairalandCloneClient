@@ -63,12 +63,13 @@ export const profileSearchedBlogs = (query) =>
   API.get(
     `/api/users/profile/search?search=${query.search}&userName=${query.userName}&page=${query.page}`
   );
+export const updateProfile = (body) =>
+  API.patch(`/api/users/profile/updateProfile/${body.user}`, body);
 //end
 
 export const updatePhoto = (body) =>
   API.patch("/api/users/profile/updatePhoto", body);
-export const updateProfile = (body) =>
-  API.patch(`/api/users/profile/updateProfile/${body.user}`, body);
+
 export const updateAddress = (body) =>
   API.patch(`/api/users/profile/updateAddress/${body.userName}`, body);
 export const deleteUser = (userName) =>

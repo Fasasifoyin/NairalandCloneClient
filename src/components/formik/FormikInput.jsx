@@ -5,6 +5,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Text,
 } from "@chakra-ui/react";
 
 const FormikInput = (props) => {
@@ -17,7 +18,7 @@ const FormikInput = (props) => {
           {label && (
             <FormLabel width={"max-content"}>
               {defaultLabel ? (
-                <p style={{ color: "rgb(0,0,0,0.7)" }}>{label}</p>
+                <Text className="fw-bold">{label}</Text>
               ) : (
                 <h3 style={{ marginBottom: "10px" }} className="fw-medium">
                   {label}

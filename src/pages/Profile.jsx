@@ -50,6 +50,7 @@ const Profile = () => {
       {userProfile?.userName && (
         <Box>
           <Hero userProfile={userProfile} user={user} />
+          <Personal userProfile={userProfile} user={user} />
           {userProfile.allBlogs.length > 0 ? (
             <UserBlogs
               userProfile={userProfile}
@@ -96,7 +97,6 @@ const Profile = () => {
     //   {profileStatus === "success" && (
     //     <Box>
     //       <Box className="cc-container page_alignment">
-    //         <Personal userProfile={userProfile} user={user} />
     //         <Address userProfile={userProfile} user={user} />
     //         {userProfile.userName === user.userName && (
     //           <Actions userProfile={userProfile} />
