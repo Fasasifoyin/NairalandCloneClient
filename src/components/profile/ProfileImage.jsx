@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -14,40 +14,50 @@ import {
 import { AiOutlineCamera } from "react-icons/ai";
 import { convertImageToBase64 } from "../../utils/Convert";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePhoto } from "../../app/actions/User";
+import { UpdateStatus } from "../../app/slice/ProfileSlice";
 
 const ProfileImage = ({ userProfile, user }) => {
+  const dispatch = useDispatch();
+  const status = useSelector(UpdateStatus);
+
   const [file, setFile] = useState("");
   const [wantToChange, setWantToChange] = useState(false);
 
   const onUpload = async (e) => {
-    if (e.target.files[0].size > 1000000) {
-      e.target.reset();
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) return;
+
+    if (selectedFile.size > 1000000) {
       setFile("");
+      e.target.value = "";
       return toast.error("Image cannot be larger than 1MB");
     }
-    const base64 = await convertImageToBase64(e.target.files[0]);
+
+    const base64 = await convertImageToBase64(selectedFile);
     setFile(base64);
     setWantToChange(true);
   };
 
   const handleReset = (e) => {
-    e.target.reset();
+    if (e) e.target.reset();
+    document.getElementById("profile").value = "";
     setFile("");
     setWantToChange(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(updatePhoto({ file, userName: userProfile.userName }));
   };
 
-  // const onSubmit = (e) => {
-  //   if (button === 1) {
-  //     e.target.reset();
-  //     dispatch(updatePhoto({ file, userName: userProfile.userName, setFile }));
-  //   } else {
-
-  //   }
-  // };
+  useEffect(() => {
+    if (status === "success") {
+      handleReset();
+    }
+  }, [status]);
 
   return (
     <form onReset={handleReset} onSubmit={handleSubmit}>
@@ -100,6 +110,7 @@ const ProfileImage = ({ userProfile, user }) => {
             width={"55px"}
             color={"white"}
             type="submit"
+            isLoading={status === "pending"}
           >
             <Text className="tiny-text">Set</Text>
           </Button>
@@ -123,6 +134,7 @@ const ProfileImage = ({ userProfile, user }) => {
             mt={"10px"}
             bg={"white"}
             type="submit"
+            isLoading={status === "pending"}
           >
             <Text className="tiny-text">Set to default image</Text>
           </Button>

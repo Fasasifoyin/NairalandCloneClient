@@ -65,10 +65,9 @@ export const profileSearchedBlogs = (query) =>
   );
 export const updateProfile = (body) =>
   API.patch(`/api/users/profile/updateProfile/${body.user}`, body);
-//end
-
 export const updatePhoto = (body) =>
   API.patch("/api/users/profile/updatePhoto", body);
+//end
 
 export const updateAddress = (body) =>
   API.patch(`/api/users/profile/updateAddress/${body.userName}`, body);

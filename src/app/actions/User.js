@@ -102,29 +102,23 @@ export const updateProfile = createAsyncThunk(
     }
   }
 );
-//end
 
 export const updatePhoto = createAsyncThunk(
   "/profile/updatePhoto",
   async (body, { rejectWithValue }) => {
     try {
-      const { userName, file, setFile } = body;
-      const { data, status } = await api.updatePhoto({ userName, file });
+      const { data, status } = await api.updatePhoto(body);
       if (status === 200) {
-        setFile("");
+        toast.success(`Photo updated successfully`);
       }
-      toast.success(`Photo updated successfully`);
-      return data;
+      return data
     } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      toast.error(outputError);
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error, toast: true });
+      return rejectWithValue(errorMessage);
     }
   }
 );
+//end
 
 // export const updateProfile = createAsyncThunk(
 //   "/profile/updateProfile",

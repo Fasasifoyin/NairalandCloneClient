@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { profile, profileSearchedBlogs, updateProfile } from "../actions/User";
+import {
+  profile,
+  profileSearchedBlogs,
+  updatePhoto,
+  updateProfile,
+} from "../actions/User";
 
 const initialState = {
   user: {},
@@ -84,6 +89,16 @@ const profileSlice = createSlice({
       })
       .addCase(updateProfile.rejected, (state) => {
         state.updateStatus = "failed";
+      })
+      .addCase(updatePhoto.pending, (state) => {
+        state.updateStatus = "pending";
+      })
+      .addCase(updatePhoto.fulfilled, (state, { payload }) => {
+        (state.updateStatus = "success"),
+          (state.user = { ...state.user, image: payload });
+      })
+      .addCase(updatePhoto.rejected, (state) => {
+        state.updateStatus = "failed";
       });
   },
 });
@@ -151,16 +166,16 @@ export default profileSlice.reducer;
 //         state.status = "failed";
 //         state.error = payload;
 //       })
-//       .addCase(updatePhoto.pending, (state, action) => {
-//         state.photoStatus = "pending";
-//       })
-//       .addCase(updatePhoto.fulfilled, (state, { payload }) => {
-//         (state.photoStatus = "success"),
-//           (state.userDetails = { ...state.userDetails, image: payload });
-//       })
-//       .addCase(updatePhoto.rejected, (state, action) => {
-//         state.photoStatus = "failed";
-//       })
+// .addCase(updatePhoto.pending, (state, action) => {
+//   state.photoStatus = "pending";
+// })
+// .addCase(updatePhoto.fulfilled, (state, { payload }) => {
+//   (state.photoStatus = "success"),
+//     (state.userDetails = { ...state.userDetails, image: payload });
+// })
+// .addCase(updatePhoto.rejected, (state, action) => {
+//   state.photoStatus = "failed";
+// })
 // .addCase(updateProfile.pending, (state, action) => {
 //   state.updateStatus = "pending";
 // })
