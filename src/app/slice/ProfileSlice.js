@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   profile,
   profileSearchedBlogs,
+  updatePassword,
   updatePhoto,
   updateProfile,
 } from "../actions/User";
@@ -98,6 +99,15 @@ const profileSlice = createSlice({
           (state.user = { ...state.user, image: payload });
       })
       .addCase(updatePhoto.rejected, (state) => {
+        state.updateStatus = "failed";
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.updateStatus = "pending";
+      })
+      .addCase(updatePassword.fulfilled, (state) => {
+        state.updateStatus = "success";
+      })
+      .addCase(updatePassword.rejected, (state) => {
         state.updateStatus = "failed";
       });
   },

@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import { Box, Text } from "@chakra-ui/react";
 import Hero from "../components/profile/Hero";
 import Personal from "../components/profile/Personal";
+import UserBlogs from "../components/profile/UserBlogs";
 
 import { useDispatch, useSelector } from "react-redux";
 import { profile } from "../app/actions/User";
@@ -16,9 +17,7 @@ import {
   setSearchEmpty,
 } from "../app/slice/ProfileSlice";
 import { UserDetails } from "../app/slice/UserSlice";
-import Address from "../components/profile/Address";
 import Actions from "../components/profile/Actions";
-import UserBlogs from "../components/profile/UserBlogs";
 
 const Profile = () => {
   const { userName } = useParams();
@@ -79,7 +78,16 @@ const Profile = () => {
           {error}
         </Text>
       )}
+      {userProfile?.userName && (
+        userProfile.userName === user.userName && (
+
+          <Actions userProfile={userProfile}  />
+        )
+      )}
     </Box>
+
+
+
 
     // <Box>
     //   {profileStatus === "pending" && (

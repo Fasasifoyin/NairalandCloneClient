@@ -111,7 +111,22 @@ export const updatePhoto = createAsyncThunk(
       if (status === 200) {
         toast.success(`Photo updated successfully`);
       }
-      return data
+      return data;
+    } catch (error) {
+      const errorMessage = errorHandler({ error, toast: true });
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  "/profile/updatePassword",
+  async (body, { rejectWithValue }) => {
+    try {
+      const { data, status } = await api.updatePassword(body);
+      if (status === 200) {
+        toast.success(data.message);
+      }
     } catch (error) {
       const errorMessage = errorHandler({ error, toast: true });
       return rejectWithValue(errorMessage);
@@ -192,27 +207,27 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
-export const updatePassword = createAsyncThunk(
-  "/profile/updatePassword",
-  async (body, { rejectWithValue }) => {
-    try {
-      const { setPassword } = body;
-      const { data, status } = await api.updatePassword(body);
-      if (status === 200) {
-        setPassword(false);
-        toast.success(data.message);
-      }
-      return data;
-    } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      toast.error(outputError);
-      return rejectWithValue(outputError);
-    }
-  }
-);
+// export const updatePassword = createAsyncThunk(
+//   "/profile/updatePassword",
+//   async (body, { rejectWithValue }) => {
+//     try {
+//       const { setPassword } = body;
+//       const { data, status } = await api.updatePassword(body);
+//       if (status === 200) {
+//         setPassword(false);
+//         toast.success(data.message);
+//       }
+//       return data;
+//     } catch (error) {
+//       const outputError =
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message;
+//       toast.error(outputError);
+//       return rejectWithValue(outputError);
+//     }
+//   }
+// );
 
 export const generateotp = createAsyncThunk(
   "/reset/generateotp",

@@ -67,14 +67,14 @@ export const updateProfile = (body) =>
   API.patch(`/api/users/profile/updateProfile/${body.user}`, body);
 export const updatePhoto = (body) =>
   API.patch("/api/users/profile/updatePhoto", body);
+export const updatePassword = (body) =>
+  API.patch("/api/users/profile/updatePassword", body);
 //end
 
 export const updateAddress = (body) =>
   API.patch(`/api/users/profile/updateAddress/${body.userName}`, body);
 export const deleteUser = (userName) =>
   API.delete(`/api/users/profile/delete/${userName}`);
-export const updatePassword = (body) =>
-  API.patch(`/api/users/profile/password/${body.userName}`, body);
 
 export const createBlog = (form) => API.post("/api/blogs/create", form);
 export const updateBlog = (form) => API.patch("/api/blogs/update", form);

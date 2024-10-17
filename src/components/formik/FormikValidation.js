@@ -99,7 +99,7 @@ export const updateProfileValidation = yup.object().shape({
 });
 
 export const updatePasswordValidation = yup.object().shape({
-  password: yup
+  oldPassword: yup
     .string()
     .min(5)
     .matches(/^\S*$/, "Password cannot contain space")
@@ -107,7 +107,7 @@ export const updatePasswordValidation = yup.object().shape({
       message:
         "Minimum of 5 characters, 1 uppercase, 1 lowercase, 1 numeric digit",
     })
-    .required("Enter Password"),
+    .required("Enter old Password"),
   newPassword: yup
     .string()
     .min(5)
@@ -116,7 +116,15 @@ export const updatePasswordValidation = yup.object().shape({
       message:
         "Minimum of 5 characters, 1 uppercase, 1 lowercase, 1 numeric digit",
     })
+    .notOneOf(
+      [yup.ref("oldPassword"), null],
+      "New password cannot be the same as the old password"
+    )
     .required("Enter New Password"),
+  confirmNewPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword"), null], "Password must match new password")
+    .required("Confirm Password"),
 });
 
 export const emailValidation = yup.object().shape({
