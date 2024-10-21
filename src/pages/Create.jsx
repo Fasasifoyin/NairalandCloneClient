@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Flex } from "@chakra-ui/react";
-import Navbar from "../components/layouts/Navbar";
 import CreateHero from "../components/create/CreateHero";
 import Tags from "../components/create/Tags";
 import { Formik, Form } from "formik";
@@ -10,15 +9,13 @@ import { toast } from "react-hot-toast";
 import { createValidation } from "../components/formik/FormikValidation";
 
 import { useDispatch, useSelector } from "react-redux";
-import { UserDetails } from "../app/slice/UserSlice";
 import { createBlog } from "../app/actions/Blogs";
 import { BlogStatus } from "../app/slice/CreateSlice";
-import Footer from "../components/layouts/Footer";
 
 const Create = () => {
-  const user = useSelector(UserDetails);
-  const status = useSelector(BlogStatus);
   const dispatch = useDispatch();
+  const status = useSelector(BlogStatus);
+
   const [tags, setTags] = useState([]);
   const [blogImages, setBlogImages] = useState(["", "", "", ""]);
 
@@ -28,7 +25,7 @@ const Create = () => {
     images: [""],
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, { resetForm }) => {
     if (!tags.length) {
       return toast.error("Please select a tag");
     }
@@ -39,75 +36,60 @@ const Create = () => {
     const formData = {
       title,
       body,
-      filterImage,
+      images: filterImage,
       tags,
+      resetForm,
     };
 
     dispatch(createBlog(formData));
   };
 
+  useEffect(() => {
+    if (status === "success") {
+      setTags([]);
+      setBlogImages(["", "", "", ""]);
+    }
+  }, [status]);
+
   return (
-    <Box>
-      {/* <Box mb={{ base: "20px", lg: "60px" }}>
-        <Navbar
-          text={"black"}
-          activeText={"#175616"}
-          hover={"#175616"}
-          buttonBg={"#175616"}
-          buttonColor={"white"}
-          btnHover={"cream2"}
-          btnColorHover={"green"}
-          logoutBg={"none"}
-          logoutColor={"#175616"}
-          logoutHoverBorder={"#175616"}
-        />
-      </Box> */}
-      <Box className="cc-container page_alignment" mb={"100px"}>
-        <CreateHero user={user} header={"Create your blog"} />
-        <Tags setTags={setTags} tags={tags} />
-        <Box>
+    <Box mt={"30px"}>
+      <CreateHero header={"Create your blog"} />
+      <Box className="cc-container page-alignment">
+        <Tags tags={tags} setTags={setTags} />
+        <Box mt={"30px"}>
           <Formik
             initialValues={initialValues}
-            onSubmit={onSubmit}
             validationSchema={createValidation}
+            onSubmit={onSubmit}
           >
             {() => (
               <Form>
-                <Box mb={{ base: "40px", lg: "60px" }}>
+                <Flex direction={"column"} gap={"30px"}>
                   <FormikControl
                     placeholder="Enter Title"
                     control="Input"
                     name="title"
                     label="Title"
-                    base={"50px"}
-                    lg={"70px"}
                   />
-                </Box>
-                <Box mb={{ base: "40px", lg: "60px" }}>
                   <FormikControl
                     placeholder="Enter Story"
                     control="Textarea"
                     name="body"
                     label="Story"
                   />
-                </Box>
-                <Box mb={{ base: "40px", lg: "60px" }}>
                   <AddImage
                     setBlogImages={setBlogImages}
                     blogImages={blogImages}
                     name="images"
                   />
-                </Box>
-                <Flex justify={"end"}>
                   <Button
-                    isLoading={status === "pending"}
-                    h={"60px"}
-                    w={"180px"}
+                    width={"max-content"}
+                    size={"md"}
+                    className="bg-green text-white"
                     type="submit"
-                    className="bg-green bg-hover-cream2 text-white text-hover-black"
-                    borderRadius={"5px"}
+                    isLoading={status === "pending"}
                   >
-                    <h5 className="btn-large-text">Create Blog</h5>
+                    Create post
                   </Button>
                 </Flex>
               </Form>
@@ -115,7 +97,6 @@ const Create = () => {
           </Formik>
         </Box>
       </Box>
-      <Footer />
     </Box>
   );
 };

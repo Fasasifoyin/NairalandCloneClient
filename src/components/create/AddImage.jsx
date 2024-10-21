@@ -8,34 +8,29 @@ import {
   Image,
   Input,
   SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import { Field, FieldArray } from "formik";
 import { convertImageToBase64 } from "../../utils/Convert";
-import { useState } from "react";
 import { HiOutlineCamera } from "react-icons/hi";
 import toast from "react-hot-toast";
 
 // eslint-disable-next-line react/prop-types
 const AddImage = ({ name, setBlogImages, blogImages }) => {
-  const [imageNumber, setImageNumber] = useState(-1);
-
-  const onUpload = async (e) => {
+  const onUpload = async (e, index) => {
     if (e.target.files[0].size > 1000000) {
       e.target.value = null;
       return toast.error("Image cannot be larger than 1MB");
     }
     const base64 = await convertImageToBase64(e.target.files[0]);
-    console.log(e.target.files[0]);
-    setBlogImages((currentArray) =>
-      currentArray.map((each, index) => (index === imageNumber ? base64 : each))
+    setBlogImages((prev) =>
+      prev.map((each, i) => (index === i ? base64 : each))
     );
   };
 
   const removeImage = (indexNumber) => {
-    setBlogImages((currentArray) =>
-      currentArray.filter((each, index) => index !== indexNumber)
-    );
-    setBlogImages((currentArray) => [...currentArray, ""]);
+    setBlogImages((prev) => prev.filter((_, index) => index !== indexNumber));
+    setBlogImages((prev) => [...prev, ""]);
   };
 
   const validateImages = (value) => {
@@ -56,98 +51,78 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
         },
       }) => (
         <Box>
-          <h3 className="fw-medium" style={{ marginBottom: "10px" }}>
-            Upload Image
-          </h3>
-          <Flex w={"100%"} justify={"flex-end"}>
+          <Flex mb={"8px"} justifyContent={"space-between"}>
+            <Text className="medium-text fw-bold">Upload Image</Text>
             <Button
-              bg={"#175616"}
-              _hover={{
-                background: "#175616",
-              }}
-              color={"white"}
+              rightIcon={<HiOutlineCamera size={15} />}
+              size={"sm"}
+              className="bg-green text-white"
               isDisabled={images.length === 4}
               onClick={() => push("")}
               type="button"
-              rightIcon={<HiOutlineCamera size={25} />}
             >
               Add Image
             </Button>
           </Flex>
-          <SimpleGrid
-            mt={"25px"}
-            spacing={"20px"}
-            columns={{ base: 1, md: 2, lg: 4 }}
-          >
-            {images.map((each, index) => (
-              <Flex
-                h={{ md: "390px" }}
-                justify={{ lg: "space-between" }}
-                direction={"column"}
-                key={index}
-              >
-                <Box>
-                  <Field name={`images[${index}]`} validate={validateImages}>
-                    {({ field, meta, form }) => {
-                      return (
-                        <FormControl isInvalid={meta.error && meta.touched}>
-                          <FormLabel
-                            onClick={() => setImageNumber(index)}
-                            className="cursor"
-                            htmlFor={field.name}
-                          >
-                            <Box
-                              height={{ base: "280px", md: "320px" }}
-                              border={"1px solid black"}
-                            >
-                              <Image
-                                objectFit={"cover"}
-                                src={
-                                  blogImages[index] ||
-                                  "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690571372/Nairaland/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector_xso7re.jpg"
-                                }
-                                w={"100%"}
-                                h={"100%"}
-                                alt="post-image"
-                              />
-                            </Box>
-                          </FormLabel>
-                          <Input
-                            type="file"
-                            onChange={(e) => {
-                              onUpload(e);
-                              form.setFieldValue(
-                                `images[${index}]`,
-                                e.target.value
-                              );
-                            }}
-                            accept="image/png, image/jpeg"
-                            name={field.name}
-                            id={field.name}
-                            display={"none"}
+          <SimpleGrid spacing={"20px"} columns={{ base: 1, md: 2, lg: 4 }}>
+            {images.map((_, index) => (
+              <Box key={index}>
+                <Field name={`images[${index}]`} validate={validateImages}>
+                  {({ field, meta, form }) => (
+                    <FormControl isInvalid={meta.error && meta.touched}>
+                      <FormLabel htmlFor={field.name} className="cursor" m={0}>
+                        <Box height={"280px"} border={"1px solid black"}>
+                          <Image
+                            width={"100%"}
+                            h={"100%"}
+                            objectFit={"cover"}
+                            alt="Image"
+                            src={
+                              blogImages[index] ||
+                              "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690571372/Nairaland/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector_xso7re.jpg"
+                            }
                           />
-                          <FormErrorMessage>{meta.error}</FormErrorMessage>
-                        </FormControl>
-                      );
-                    }}
-                  </Field>
-                </Box>
-                <Flex justify={"center"}>
-                  {index > 0 && (
+                        </Box>
+                      </FormLabel>
+                      <Input
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        name={field.name}
+                        id={field.name}
+                        display={"none"}
+                        onChange={(e) => {
+                          onUpload(e, index);
+                          form.setFieldValue(
+                            `images[${index}]`,
+                            e.target.value
+                          );
+                        }}
+                      />
+                      <FormErrorMessage>{meta.error}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+                {index > 0 && (
+                  <Flex justifyContent={"center"}>
                     <Button
                       type="button"
+                      size={"sm"}
                       bg={"red"}
                       _hover={{
                         background: "red",
                       }}
                       color={"white"}
-                 
+                      mt={"5px"}
+                      onClick={() => {
+                        remove();
+                        removeImage(index);
+                      }}
                     >
-                      Remove
+                      Remove image
                     </Button>
-                  )}
-                </Flex>
-              </Flex>
+                  </Flex>
+                )}
+              </Box>
             ))}
           </SimpleGrid>
         </Box>

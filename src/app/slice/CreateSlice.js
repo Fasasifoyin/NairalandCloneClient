@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
 import { createBlog, editBlog } from "../actions/Blogs";
-import { toast } from "react-hot-toast";
 
 const initialState = {
-  error: null,
   status: "idle",
   editStatus: "idle",
 };
@@ -15,27 +13,23 @@ const createSliceComp = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createBlog.pending, (state, action) => {
+      .addCase(createBlog.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(createBlog.fulfilled, (state, { payload }) => {
+      .addCase(createBlog.fulfilled, (state) => {
         state.status = "success";
-        toast.success(payload.message);
       })
-      .addCase(createBlog.rejected, (state, { payload }) => {
+      .addCase(createBlog.rejected, (state) => {
         state.status = "failed";
-        toast.error(payload);
       })
-      .addCase(editBlog.pending, (state, action) => {
+      .addCase(editBlog.pending, (state) => {
         state.editStatus = "pending";
       })
-      .addCase(editBlog.fulfilled, (state, { payload }) => {
+      .addCase(editBlog.fulfilled, (state) => {
         state.editStatus = "success";
-        toast.success(payload);
       })
-      .addCase(editBlog.rejected, (state, { payload }) => {
+      .addCase(editBlog.rejected, (state) => {
         state.editStatus = "failed";
-        toast.error(payload);
       });
   },
 });

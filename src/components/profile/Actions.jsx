@@ -75,10 +75,10 @@ const Actions = ({ userProfile }) => {
         </Text>
         <Flex gap={"20px"}>
           <Button
-            onClick={loggingOut}
             size={"sm"}
             className="bg-green text-white"
             width={"140px"}
+            onClick={loggingOut}
           >
             Log out
           </Button>

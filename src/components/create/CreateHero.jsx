@@ -1,47 +1,42 @@
 /* eslint-disable react/prop-types */
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react";
 
-const CreateHero = ({ user, header }) => {
+import { UserDetails } from "../../app/slice/UserSlice";
+import { useSelector } from "react-redux";
+
+const CreateHero = ({ header }) => {
+  const user = useSelector(UserDetails);
+  const checkSize = useBreakpointValue({ base: false, md: true });
+
   return (
-    <Box
-      mb={{ base: "40px", lg: "60px" }}
-      py={{ base: "20px", lg: "0px" }}
-      px={"30px"}
-      display={"grid"}
-      placeContent={"center"}
-      className="bg-cream"
-      h={{ lg: "160px" }}
-      boxShadow={"0px 4px 5px rgb(0,0,0,0.2)"}
-      pos={"relative"}
-    >
-      <h2 style={{ textAlign: "center" }} className="fw-bold">
-        {header}
-      </h2>
-
-      <Box
-        display={{ base: "none", lg: "block" }}
-        position={"absolute"}
-        w={"100px"}
-        h={"100px"}
-        borderRadius={"50%"}
-        top={"50%"}
-        transform={"translateY(-50%)"}
-        right={"30px"}
-        boxShadow={
-          user.image ===
-          "https://res.cloudinary.com/dbxvk3apv/image/upload/v1690553303/Nairaland/default_avatar_cxfqgl.jpg"
-            ? ""
-            : "0px 15px rgb(0,0,0,0.2)"
-        }
+    <Box className={checkSize ? "cc-container page-alignment" : ""}>
+      <Flex
+        h={{ base: "80px", md: "120px" }}
+        justify={"center"}
+        alignItems={"center"}
+        position={"relative"}
+        className="bg-cream"
       >
-        <Image
-          w={"100%"}
-          h={"100%"}
+        <Text className="fw-bold text-green large-text">{header}</Text>
+        <Box
+          display={{ base: "none", md: "block" }}
+          position={"absolute"}
+          w={"100px"}
+          h={"100px"}
           borderRadius={"50%"}
-          src={user.image}
-          alt={user.userName}
-        />
-      </Box>
+          top={"50%"}
+          transform={"translateY(-50%)"}
+          right={"10px"}
+        >
+          <Image
+            w={"100%"}
+            h={"100%"}
+            borderRadius={"50%"}
+            src={user.image}
+            alt={user.userName}
+          />
+        </Box>
+      </Flex>
     </Box>
   );
 };

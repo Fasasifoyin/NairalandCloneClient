@@ -98,29 +98,29 @@ export const getTagBlogs = createAsyncThunk(
     }
   }
 );
-//end
 
 export const createBlog = createAsyncThunk(
   "/blog/createBlog",
-  async (formData, { rejectWithValue }) => {
-    const { title, body, tags, filterImage } = formData;
+  async (form, { rejectWithValue }) => {
     try {
-      const { data } = await api.createBlog({
+      const { title, body, tags, images, resetForm } = form;
+      const { data, status } = await api.createBlog({
         title,
         body,
         tags,
-        filterImage,
+        images,
       });
-      return data;
+      if (status === 201) {
+        resetForm();
+        toast.success(data.message);
+      }
     } catch (error) {
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error, toast: true });
+      return rejectWithValue(errorMessage);
     }
   }
 );
+//end
 
 export const editBlog = createAsyncThunk(
   "/blog/editBlog",

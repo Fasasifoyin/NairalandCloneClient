@@ -15,7 +15,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    LOGOUT: (state, action) => {
+    LOGOUT: (state) => {
       localStorage.removeItem("nairalandUser");
       toast.success("LOGGED OUT");
       state.user = {};

@@ -20,19 +20,17 @@ const FormikInput = (props) => {
               {defaultLabel ? (
                 <Text className="fw-bold">{label}</Text>
               ) : (
-                <h3 style={{ marginBottom: "10px" }} className="fw-medium">
-                  {label}
-                </h3>
+                <Text className="medium-text fw-bold">{label}</Text>
               )}
             </FormLabel>
           )}
           <Input
             {...field}
             type={type}
+            borderRadius={"5px"}
             placeholder={placeholder}
             autoComplete="off"
             focusBorderColor="#175616"
-            borderRadius={"5px"}
             h={"50px"}
             border={"1px solid #175616"}
           />
