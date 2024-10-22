@@ -120,34 +120,33 @@ export const createBlog = createAsyncThunk(
     }
   }
 );
-//end
 
 export const editBlog = createAsyncThunk(
   "/blog/editBlog",
-  async (formData, { rejectWithValue }) => {
-    const { title, body, tags, filterImage, blogId, navigate } = formData;
+  async (form, { rejectWithValue }) => {
     try {
+      const { title, body, tags, images, blogId, resetForm, navigate } = form;
       const { data, status } = await api.updateBlog({
         title,
         body,
         tags,
-        filterImage,
+        images,
         blogId,
       });
       if (status === 200) {
+        resetForm();
         navigate(`/${data.slug}`);
+        toast.success("Blog edit successful");
       }
-      return "Blog edit successful";
+      return data;
     } catch (error) {
-      console.log(error);
-      const outputError =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      return rejectWithValue(outputError);
+      const errorMessage = errorHandler({ error, toast: true });
+      return rejectWithValue(errorMessage);
     }
   }
 );
+
+//end
 
 export const deleteBlog = createAsyncThunk(
   "/profile/deleteBlog",

@@ -17,7 +17,7 @@ const Create = () => {
   const status = useSelector(BlogStatus);
 
   const [tags, setTags] = useState([]);
-  const [blogImages, setBlogImages] = useState(["", "", "", ""]);
+  const [blogImages, setBlogImages] = useState([""]);
 
   const initialValues = {
     title: "",
@@ -31,12 +31,11 @@ const Create = () => {
     }
 
     const { title, body } = values;
-    const filterImage = blogImages.filter((each) => each !== "");
 
     const formData = {
       title,
       body,
-      images: filterImage,
+      images: blogImages,
       tags,
       resetForm,
     };
@@ -47,7 +46,7 @@ const Create = () => {
   useEffect(() => {
     if (status === "success") {
       setTags([]);
-      setBlogImages(["", "", "", ""]);
+      setBlogImages([""]);
     }
   }, [status]);
 

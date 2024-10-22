@@ -4,7 +4,6 @@ import { createBlog, editBlog } from "../actions/Blogs";
 
 const initialState = {
   status: "idle",
-  editStatus: "idle",
 };
 
 const createSliceComp = createSlice({
@@ -23,18 +22,17 @@ const createSliceComp = createSlice({
         state.status = "failed";
       })
       .addCase(editBlog.pending, (state) => {
-        state.editStatus = "pending";
+        state.status = "pending";
       })
       .addCase(editBlog.fulfilled, (state) => {
-        state.editStatus = "success";
+        state.status = "success";
       })
       .addCase(editBlog.rejected, (state) => {
-        state.editStatus = "failed";
+        state.status = "failed";
       });
   },
 });
 
 export const BlogStatus = (state) => state.blog.status;
-export const EditStatus = (state) => state.blog.editStatus;
 
 export default createSliceComp.reducer;

@@ -5,7 +5,7 @@ import { tagsList } from "../../utils/Data";
 import { GrFormAdd } from "react-icons/gr";
 import { toast } from "react-hot-toast";
 
-const Tags = ({ setTags, tags, edit }) => {
+const Tags = ({ setTags, tags }) => {
   const addToTag = (value) => {
     if (tags.includes(value)) {
       return toast.error("Tag included already");
@@ -16,13 +16,10 @@ const Tags = ({ setTags, tags, edit }) => {
     }
   };
 
-  const removeTag = (value, index) => {
-    if (index === 0 && edit) {
-      toast.error("First Tag is niot allowed to be remove");
-    } else {
-      setTags(tags.filter((each) => each !== value));
-    }
+  const removeTag = (value) => {
+    setTags(tags.filter((each) => each !== value));
   };
+
   return (
     <Box mt={"40px"}>
       <Text className="medium-text fw-bold" mb={"8px"}>
@@ -40,14 +37,11 @@ const Tags = ({ setTags, tags, edit }) => {
         {tags.length ? (
           tags.map((each, index) => (
             <Button
-              key={each}
+              key={index}
               size={"sm"}
               className="bg-green text-white"
               rightIcon={
-                <MdOutlineCancel
-                  size={15}
-                  onClick={() => removeTag(each, index)}
-                />
+                <MdOutlineCancel size={15} onClick={() => removeTag(each)} />
               }
             >
               {each}

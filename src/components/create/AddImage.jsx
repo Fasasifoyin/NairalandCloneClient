@@ -30,7 +30,6 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
 
   const removeImage = (indexNumber) => {
     setBlogImages((prev) => prev.filter((_, index) => index !== indexNumber));
-    setBlogImages((prev) => [...prev, ""]);
   };
 
   const validateImages = (value) => {
@@ -58,7 +57,10 @@ const AddImage = ({ name, setBlogImages, blogImages }) => {
               size={"sm"}
               className="bg-green text-white"
               isDisabled={images.length === 4}
-              onClick={() => push("")}
+              onClick={() => {
+                push("");
+                setBlogImages((prev) => [...prev, ""]);
+              }}
               type="button"
             >
               Add Image

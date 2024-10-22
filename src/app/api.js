@@ -71,6 +71,7 @@ export const updatePassword = (body) =>
   API.patch("/api/users/profile/updatePassword", body);
 
 export const createBlog = (form) => API.post("/api/blogs/create", form);
+export const updateBlog = (form) => API.patch("/api/blogs/update", form);
 //end
 
 export const updateAddress = (body) =>
@@ -78,7 +79,6 @@ export const updateAddress = (body) =>
 export const deleteUser = (userName) =>
   API.delete(`/api/users/profile/delete/${userName}`);
 
-export const updateBlog = (form) => API.patch("/api/blogs/update", form);
 export const deleteBlog = (blogId) => API.delete(`/api/blogs/delete/${blogId}`);
 
 export const homePageTags = (page) => API.get(`/api/blogs/homepage/${page}`);

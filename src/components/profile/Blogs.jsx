@@ -35,7 +35,7 @@ const Blogs = ({ blogs, userProfile, user }) => {
   // const [index, setIndex] = useState(6);
 
   return (
-    <Flex direction={"column"} gap={"10px"} >
+    <Flex direction={"column"} gap={"10px"}>
       {blogs?.map((each) => (
         <Box key={each._id} className="bg-green-light-9" p={"20px"}>
           <Link to={`/${each?.slug}`}>
@@ -55,9 +55,12 @@ const Blogs = ({ blogs, userProfile, user }) => {
           </Text>
           {userProfile.userName === user.userName && (
             <Flex justifyContent={"flex-end"} gap={"10px"} mt={"10px"}>
-              <Button size={"sm"} width={"80px"} bg={"green"} color={"white"}>
-                Edit
-              </Button>
+              <Link to={`/blog/edit/${each?.slug}`}>
+                <Button size={"sm"} width={"80px"} bg={"green"} color={"white"}>
+                  Edit
+                </Button>
+              </Link>
+
               <Button size={"sm"} width={"80px"} bg={"red"} color={"white"}>
                 Delete
               </Button>

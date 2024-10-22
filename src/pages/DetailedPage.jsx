@@ -46,7 +46,6 @@ const DetailedPage = () => {
 
   const related = useSelector(allDetailedRelatedId);
   const relatedStatus = useSelector(RelatedStatus);
-  console.log(relatedStatus);
 
   const comments = useSelector(allCommentIds);
   const commentStatus = useSelector(CommentStatus);

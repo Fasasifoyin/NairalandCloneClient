@@ -10,10 +10,11 @@ import {
 } from "react-share";
 
 const HeroSection = ({ blog }) => {
+  const paragraphs = blog.body.split(/\n\n/);
   const date = convertDate(blog?.createdAt);
 
-  const [index, setIndex] = useState(1);
-  const number = index * 2000;
+  const [index, setIndex] = useState(15);
+  // const number = index * 2000;
 
   return (
     <Box>
@@ -35,47 +36,22 @@ const HeroSection = ({ blog }) => {
           alt="Image"
         />
       </Box>
-      <Text mt={"10px"} wordBreak={"break-word"}>
-        {blog.body
-          .slice(0, number)
-          .trim()
-          .split("\n\n")
-          .map((paragraph, index) => (
-            <Text as={"span"} style={{ display: "block" }} key={index}>
-              {paragraph
-                .split("\n")
-                .reduce((total, line, index) => [
-                  total,
-                  <br key={index} />,
-                  line,
-                ])}
-              {index ===
-                blog.body.slice(0, number).trim().split("\n\n").length - 1 && (
-                <Text as={"span"}>
-                  {number <= blog.body.length && (
-                    <Text
-                      as={"span"}
-                      onClick={() => setIndex((prev) => prev + 1)}
-                      className="text-green text-green-light-5-hover cursor"
-                    >
-                      ...Read More
-                    </Text>
-                  )}
-                  {number >= blog.body.length && blog.body.length > 2000 && (
-                    <Text
-                      as={"span"}
-                      onClick={() => setIndex(1)}
-                      className="text-green text-green-light-5-hover cursor"
-                    >
-                      {" "}
-                      See less
-                    </Text>
-                  )}
-                </Text>
-              )}
-            </Text>
-          ))}
-      </Text>
+      <Box mt={"20px"}>
+        {paragraphs.slice(0, index).map((paragraph, index) => (
+          <Text textAlign={"justify"} key={index} mt={"7px"}>
+            {paragraph}
+          </Text>
+        ))}
+        {paragraphs.length > index && (
+          <Text
+            color={"blue"}
+            className="cursor fw-bold"
+            onClick={() => setIndex((prev) => prev + 10)}
+          >
+            See more
+          </Text>
+        )}
+      </Box>
       {blog.images.length > 1 && (
         <SimpleGrid mt={"20px"} columns={{ base: 2, md: 3 }} gap={5}>
           {blog.images.slice(1, blog.images.length).map((each, index) => (
@@ -112,7 +88,7 @@ const HeroSection = ({ blog }) => {
           <Text>Share:</Text>
           <Flex gap={"15px"}>
             <FacebookShareButton
-              url={`http://localhost:5173/${blog?.slug}`}
+              url={`https://nairaland-clone-client.vercel.app/${blog?.slug}`}
               title={blog?.title}
             >
               <Icon as={FaFacebookF} boxSize={3} />
