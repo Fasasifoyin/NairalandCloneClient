@@ -94,13 +94,13 @@ const HeroSection = ({ blog }) => {
               <Icon as={FaFacebookF} boxSize={3} />
             </FacebookShareButton>
             <TwitterShareButton
-              url={`http://localhost:5173/${blog?.slug}`}
+              url={`https://nairaland-clone-client.vercel.app/${blog?.slug}`}
               title={blog?.title}
             >
               <Icon as={FaXTwitter} boxSize={3} />
             </TwitterShareButton>
             <WhatsappShareButton
-              url={`http://localhost:5173/${blog?.slug}`}
+              url={`https://nairaland-clone-client.vercel.app/${blog?.slug}`}
               title={blog?.title}
             >
               <Icon as={FaWhatsapp} boxSize={3} />
